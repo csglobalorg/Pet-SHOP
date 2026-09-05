@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+  <defs>
+    <!-- Purple Violet Gradient for Ring and Paw -->
+    <linearGradient id="purpleGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#581C87" />
+      <stop offset="50%" stop-color="#7E22CE" />
+      <stop offset="100%" stop-color="#3B0764" />
+    </linearGradient>
+    <linearGradient id="pawGradient" x1="0%" y1="0%" x2="50%" y2="100%">
+      <stop offset="0%" stop-color="#6B21A8" />
+      <stop offset="100%" stop-color="#4C1D95" />
+    </linearGradient>
+
+    <!-- Top Text Arc: Clockwise arc from left to right -->
+    <!-- Center is 250, 250. Radius is 196 -->
+    <path id="topTextArc" d="M 68 250 A 182 182 0 0 1 432 250" fill="none" />
+    <!-- Bottom Text Arc: Clockwise arc from left to right along bottom -->
+    <path id="bottomTextArc" d="M 410 270 A 185 185 0 0 1 90 270" fill="none" />
+  </defs>
+
+  <!-- Outer Ring with Gradient -->
+  <circle cx="250" cy="250" r="242" fill="url(#purpleGradient)" stroke="#3B0764" stroke-width="4" />
+  
+  <!-- Outer Ring Inner & Outer Edge fine white lines -->
+  <circle cx="250" cy="250" r="238" fill="none" stroke="#FFFFFF" stroke-width="3" opacity="0.9" />
+  <circle cx="250" cy="250" r="148" fill="none" stroke="#FFFFFF" stroke-width="3" opacity="0.95" />
+
+  <!-- Inner Circle White Plate -->
+  <circle cx="250" cy="250" r="144" fill="#FFFFFF" stroke="#6B21A8" stroke-width="2" />
+
+  <!-- TOP TEXT: COX'S BAZAR PET SHOP & CARE -->
+  <text fill="#FFFFFF" font-family="system-ui, -apple-system, sans-serif" font-weight="900" font-size="34" letter-spacing="4.5">
+    <textPath href="#topTextArc" startOffset="50%" text-anchor="middle">
+      COX'S BAZAR PET SHOP &amp; CARE
+    </textPath>
+  </text>
+
+  <!-- BOTTOM TEXT: Your Pet, Our Passion -->
+  <text fill="#FFFFFF" font-family="'Georgia', serif" font-style="italic" font-weight="bold" font-size="28" letter-spacing="2">
+    <textPath href="#bottomTextArc" startOffset="50%" text-anchor="middle">
+      Your Pet, Our Passion
+    </textPath>
+  </text>
+
+  <!-- Flanking Left Icon (Paw & Bird Wing) -->
+  <g transform="translate(100, 350) scale(0.65)" fill="#FFFFFF">
+    <circle cx="6" cy="4" r="3.5" />
+    <circle cx="16" cy="1" r="3.5" />
+    <circle cx="26" cy="4" r="3.5" />
+    <path d="M16 10 C10 10, 7 15, 9 21 C11 25, 21 25, 23 21 C25 15, 22 10, 16 10 Z" />
+    <path d="M-6 12 C-1 9, 8 13, 10 18 C5 17, 0 19, -4 23 C-2 19, -3 15, -6 12 Z" opacity="0.9" />
+  </g>
+
+  <!-- Flanking Right Icon (Paw & Bird Wing) -->
+  <g transform="translate(370, 350) scale(0.65)" fill="#FFFFFF">
+    <circle cx="6" cy="4" r="3.5" />
+    <circle cx="16" cy="1" r="3.5" />
+    <circle cx="26" cy="4" r="3.5" />
+    <path d="M16 10 C10 10, 7 15, 9 21 C11 25, 21 25, 23 21 C25 15, 22 10, 16 10 Z" />
+    <path d="M38 12 C33 9, 24 13, 22 18 C27 17, 32 19, 36 23 C34 19, 35 15, 38 12 Z" opacity="0.9" />
+  </g>
+
+  <!-- CENTRAL LARGE PURPLE PAW PRINT -->
+  <g fill="url(#pawGradient)">
+    <!-- Toe 1 (Far Left) -->
+    <ellipse cx="188" cy="200" rx="22" ry="34" transform="rotate(-26, 188, 200)" />
+    <!-- Toe 2 (Mid Left) -->
+    <ellipse cx="230" cy="162" rx="22" ry="36" transform="rotate(-8, 230, 162)" />
+    <!-- Toe 3 (Mid Right) -->
+    <ellipse cx="282" cy="168" rx="22" ry="36" transform="rotate(10, 282, 168)" />
+    <!-- Toe 4 (Far Right) -->
+    <ellipse cx="320" cy="212" rx="21" ry="33" transform="rotate(28, 320, 212)" />
+
+    <!-- Main Central Palm Pad with Characteristic Indents -->
+    <path d="M 246 220 
+             C 278 215, 318 240, 322 278 
+             C 325 308, 290 355, 258 358 
+             C 246 360, 234 346, 230 330
+             C 224 300, 202 328, 184 322
+             C 164 316, 155 285, 166 260
+             C 178 232, 218 224, 246 220 Z" />
+  </g>
+</svg>

@@ -1,0 +1,6 @@
+{
+  "name": "Cox's Bazar Pet Shop & Care",
+  "description": "Cox's Bazar's premier pet store and grooming care center. Premium pet food, toys, accessories, healthcare essentials, and dedicated pet care. Your Pet, Our Passion.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
