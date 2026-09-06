@@ -4,6 +4,7 @@ import confetti from 'canvas-confetti';
 import { useStore } from '../context/StoreContext';
 import { PaymentMethod } from '../types';
 import { STORE_INFO } from '../data/initialData';
+import { SamsungEmoji } from './SamsungEmoji';
 
 export const CheckoutModal: React.FC = () => {
   const { 
@@ -100,23 +101,24 @@ export const CheckoutModal: React.FC = () => {
   };
 
   return (
-    <div className="fixed inset-0 z-50 overflow-y-auto bg-slate-950/60 backdrop-blur-xs flex items-center justify-center p-3 sm:p-6">
-      <div className="relative w-full max-w-2xl bg-white rounded-2xl shadow-2xl border border-purple-100 overflow-hidden my-6">
+    <div className="fixed inset-0 z-50 overflow-y-auto bg-slate-950/60 backdrop-blur-xs flex items-end sm:items-center justify-center p-0 sm:p-6">
+      <div className="relative w-full max-w-2xl bg-white rounded-t-3xl sm:rounded-2xl shadow-2xl border border-purple-100 overflow-hidden my-0 sm:my-6 max-h-[92vh] sm:max-h-[90vh] flex flex-col">
         
         {/* Modal Header */}
-        <div className="px-6 py-4 bg-gradient-to-r from-purple-950 via-purple-900 to-indigo-950 text-white flex items-center justify-between">
+        <div className="px-4 sm:px-6 py-3.5 sm:py-4 bg-gradient-to-r from-purple-950 via-purple-900 to-indigo-950 text-white flex items-center justify-between shrink-0">
           <div className="flex items-center gap-2.5">
-            <ShoppingBag className="w-5 h-5 text-purple-300" />
+            <ShoppingBag className="w-5 h-5 text-purple-300 shrink-0" />
             <div>
-              <h2 className="text-base font-bold">
+              <h2 className="text-sm sm:text-base font-bold">
                 {orderSuccess ? 'Order Confirmed!' : 'Complete Order (Checkout)'}
               </h2>
-              <span className="text-[11px] text-purple-200">Cox's Bazar Pet Shop & Care</span>
+              <span className="text-[10px] sm:text-[11px] text-purple-200">Cox's Bazar Pet Shop & Care</span>
             </div>
           </div>
           <button
             onClick={handleClose}
-            className="p-1 rounded-lg text-purple-300 hover:text-white hover:bg-white/10 transition-colors cursor-pointer"
+            className="p-1.5 rounded-lg text-purple-300 hover:text-white hover:bg-white/10 transition-colors cursor-pointer"
+            aria-label="Close checkout"
           >
             <X className="w-5 h-5" />
           </button>
@@ -124,21 +126,21 @@ export const CheckoutModal: React.FC = () => {
 
         {orderSuccess ? (
           /* Order Success Screen */
-          <div className="p-6 sm:p-8 text-center space-y-5">
-            <div className="w-16 h-16 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center mx-auto shadow-sm">
-              <CheckCircle2 className="w-10 h-10" />
+          <div className="overflow-y-auto p-5 sm:p-8 text-center space-y-4 sm:space-y-5">
+            <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center mx-auto shadow-sm">
+              <CheckCircle2 className="w-8 h-8 sm:w-10 sm:h-10" />
             </div>
 
             <div className="space-y-1">
-              <h3 className="text-xl font-black text-slate-900">
+              <h3 className="text-lg sm:text-xl font-black text-slate-900">
                 Thank You, {orderSuccess.customerName}!
               </h3>
-              <p className="text-xs text-slate-600">
+              <p className="text-xs text-slate-600 max-w-md mx-auto">
                 Your order has been received successfully. Our team will contact you shortly to confirm delivery.
               </p>
             </div>
 
-            <div className="bg-purple-50/60 rounded-2xl p-4 border border-purple-100 max-w-md mx-auto text-left text-xs space-y-2 text-slate-700">
+            <div className="bg-purple-50/60 rounded-2xl p-3.5 sm:p-4 border border-purple-100 max-w-md mx-auto text-left text-xs space-y-2 text-slate-700">
               <div className="flex justify-between border-b border-purple-100 pb-1.5">
                 <span className="text-slate-500">Order Number:</span>
                 <span className="font-mono font-bold text-purple-800 text-sm">{orderSuccess.orderNumber}</span>
@@ -157,7 +159,7 @@ export const CheckoutModal: React.FC = () => {
               </div>
             </div>
 
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-3 pt-2">
               <button
                 onClick={handleClose}
                 className="w-full sm:w-auto px-5 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-semibold cursor-pointer transition-colors"
@@ -174,12 +176,12 @@ export const CheckoutModal: React.FC = () => {
                 className="w-full sm:w-auto px-5 py-2.5 bg-purple-700 hover:bg-purple-800 text-white rounded-xl text-xs font-semibold flex items-center justify-center gap-1.5 cursor-pointer transition-colors shadow-xs"
               >
                 <Sparkles className="w-4 h-4 text-purple-200" />
-                <span>View Order in Admin Dashboard</span>
+                <span>View Order in Admin</span>
               </button>
             </div>
           </div>
         ) : (
-          <form onSubmit={handleSubmitOrder} className="p-6 space-y-6">
+          <form onSubmit={handleSubmitOrder} className="overflow-y-auto p-4 sm:p-6 space-y-4 sm:space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
               
               {/* Customer Contact Details */}
@@ -313,7 +315,9 @@ export const CheckoutModal: React.FC = () => {
                         : 'bg-white border-slate-200 hover:bg-slate-50 text-slate-700'
                     }`}
                   >
-                    <div className="text-lg">{pm.icon}</div>
+                    <div className="h-6 flex items-center">
+                      <SamsungEmoji emoji={pm.icon} size="md" />
+                    </div>
                     <div className="text-xs font-bold text-slate-900 mt-1">{pm.name}</div>
                     <div className="text-[10px] text-slate-400">{pm.desc}</div>
                   </button>
@@ -338,17 +342,17 @@ export const CheckoutModal: React.FC = () => {
             </div>
 
             {/* Submit button */}
-            <div className="flex items-center justify-end gap-3 pt-2">
+            <div className="flex flex-col-reverse sm:flex-row items-stretch sm:items-center justify-end gap-2 sm:gap-3 pt-2">
               <button
                 type="button"
                 onClick={handleClose}
-                className="px-4 py-2 text-xs font-semibold text-slate-600 hover:text-slate-900 transition-colors cursor-pointer"
+                className="w-full sm:w-auto px-4 py-2 text-xs font-semibold text-slate-600 hover:text-slate-900 transition-colors cursor-pointer text-center"
               >
                 Cancel
               </button>
               <button
                 type="submit"
-                className="px-6 py-2.5 rounded-xl bg-purple-700 hover:bg-purple-800 text-white font-bold text-xs shadow-md transition-all cursor-pointer flex items-center gap-1.5"
+                className="w-full sm:w-auto px-6 py-2.5 rounded-xl bg-purple-700 hover:bg-purple-800 text-white font-bold text-xs shadow-md transition-all cursor-pointer flex items-center justify-center gap-1.5"
               >
                 <CheckCircle2 className="w-4 h-4" />
                 <span>Confirm Order (৳{total.toLocaleString()})</span>

@@ -66,27 +66,28 @@ export const AppointmentBookingModal: React.FC = () => {
   ];
 
   return (
-    <div className="fixed inset-0 z-50 overflow-y-auto bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4">
-      <div className="relative bg-white rounded-2xl max-w-lg w-full shadow-2xl border border-purple-100 overflow-hidden">
+    <div className="fixed inset-0 z-50 overflow-y-auto bg-slate-900/60 backdrop-blur-xs flex items-end sm:items-center justify-center p-0 sm:p-4">
+      <div className="relative bg-white rounded-t-3xl sm:rounded-2xl max-w-lg w-full shadow-2xl border border-purple-100 overflow-hidden max-h-[92vh] sm:max-h-[90vh] flex flex-col">
         
         {/* Modal Header */}
-        <div className="bg-gradient-to-r from-purple-800 via-purple-700 to-indigo-900 px-6 py-5 text-white flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center border border-white/20">
-              <Calendar className="w-5 h-5 text-purple-200" />
+        <div className="bg-gradient-to-r from-purple-800 via-purple-700 to-indigo-900 px-4 sm:px-6 py-4 sm:py-5 text-white flex items-center justify-between shrink-0">
+          <div className="flex items-center gap-2.5 sm:gap-3">
+            <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-white/10 flex items-center justify-center border border-white/20 shrink-0">
+              <Calendar className="w-4 h-4 sm:w-5 sm:h-5 text-purple-200" />
             </div>
             <div>
-              <h3 className="font-bold text-lg text-white">
-                Book Care & Grooming Appointment
+              <h3 className="font-bold text-base sm:text-lg text-white">
+                Book Care & Grooming
               </h3>
-              <p className="text-xs text-purple-200">
-                Cox's Bazar Pet Shop & Care • Grooming & Care Center
+              <p className="text-[11px] sm:text-xs text-purple-200">
+                Cox's Bazar Pet Shop & Care
               </p>
             </div>
           </div>
           <button
             onClick={handleClose}
             className="text-white/80 hover:text-white p-1.5 rounded-lg hover:bg-white/10 transition-colors cursor-pointer"
+            aria-label="Close booking modal"
           >
             <X className="w-5 h-5" />
           </button>
@@ -140,7 +141,7 @@ export const AppointmentBookingModal: React.FC = () => {
             </div>
           </div>
         ) : (
-          <form onSubmit={handleSubmit} className="p-6 space-y-4">
+          <form onSubmit={handleSubmit} className="overflow-y-auto p-4 sm:p-6 space-y-3.5 sm:space-y-4">
             {/* Service Selection */}
             <div>
               <label className="block text-xs font-semibold text-slate-700 mb-1.5">
@@ -149,14 +150,27 @@ export const AppointmentBookingModal: React.FC = () => {
               <select
                 value={serviceId}
                 onChange={(e) => setServiceId(e.target.value)}
-                className="w-full text-sm border border-purple-200 rounded-xl px-3 py-2.5 bg-white text-slate-900 focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent font-medium"
+                className="w-full text-sm border border-slate-200 rounded-xl px-3.5 py-2.5 bg-slate-50/50 hover:bg-white text-slate-900 focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent font-medium transition-all"
               >
                 {services.map(s => (
                   <option key={s.id} value={s.id}>
-                    {s.titleEn || s.titleBn} — {s.startingPrice > 0 ? `৳${s.startingPrice}` : 'Free Consultation'} ({s.duration})
+                    {s.title} — {s.startingPrice > 0 ? `৳${s.startingPrice}` : 'Free Consultation'} ({s.duration})
                   </option>
                 ))}
               </select>
+            </div>
+
+            {/* Service-Specific Micro Guidance Card */}
+            <div className="bg-purple-50/70 border border-purple-100 rounded-xl p-3 text-xs text-purple-900 space-y-1">
+              <div className="font-semibold flex items-center justify-between">
+                <span>{activeService?.title}</span>
+                <span className="text-purple-700 font-bold">
+                  {activeService?.startingPrice > 0 ? `Starts ৳${activeService.startingPrice}` : 'Free Inquiry'}
+                </span>
+              </div>
+              <p className="text-purple-800 text-[11px] leading-relaxed">
+                {activeService?.description}
+              </p>
             </div>
 
             {/* Pet Parent & Pet details */}
@@ -279,17 +293,17 @@ export const AppointmentBookingModal: React.FC = () => {
             </div>
 
             {/* Submit Button */}
-            <div className="pt-2 flex items-center justify-end gap-2.5">
+            <div className="pt-2 flex flex-col-reverse sm:flex-row items-stretch sm:items-center justify-end gap-2 sm:gap-2.5">
               <button
                 type="button"
                 onClick={handleClose}
-                className="px-4 py-2 text-sm font-medium text-slate-600 hover:text-slate-800 hover:bg-slate-100 rounded-xl transition-colors cursor-pointer"
+                className="w-full sm:w-auto px-4 py-2 text-sm font-medium text-slate-600 hover:text-slate-800 hover:bg-slate-100 rounded-xl transition-colors cursor-pointer text-center"
               >
                 Cancel
               </button>
               <button
                 type="submit"
-                className="px-6 py-2.5 bg-gradient-to-r from-purple-700 to-purple-800 hover:from-purple-800 hover:to-purple-900 text-white text-sm font-semibold rounded-xl shadow-md hover:shadow-lg transition-all cursor-pointer flex items-center gap-2"
+                className="w-full sm:w-auto px-6 py-2.5 bg-gradient-to-r from-purple-700 to-purple-800 hover:from-purple-800 hover:to-purple-900 text-white text-sm font-semibold rounded-xl shadow-md hover:shadow-lg transition-all cursor-pointer flex items-center justify-center gap-2"
               >
                 <CheckCircle2 className="w-4 h-4" />
                 <span>Confirm Booking</span>

@@ -30,6 +30,7 @@ import {
 } from 'lucide-react';
 import { useStore } from '../../context/StoreContext';
 import { Product, ProductCategory, AnimalType, PaymentMethod, Order } from '../../types';
+import { SamsungEmoji } from '../SamsungEmoji';
 
 interface POSCartItem {
   product: Product;
@@ -451,13 +452,40 @@ export const POSTerminal: React.FC = () => {
                   <button
                     key={type}
                     onClick={() => setSelectedAnimal(type)}
-                    className={`px-2.5 py-1 rounded-lg capitalize font-medium transition-colors cursor-pointer ${
+                    className={`px-2.5 py-1 rounded-lg capitalize font-medium transition-colors cursor-pointer inline-flex items-center gap-1 ${
                       selectedAnimal === type
                         ? 'bg-purple-900 text-white font-bold'
                         : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
                     }`}
                   >
-                    {type === 'all' ? '🐾 All' : type}
+                    {type === 'all' ? (
+                      <>
+                        <SamsungEmoji emoji="🐾" size="xs" />
+                        <span>All</span>
+                      </>
+                    ) : type === 'cat' ? (
+                      <>
+                        <SamsungEmoji emoji="🐱" size="xs" />
+                        <span>Cats</span>
+                      </>
+                    ) : type === 'dog' ? (
+                      <>
+                        <SamsungEmoji emoji="🐶" size="xs" />
+                        <span>Dogs</span>
+                      </>
+                    ) : type === 'bird' ? (
+                      <>
+                        <SamsungEmoji emoji="🦜" size="xs" />
+                        <span>Birds</span>
+                      </>
+                    ) : type === 'rabbit' ? (
+                      <>
+                        <SamsungEmoji emoji="🐰" size="xs" />
+                        <span>Rabbits</span>
+                      </>
+                    ) : (
+                      type
+                    )}
                   </button>
                 ))}
               </div>
@@ -466,23 +494,24 @@ export const POSTerminal: React.FC = () => {
             {/* Category Pills */}
             <div className="flex items-center gap-1.5 overflow-x-auto pt-2.5 scrollbar-none text-xs">
               {[
-                { id: 'all', label: 'All Items' },
-                { id: 'Pet Food', label: '🥩 Pet Food' },
-                { id: 'Litter & Hygiene', label: '🧼 Litter' },
-                { id: 'Accessories & Toys', label: '🎾 Toys & Gear' },
-                { id: 'Grooming Essentials', label: '✂️ Grooming' },
-                { id: 'Healthcare & First Aid', label: '💊 Healthcare' }
+                { id: 'all', emoji: '✨', label: 'All Items' },
+                { id: 'Pet Food', emoji: '🥩', label: 'Pet Food' },
+                { id: 'Litter & Hygiene', emoji: '🧼', label: 'Litter' },
+                { id: 'Accessories & Toys', emoji: '🎾', label: 'Toys & Gear' },
+                { id: 'Grooming Essentials', emoji: '✂️', label: 'Grooming' },
+                { id: 'Healthcare & First Aid', emoji: '💊', label: 'Healthcare' }
               ].map(cat => (
                 <button
                   key={cat.id}
                   onClick={() => setSelectedCategory(cat.id)}
-                  className={`px-3 py-1.5 rounded-lg whitespace-nowrap text-xs font-semibold transition-all cursor-pointer ${
+                  className={`px-3 py-1.5 rounded-lg whitespace-nowrap text-xs font-semibold transition-all cursor-pointer inline-flex items-center gap-1.5 ${
                     selectedCategory === cat.id
                       ? 'bg-purple-700 text-white shadow-xs'
                       : 'bg-slate-50 text-slate-600 hover:bg-purple-50 hover:text-purple-700 border border-slate-200/60'
                   }`}
                 >
-                  {cat.label}
+                  <SamsungEmoji emoji={cat.emoji} size="xs" />
+                  <span>{cat.label}</span>
                 </button>
               ))}
             </div>
@@ -797,22 +826,23 @@ export const POSTerminal: React.FC = () => {
           <div className="p-3.5 space-y-2.5">
             <div className="grid grid-cols-4 gap-1.5 text-xs">
               {[
-                { id: 'Cash on Delivery', label: '💵 Cash', isDigital: false },
-                { id: 'bKash', label: '📱 bKash', isDigital: true },
-                { id: 'Nagad', label: '📲 Nagad', isDigital: true },
-                { id: 'Credit/Debit Card', label: '💳 Card', isDigital: true }
+                { id: 'Cash on Delivery', emoji: '💵', name: 'Cash', isDigital: false },
+                { id: 'bKash', emoji: '📱', name: 'bKash', isDigital: true },
+                { id: 'Nagad', emoji: '📲', name: 'Nagad', isDigital: true },
+                { id: 'Credit/Debit Card', emoji: '💳', name: 'Card', isDigital: true }
               ].map(m => (
                 <button
                   key={m.id}
                   type="button"
                   onClick={() => setPaymentMethod(m.id as PaymentMethod)}
-                  className={`py-2 px-1 rounded-xl font-bold text-center border transition-all cursor-pointer ${
+                  className={`py-2 px-1 rounded-xl font-bold text-center border transition-all cursor-pointer inline-flex items-center justify-center gap-1 ${
                     paymentMethod === m.id
                       ? 'bg-purple-900 text-white border-purple-900 shadow-xs'
                       : 'bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100'
                   }`}
                 >
-                  {m.label}
+                  <SamsungEmoji emoji={m.emoji} size="xs" />
+                  <span>{m.name}</span>
                 </button>
               ))}
             </div>

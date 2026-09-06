@@ -1,6 +1,6 @@
 {
   "name": "Cox's Bazar Pet Shop & Care",
-  "description": "Cox's Bazar's premier pet store and grooming care center. Premium pet food, toys, accessories, healthcare essentials, and dedicated pet care. Your Pet, Our Passion.",
+  "description": "Cox's Bazar's premier pet care center and shop — Foster Care, Professional Grooming & Spa, Pet Sale & Adoption, Pet Courier, and Beachside Pet Cafe. Premium pet food, toys, accessories & healthcare essentials.",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }

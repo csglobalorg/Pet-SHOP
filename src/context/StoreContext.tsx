@@ -10,7 +10,9 @@ import {
   ServiceItem,
   ExpenseRecord,
   CustomerDueRecord,
-  SupplierRecord
+  SupplierRecord,
+  UserProfile,
+  PetListing
 } from '../types';
 import { 
   INITIAL_PRODUCTS, 
@@ -20,7 +22,8 @@ import {
   STORE_SERVICES,
   INITIAL_EXPENSES,
   INITIAL_CUSTOMER_DUES,
-  INITIAL_SUPPLIERS
+  INITIAL_SUPPLIERS,
+  INITIAL_PET_LISTINGS
 } from '../data/initialData';
 
 export interface DailySalesMetric {
@@ -37,6 +40,7 @@ interface StoreContextType {
   inventoryLogs: InventoryLog[];
   appointments: AppointmentBooking[];
   services: ServiceItem[];
+  petListings: PetListing[];
   cart: CartItem[];
   wishlist: string[]; // product IDs
   activeView: 'store' | 'admin';
@@ -48,6 +52,21 @@ interface StoreContextType {
   isBookingModalOpen: boolean;
   selectedServiceForBooking: ServiceItem | null;
   salesAnalytics: DailySalesMetric[];
+
+  // Customer Account & Profile
+  currentUser: UserProfile;
+  setCurrentUser: React.Dispatch<React.SetStateAction<UserProfile>>;
+  loginUser: (profileData: Partial<UserProfile>) => void;
+  logoutUser: () => void;
+  updateUserProfile: (profileData: Partial<UserProfile>) => void;
+
+  // Grooming Appointment Reminders System
+  upcomingGroomingAppointments: AppointmentBooking[];
+  isReminderToastOpen: boolean;
+  setIsReminderToastOpen: (open: boolean) => void;
+  dismissedReminderIds: string[];
+  dismissReminder: (appointmentId?: string) => void;
+  triggerGroomingReminderCheck: () => void;
 
   // Admin Protection & Staff Security Gate
   isAdminAuthenticated: boolean;
@@ -243,6 +262,68 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [isAdminAuthenticated]);
+
+  // Customer Account & Profile
+  const DEFAULT_USER: UserProfile = {
+    name: 'Tanvir Ahmed',
+    phone: '01854-444344',
+    email: 'tanvir.petcare@gmail.com',
+    city: "Cox's Bazar Municipality",
+    membershipPoints: 450,
+    isLoggedIn: true
+  };
+
+  const [currentUser, setCurrentUser] = useState<UserProfile>(() => {
+    const saved = localStorage.getItem('cbz_pet_user_profile_v2');
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        if (parsed && typeof parsed.isLoggedIn === 'boolean') return parsed;
+      } catch (e) { console.error(e); }
+    }
+    return DEFAULT_USER;
+  });
+
+  useEffect(() => {
+    try {
+      localStorage.setItem('cbz_pet_user_profile_v2', JSON.stringify(currentUser));
+    } catch (e) { console.error(e); }
+  }, [currentUser]);
+
+  const [dismissedReminderIds, setDismissedReminderIds] = useState<string[]>(() => {
+    try {
+      const saved = sessionStorage.getItem('cbz_dismissed_apt_reminders');
+      return saved ? JSON.parse(saved) : [];
+    } catch {
+      return [];
+    }
+  });
+
+  const [isReminderToastOpen, setIsReminderToastOpen] = useState(false);
+
+  const loginUser = (profileData: Partial<UserProfile>) => {
+    setCurrentUser(prev => ({
+      ...prev,
+      ...profileData,
+      isLoggedIn: true
+    }));
+    setIsReminderToastOpen(true);
+  };
+
+  const logoutUser = () => {
+    setCurrentUser(prev => ({
+      ...prev,
+      isLoggedIn: false
+    }));
+    setIsReminderToastOpen(false);
+  };
+
+  const updateUserProfile = (profileData: Partial<UserProfile>) => {
+    setCurrentUser(prev => ({
+      ...prev,
+      ...profileData
+    }));
+  };
 
   const [selectedProductForDetail, setSelectedProductForDetail] = useState<Product | null>(null);
   const [isCartOpen, setIsCartOpen] = useState(false);
@@ -557,6 +638,100 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     }));
   }, [orders]);
 
+  // Grooming Appointments & Notification / Reminder Engine
+  const upcomingGroomingAppointments = useMemo(() => {
+    if (!currentUser.isLoggedIn) return [];
+
+    const cleanUserPhone = currentUser.phone.replace(/\D/g, '');
+    const cleanUserName = currentUser.name.trim().toLowerCase();
+
+    return appointments.filter(apt => {
+      // Exclude cancelled or completed appointments
+      if (apt.status === 'Cancelled' || apt.status === 'Completed') return false;
+
+      // Phone match (last 6 digits or substring) or name match
+      const cleanAptPhone = (apt.ownerPhone || '').replace(/\D/g, '');
+      const cleanAptName = (apt.ownerName || '').trim().toLowerCase();
+      
+      const phoneMatch = cleanUserPhone.length >= 6 && cleanAptPhone.length >= 6 &&
+        (cleanUserPhone.endsWith(cleanAptPhone.slice(-6)) || 
+         cleanAptPhone.endsWith(cleanUserPhone.slice(-6)) ||
+         cleanUserPhone.includes(cleanAptPhone) || 
+         cleanAptPhone.includes(cleanUserPhone));
+         
+      const nameMatch = cleanUserName.length >= 3 && 
+        (cleanAptName.includes(cleanUserName) || cleanUserName.includes(cleanAptName));
+
+      if (!phoneMatch && !nameMatch) return false;
+
+      // Grooming / Spa / Bath service match
+      const sId = (apt.serviceId || '').toLowerCase();
+      const sName = (apt.serviceName || '').toLowerCase();
+      const isGrooming = sId.includes('grooming') || sName.includes('grooming') || 
+        sName.includes('spa') || sName.includes('bath') || sName.includes('trimming') || 
+        sName.includes('haircut') || sId === 'srv-grooming' || sId === 'srv-vet';
+
+      if (!isGrooming) return false;
+
+      // Relative date check: upcoming within 14 days
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+
+      const parts = (apt.preferredDate || '').split('-');
+      if (parts.length === 3) {
+        const aptDate = new Date(parseInt(parts[0], 10), parseInt(parts[1], 10) - 1, parseInt(parts[2], 10));
+        aptDate.setHours(0, 0, 0, 0);
+        const diffTime = aptDate.getTime() - today.getTime();
+        const diffDays = Math.round(diffTime / (1000 * 60 * 60 * 24));
+        // Include upcoming appointments (e.g. today, tomorrow, or within next 14 days)
+        return diffDays >= -1 && diffDays <= 14;
+      }
+
+      return true;
+    });
+  }, [currentUser, appointments]);
+
+  const dismissReminder = (appointmentId?: string) => {
+    if (appointmentId) {
+      setDismissedReminderIds(prev => {
+        const updated = Array.from(new Set([...prev, appointmentId]));
+        try { sessionStorage.setItem('cbz_dismissed_apt_reminders', JSON.stringify(updated)); } catch {}
+        return updated;
+      });
+    } else {
+      const allIds = upcomingGroomingAppointments.map(a => a.id);
+      setDismissedReminderIds(prev => {
+        const updated = Array.from(new Set([...prev, ...allIds]));
+        try { sessionStorage.setItem('cbz_dismissed_apt_reminders', JSON.stringify(updated)); } catch {}
+        return updated;
+      });
+    }
+    setIsReminderToastOpen(false);
+  };
+
+  const triggerGroomingReminderCheck = () => {
+    setIsReminderToastOpen(true);
+  };
+
+  // Auto trigger reminder toast on session mount / when user logs in if there are active undismissed grooming appointments
+  useEffect(() => {
+    if (!currentUser.isLoggedIn) {
+      setIsReminderToastOpen(false);
+      return;
+    }
+
+    const activeUndismissed = upcomingGroomingAppointments.filter(
+      apt => !dismissedReminderIds.includes(apt.id)
+    );
+
+    if (activeUndismissed.length > 0) {
+      const timer = setTimeout(() => {
+        setIsReminderToastOpen(true);
+      }, 700);
+      return () => clearTimeout(timer);
+    }
+  }, [currentUser.isLoggedIn, upcomingGroomingAppointments, dismissedReminderIds]);
+
   // Appointment Bookings
   const bookAppointment = (bookingData: Omit<AppointmentBooking, 'id' | 'createdAt' | 'status'>): AppointmentBooking => {
     const newBooking: AppointmentBooking = {
@@ -566,6 +741,11 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       createdAt: new Date().toISOString().replace('T', ' ').substring(0, 16)
     };
     setAppointments(prev => [newBooking, ...prev]);
+
+    // Make sure newly booked appointment will notify the user
+    setDismissedReminderIds(prev => prev.filter(id => id !== newBooking.id));
+    setIsReminderToastOpen(true);
+
     return newBooking;
   };
 
@@ -677,6 +857,7 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         inventoryLogs,
         appointments,
         services,
+        petListings: INITIAL_PET_LISTINGS,
         cart,
         wishlist,
         activeView,
@@ -687,6 +868,17 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         isOrderTrackOpen,
         isBookingModalOpen,
         selectedServiceForBooking,
+        currentUser,
+        setCurrentUser,
+        loginUser,
+        logoutUser,
+        updateUserProfile,
+        upcomingGroomingAppointments,
+        isReminderToastOpen,
+        setIsReminderToastOpen,
+        dismissedReminderIds,
+        dismissReminder,
+        triggerGroomingReminderCheck,
         setActiveView,
         setAdminTab,
         setSelectedProductForDetail,

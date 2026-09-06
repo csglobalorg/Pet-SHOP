@@ -14,18 +14,21 @@ import {
   LayoutDashboard,
   Store,
   Scan,
-  Lock
+  Lock,
+  Bell,
+  Scissors
 } from 'lucide-react';
 import { useStore } from '../context/StoreContext';
 import { ProductCategory } from '../types';
 import { STORE_INFO } from '../data/initialData';
 import { Logo } from './Logo';
+import { SamsungEmoji } from './SamsungEmoji';
 
 interface NavbarProps {
   onSelectCategory?: (category: ProductCategory | 'All') => void;
   selectedCategory?: string;
   onSearch?: (query: string) => void;
-  onOpenAccountModal?: (tab?: 'account' | 'privilege' | 'giftcards') => void;
+  onOpenAccountModal?: (tab?: 'account' | 'privilege' | 'giftcards' | 'grooming') => void;
 }
 
 export const Navbar: React.FC<NavbarProps> = ({ 
@@ -43,7 +46,10 @@ export const Navbar: React.FC<NavbarProps> = ({
     openAdminPortal,
     setIsOrderTrackOpen,
     products,
-    setSelectedProductForDetail
+    setSelectedProductForDetail,
+    currentUser,
+    upcomingGroomingAppointments,
+    triggerGroomingReminderCheck
   } = useStore();
 
   const [searchQuery, setSearchQuery] = useState('');
@@ -91,11 +97,11 @@ export const Navbar: React.FC<NavbarProps> = ({
     <header className="sticky top-0 z-40 bg-white border-b border-slate-200/80 shadow-xs">
       
       {/* Top Announcement Bar */}
-      <div className="bg-slate-900 text-slate-300 text-xs px-4 py-1.5 border-b border-slate-800">
-        <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-2">
+      <div className="bg-slate-900 text-slate-300 text-xs px-3 sm:px-4 py-1.5 border-b border-slate-800">
+        <div className="max-w-7xl mx-auto flex items-center justify-between gap-2">
           
           {/* Left contact info */}
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2 sm:gap-4">
             <a 
               href={`tel:${STORE_INFO.phone}`} 
               className="flex items-center gap-1.5 hover:text-white transition-colors font-medium text-[11px]"
@@ -117,7 +123,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           </div>
 
           {/* Right quick links */}
-          <div className="flex items-center gap-3 text-[11px]">
+          <div className="flex items-center gap-2 sm:gap-3 text-[11px]">
             <a
               href={`https://wa.me/${STORE_INFO.whatsappDigits}?text=${encodeURIComponent('Hello Cox\'s Bazar Pet Shop!')}`}
               target="_blank"
@@ -133,9 +139,9 @@ export const Navbar: React.FC<NavbarProps> = ({
               className="flex items-center gap-1 hover:text-white transition-colors font-medium cursor-pointer"
             >
               <Truck className="w-3 h-3 text-purple-400" />
-              <span>Track Order</span>
+              <span className="hidden xs:inline">Track Order</span>
             </button>
-            <span className="text-slate-700">|</span>
+            <span className="hidden sm:inline text-slate-700">|</span>
             
             {/* View Switcher: Storefront vs Admin Protected Portal */}
             {activeView === 'admin' ? (
@@ -149,11 +155,11 @@ export const Navbar: React.FC<NavbarProps> = ({
             ) : (
               <button
                 onClick={() => openAdminPortal()}
-                className="flex items-center gap-1 px-2 py-0.5 rounded-full text-slate-400 hover:text-slate-200 text-[11px] font-medium transition-colors cursor-pointer hover:bg-slate-800"
+                className="hidden sm:flex items-center gap-1 px-2 py-0.5 rounded-full text-slate-400 hover:text-slate-200 text-[11px] font-medium transition-colors cursor-pointer hover:bg-slate-800"
                 title="Staff Portal (Passcode Protected)"
               >
                 <Lock className="w-2.5 h-2.5 text-purple-400" />
-                <span className="hidden sm:inline">Staff Access</span>
+                <span>Staff Access</span>
               </button>
             )}
           </div>
@@ -161,15 +167,15 @@ export const Navbar: React.FC<NavbarProps> = ({
       </div>
 
       {/* Main Header (Exact Mew Mew Shop style: Circular Logo, Pill Search, Account Pill, Basket Pill) */}
-      <div className="max-w-7xl mx-auto px-4 py-3 sm:py-4">
-        <div className="flex items-center justify-between gap-4 sm:gap-8">
+      <div className="max-w-7xl mx-auto px-3 sm:px-4 py-2.5 sm:py-4">
+        <div className="flex items-center justify-between gap-2 sm:gap-6">
           
           {/* Circular Brand Logo */}
           <div 
             onClick={() => setActiveView('store')}
-            className="flex items-center gap-3 cursor-pointer select-none shrink-0"
+            className="flex items-center gap-2 sm:gap-3 cursor-pointer select-none shrink-0"
           >
-            <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-white border border-purple-200 p-0.5 shadow-sm flex items-center justify-center overflow-hidden ring-2 ring-purple-100 hover:scale-105 transition-transform">
+            <div className="w-10 h-10 sm:w-14 sm:h-14 rounded-full bg-white border border-purple-200 p-0.5 shadow-sm flex items-center justify-center overflow-hidden ring-2 ring-purple-100 hover:scale-105 transition-transform">
               <Logo className="w-full h-full object-contain rounded-full" />
             </div>
             <div className="hidden sm:block">
@@ -185,7 +191,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           {/* Centered Pill Search Bar */}
           <form 
             onSubmit={handleSearchSubmit}
-            className="flex-1 max-w-2xl relative"
+            className="flex-1 max-w-2xl relative min-w-0"
           >
             <div className="relative w-full">
               <input
@@ -194,15 +200,15 @@ export const Navbar: React.FC<NavbarProps> = ({
                 onChange={handleSearchChange}
                 onFocus={() => setShowSearchDropdown(true)}
                 onBlur={() => setTimeout(() => setShowSearchDropdown(false), 200)}
-                placeholder="Search for items..."
-                className="w-full pl-5 pr-12 py-2.5 rounded-full border border-slate-300 bg-white hover:border-purple-300 focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-purple-600 text-sm text-slate-800 placeholder:text-slate-400 shadow-xs transition-all"
+                placeholder="Search food, toys, care..."
+                className="w-full pl-3.5 sm:pl-5 pr-8 sm:pr-12 py-2 sm:py-2.5 rounded-full border border-slate-300 bg-white hover:border-purple-300 focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-purple-600 text-xs sm:text-sm text-slate-800 placeholder:text-slate-400 shadow-xs transition-all"
               />
               <button 
                 type="submit"
-                className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-500 hover:text-purple-700 cursor-pointer transition-colors p-1"
+                className="absolute right-2.5 sm:right-3.5 top-1/2 -translate-y-1/2 text-slate-500 hover:text-purple-700 cursor-pointer transition-colors p-1"
                 aria-label="Search"
               >
-                <Search className="w-4 h-4" />
+                <Search className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
               </button>
             </div>
 
@@ -243,22 +249,57 @@ export const Navbar: React.FC<NavbarProps> = ({
             )}
           </form>
 
-          {/* Right Buttons: Hello User, Account & My Basket(0) (Exact match) */}
-          <div className="flex items-center gap-2 sm:gap-3 shrink-0">
+          {/* Right Buttons: Hello User, Account & My Basket(0) */}
+          <div className="flex items-center gap-1.5 sm:gap-3 shrink-0">
             
+            {/* Upcoming Grooming Alert Bell */}
+            {currentUser.isLoggedIn && upcomingGroomingAppointments.length > 0 && (
+              <button
+                type="button"
+                onClick={() => triggerGroomingReminderCheck()}
+                title={`You have ${upcomingGroomingAppointments.length} upcoming grooming reminder(s). Click to view!`}
+                className="relative p-1.5 sm:p-2 rounded-full border border-purple-200 bg-purple-50 text-purple-700 hover:bg-purple-100 hover:border-purple-300 transition-all cursor-pointer shadow-xs"
+              >
+                <Bell className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                <span className="absolute -top-1 -right-1 bg-purple-700 text-white text-[9px] font-bold w-4 h-4 rounded-full flex items-center justify-center animate-bounce shadow-xs">
+                  {upcomingGroomingAppointments.length}
+                </span>
+              </button>
+            )}
+
             {/* Hello User, Account button */}
             <button
               onClick={() => onOpenAccountModal?.('account')}
               className="hidden md:flex items-center gap-2 px-4 py-2 rounded-full border border-slate-300 hover:border-purple-400 hover:bg-purple-50/50 text-slate-700 text-xs font-semibold transition-all cursor-pointer shadow-xs"
             >
               <User className="w-4 h-4 text-purple-700" />
-              <span>Hello User , Account</span>
+              <span>
+                {currentUser.isLoggedIn 
+                  ? `Hello ${currentUser.name.split(' ')[0] || 'User'} , Account` 
+                  : 'Sign In / Account'}
+              </span>
+              {currentUser.isLoggedIn && upcomingGroomingAppointments.length > 0 && (
+                <span className="w-2 h-2 rounded-full bg-amber-500 shrink-0" title="Upcoming appointment reminder" />
+              )}
             </button>
 
-            {/* My Basket(0) button */}
+            {/* My Basket button: sleek circular button with badge on mobile, full pill on sm+ */}
             <button
               onClick={() => setIsCartOpen(true)}
-              className="flex items-center gap-2 px-4 py-2 rounded-full border border-slate-300 hover:border-purple-500 hover:bg-purple-50 text-slate-800 text-xs font-bold transition-all cursor-pointer shadow-xs"
+              aria-label={`Cart with ${totalCartCount} items`}
+              className="sm:hidden relative w-9 h-9 rounded-full border border-slate-300 hover:border-purple-500 hover:bg-purple-50 flex items-center justify-center text-slate-800 transition-all cursor-pointer shadow-xs"
+            >
+              <ShoppingBag className="w-4 h-4 text-purple-700" />
+              {totalCartCount > 0 && (
+                <span className="absolute -top-1 -right-1 bg-purple-700 text-white text-[9px] font-bold min-w-[16px] h-4 px-1 rounded-full flex items-center justify-center">
+                  {totalCartCount}
+                </span>
+              )}
+            </button>
+
+            <button
+              onClick={() => setIsCartOpen(true)}
+              className="hidden sm:flex items-center gap-2 px-4 py-2 rounded-full border border-slate-300 hover:border-purple-500 hover:bg-purple-50 text-slate-800 text-xs font-bold transition-all cursor-pointer shadow-xs"
             >
               <ShoppingBag className="w-4 h-4 text-purple-700" />
               <span>My Basket({totalCartCount})</span>
@@ -267,7 +308,8 @@ export const Navbar: React.FC<NavbarProps> = ({
             {/* Mobile Menu Toggle */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="md:hidden p-2 text-slate-700 hover:bg-slate-100 rounded-xl cursor-pointer"
+              className="md:hidden p-1.5 sm:p-2 text-slate-700 hover:bg-slate-100 rounded-xl cursor-pointer"
+              aria-label="Toggle menu"
             >
               {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </button>
@@ -447,6 +489,23 @@ export const Navbar: React.FC<NavbarProps> = ({
               Reflex
             </button>
 
+            {/* Services */}
+            <a 
+              href="#services-and-policies-section"
+              className="py-2.5 px-2 hover:text-purple-700 transition-colors cursor-pointer text-purple-900 font-bold flex items-center gap-1"
+            >
+              <Sparkles className="w-3.5 h-3.5 text-amber-500" />
+              <span>Services</span>
+            </a>
+
+            {/* Pet Sale & Adoption */}
+            <a 
+              href="#pet-sale-showcase-section"
+              className="py-2.5 px-2 hover:text-purple-700 transition-colors cursor-pointer text-slate-700 font-semibold"
+            >
+              Pet Sale & Adoption
+            </a>
+
             {/* Blog */}
             <a 
               href="#pet-care-blog-section"
@@ -485,56 +544,141 @@ export const Navbar: React.FC<NavbarProps> = ({
               className="flex items-center gap-2 text-xs font-bold text-purple-900"
             >
               <User className="w-4 h-4 text-purple-700" />
-              <span>My Account & Orders</span>
+              <span>{currentUser.isLoggedIn ? `Account (${currentUser.name.split(' ')[0]})` : 'Sign In / Account'}</span>
             </button>
             <button
               onClick={() => {
-                onOpenAccountModal?.('privilege');
+                onOpenAccountModal?.('grooming');
                 setMobileMenuOpen(false);
               }}
-              className="text-xs font-bold text-amber-600 bg-amber-50 px-2.5 py-1 rounded-full"
+              className="text-xs font-bold text-purple-700 bg-purple-50 px-2.5 py-1 rounded-full flex items-center gap-1"
             >
-              Privilege Club
+              <Scissors className="w-3 h-3" />
+              <span>Grooming</span>
+              {currentUser.isLoggedIn && upcomingGroomingAppointments.length > 0 && (
+                <span className="bg-amber-400 text-slate-900 text-[10px] px-1 rounded-full font-black">
+                  {upcomingGroomingAppointments.length}
+                </span>
+              )}
             </button>
           </div>
 
-          <div className="grid grid-cols-2 gap-2 text-xs font-medium">
+          {/* Mobile Grooming Alert if user has upcoming appointments */}
+          {currentUser.isLoggedIn && upcomingGroomingAppointments.length > 0 && (
+            <div 
+              onClick={() => {
+                triggerGroomingReminderCheck();
+                setMobileMenuOpen(false);
+              }}
+              className="p-3 bg-purple-50 rounded-xl border border-purple-200 flex items-center justify-between text-xs cursor-pointer"
+            >
+              <div className="flex items-center gap-2">
+                <Bell className="w-4 h-4 text-purple-700 shrink-0" />
+                <span className="text-purple-950 font-bold">
+                  {upcomingGroomingAppointments[0].petName}'s Grooming is coming up!
+                </span>
+              </div>
+              <span className="text-purple-700 font-bold shrink-0">View Toast →</span>
+            </div>
+          )}
+
+          {/* Dedicated Services & Pet Sale shortcuts */}
+          <div className="pt-2 border-t border-slate-100">
+            <span className="text-[11px] font-bold uppercase tracking-wider text-slate-400 block mb-2">
+              Specialized Services
+            </span>
+            <div className="grid grid-cols-2 gap-2 text-xs font-semibold">
+              <a
+                href="#services-and-policies-section"
+                onClick={() => setMobileMenuOpen(false)}
+                className="px-3 py-2 rounded-xl bg-purple-50 text-purple-900 border border-purple-100 flex items-center gap-1.5"
+              >
+                <SamsungEmoji emoji="🏡" size="xs" />
+                <span>Foster Care</span>
+              </a>
+              <a
+                href="#services-and-policies-section"
+                onClick={() => setMobileMenuOpen(false)}
+                className="px-3 py-2 rounded-xl bg-purple-50 text-purple-900 border border-purple-100 flex items-center gap-1.5"
+              >
+                <SamsungEmoji emoji="✂️" size="xs" />
+                <span>Grooming Spa</span>
+              </a>
+              <a
+                href="#pet-sale-showcase-section"
+                onClick={() => setMobileMenuOpen(false)}
+                className="px-3 py-2 rounded-xl bg-amber-50 text-amber-900 border border-amber-100 flex items-center gap-1.5"
+              >
+                <SamsungEmoji emoji="🐾" size="xs" />
+                <span>Pet Sale & Kittens</span>
+              </a>
+              <a
+                href="#services-and-policies-section"
+                onClick={() => setMobileMenuOpen(false)}
+                className="px-3 py-2 rounded-xl bg-blue-50 text-blue-900 border border-blue-100 flex items-center gap-1.5"
+              >
+                <SamsungEmoji emoji="🚚" size="xs" />
+                <span>Pet Courier</span>
+              </a>
+              <a
+                href="#services-and-policies-section"
+                onClick={() => setMobileMenuOpen(false)}
+                className="px-3 py-2 rounded-xl bg-emerald-50 text-emerald-900 border border-emerald-100 col-span-2 flex items-center justify-center gap-1.5"
+              >
+                <SamsungEmoji emoji="☕" size="xs" />
+                <span>Beachside Pet Cafe & Lounge</span>
+              </a>
+            </div>
+          </div>
+
+          <div className="pt-2 border-t border-slate-100">
+            <span className="text-[11px] font-bold uppercase tracking-wider text-slate-400 block mb-2">
+              Shop Categories
+            </span>
+            <div className="grid grid-cols-2 gap-2 text-xs font-medium">
             <button
               onClick={() => { handleCategoryClick('All'); setMobileMenuOpen(false); }}
-              className="text-left px-3 py-2 rounded-xl bg-purple-50 text-purple-900 font-bold"
+              className="text-left px-3 py-2 rounded-xl bg-purple-50 text-purple-900 font-bold flex items-center gap-1.5"
             >
-              ✨ All Products
+              <SamsungEmoji emoji="✨" size="xs" />
+              <span>All Products</span>
             </button>
             <button
               onClick={() => { handleCategoryClick('Pet Food'); setMobileMenuOpen(false); }}
-              className="text-left px-3 py-2 rounded-xl bg-slate-50 text-slate-700"
+              className="text-left px-3 py-2 rounded-xl bg-slate-50 text-slate-700 flex items-center gap-1.5"
             >
-              🐱 Cat Food
+              <SamsungEmoji emoji="🐱" size="xs" />
+              <span>Cat Food</span>
             </button>
             <button
               onClick={() => { handleCategoryClick('Accessories & Toys'); setMobileMenuOpen(false); }}
-              className="text-left px-3 py-2 rounded-xl bg-slate-50 text-slate-700"
+              className="text-left px-3 py-2 rounded-xl bg-slate-50 text-slate-700 flex items-center gap-1.5"
             >
-              🧶 Cat Toys
+              <SamsungEmoji emoji="🧶" size="xs" />
+              <span>Cat Toys</span>
             </button>
             <button
               onClick={() => { handleCategoryClick('Litter & Hygiene'); setMobileMenuOpen(false); }}
-              className="text-left px-3 py-2 rounded-xl bg-slate-50 text-slate-700"
+              className="text-left px-3 py-2 rounded-xl bg-slate-50 text-slate-700 flex items-center gap-1.5"
             >
-              🚽 Cat Litter
+              <SamsungEmoji emoji="🚽" size="xs" />
+              <span>Cat Litter</span>
             </button>
             <button
               onClick={() => { handleCategoryClick('Grooming Essentials'); setMobileMenuOpen(false); }}
-              className="text-left px-3 py-2 rounded-xl bg-slate-50 text-slate-700"
+              className="text-left px-3 py-2 rounded-xl bg-slate-50 text-slate-700 flex items-center gap-1.5"
             >
-              ✨ Grooming
+              <SamsungEmoji emoji="✨" size="xs" />
+              <span>Grooming</span>
             </button>
             <button
               onClick={() => { handleCategoryClick('Healthcare & First Aid'); setMobileMenuOpen(false); }}
-              className="text-left px-3 py-2 rounded-xl bg-slate-50 text-slate-700"
+              className="text-left px-3 py-2 rounded-xl bg-slate-50 text-slate-700 flex items-center gap-1.5"
             >
-              🏥 Health & Vet
+              <SamsungEmoji emoji="🏥" size="xs" />
+              <span>Health & Vet</span>
             </button>
+            </div>
           </div>
         </div>
       )}

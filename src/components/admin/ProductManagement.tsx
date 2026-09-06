@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Plus, Search, Edit3, Trash2, AlertTriangle, Check, X, Filter, Package, ArrowUpDown } from 'lucide-react';
+import React, { useState, useRef } from 'react';
+import { Plus, Search, Edit3, Trash2, AlertTriangle, Check, X, Filter, Package, ArrowUpDown, Upload, Image as ImageIcon, Link as LinkIcon } from 'lucide-react';
 import { useStore } from '../../context/StoreContext';
 import { Product, ProductCategory } from '../../types';
 
@@ -13,6 +13,9 @@ export const ProductManagement: React.FC = () => {
   // Modal state for Add/Edit
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
+  const [isDragging, setIsDragging] = useState(false);
+  const [uploadMethod, setUploadMethod] = useState<'upload' | 'url'>('upload');
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Form state
   const [formData, setFormData] = useState({
@@ -28,7 +31,7 @@ export const ProductManagement: React.FC = () => {
     weightOrSize: '',
     badgeText: '',
     isFlashSale: false,
-    image: 'https://images.unsplash.com/photo-1589924691995-400dc9ecc119?w=500&auto=format&fit=crop&q=80'
+    image: ''
   });
 
   const categories: ProductCategory[] = [
@@ -54,11 +57,52 @@ export const ProductManagement: React.FC = () => {
     return true;
   });
 
+  const handleImageFile = (file: File) => {
+    if (!file.type.startsWith('image/')) {
+      alert('Please select a valid image file (JPEG, PNG, WEBP, GIF)');
+      return;
+    }
+    if (file.size > 5 * 1024 * 1024) {
+      alert('File size exceeds 5MB. Please choose a smaller image.');
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const result = event.target?.result;
+      if (typeof result === 'string') {
+        setFormData(prev => ({ ...prev, image: result }));
+      }
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const handleDragOver = (e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragging(true);
+  };
+
+  const handleDragLeave = (e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragging(false);
+  };
+
+  const handleDrop = (e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragging(false);
+    if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+      handleImageFile(e.dataTransfer.files[0]);
+    }
+  };
+
   const openAddModal = () => {
     setEditingProduct(null);
+    setUploadMethod('upload');
     setFormData({
       title: '',
-      category: 'Cat Food',
+      category: 'Pet Food',
       price: 1200,
       originalPrice: 1400,
       stock: 25,
@@ -69,13 +113,14 @@ export const ProductManagement: React.FC = () => {
       weightOrSize: '1.5 kg',
       badgeText: 'New Import',
       isFlashSale: false,
-      image: 'https://images.unsplash.com/photo-1589924691995-400dc9ecc119?w=500&auto=format&fit=crop&q=80'
+      image: ''
     });
     setIsModalOpen(true);
   };
 
   const openEditModal = (p: Product) => {
     setEditingProduct(p);
+    setUploadMethod('upload');
     setFormData({
       title: p.title,
       category: p.category,
@@ -101,9 +146,12 @@ export const ProductManagement: React.FC = () => {
       return;
     }
 
+    const finalImage = formData.image.trim() || 'https://images.unsplash.com/photo-1589924691995-400dc9ecc119?w=500&auto=format&fit=crop&q=80';
+
     if (editingProduct) {
       updateProduct(editingProduct.id, {
         ...formData,
+        image: finalImage,
         originalPrice: formData.originalPrice > 0 ? formData.originalPrice : undefined,
         weightOrSize: formData.weightOrSize || undefined,
         badgeText: formData.badgeText || undefined
@@ -111,6 +159,7 @@ export const ProductManagement: React.FC = () => {
     } else {
       addProduct({
         ...formData,
+        image: finalImage,
         originalPrice: formData.originalPrice > 0 ? formData.originalPrice : undefined,
         weightOrSize: formData.weightOrSize || undefined,
         badgeText: formData.badgeText || undefined,
@@ -464,14 +513,149 @@ export const ProductManagement: React.FC = () => {
                 </div>
 
                 <div>
-                  <label className="block font-medium text-gray-700 mb-1">Image URL</label>
-                  <input
-                    type="url"
-                    value={formData.image}
-                    onChange={(e) => setFormData({ ...formData, image: e.target.value })}
-                    placeholder="https://..."
-                    className="w-full px-3.5 py-2 rounded-lg border border-gray-200 text-gray-900 focus:outline-none"
-                  />
+                  <div className="flex items-center justify-between mb-1.5">
+                    <label className="block font-medium text-gray-700 text-sm">
+                      Product Image <span className="text-blue-600 font-normal text-xs">(Upload or URL)</span>
+                    </label>
+                    <div className="inline-flex items-center p-0.5 bg-gray-100 rounded-lg text-xs font-medium">
+                      <button
+                        type="button"
+                        onClick={() => setUploadMethod('upload')}
+                        className={`px-2.5 py-1 rounded-md transition-all cursor-pointer inline-flex items-center gap-1.5 ${
+                          uploadMethod === 'upload'
+                            ? 'bg-white text-blue-700 shadow-xs font-semibold'
+                            : 'text-gray-500 hover:text-gray-800'
+                        }`}
+                      >
+                        <Upload className="w-3.5 h-3.5" />
+                        <span>Upload File</span>
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setUploadMethod('url')}
+                        className={`px-2.5 py-1 rounded-md transition-all cursor-pointer inline-flex items-center gap-1.5 ${
+                          uploadMethod === 'url'
+                            ? 'bg-white text-blue-700 shadow-xs font-semibold'
+                            : 'text-gray-500 hover:text-gray-800'
+                        }`}
+                      >
+                        <LinkIcon className="w-3.5 h-3.5" />
+                        <span>Image URL</span>
+                      </button>
+                    </div>
+                  </div>
+
+                  {uploadMethod === 'upload' ? (
+                    <div>
+                      <input
+                        ref={fileInputRef}
+                        type="file"
+                        accept="image/*"
+                        className="hidden"
+                        onChange={(e) => {
+                          if (e.target.files && e.target.files[0]) {
+                            handleImageFile(e.target.files[0]);
+                          }
+                        }}
+                      />
+
+                      {formData.image ? (
+                        <div className="flex flex-col sm:flex-row items-center gap-4 p-3.5 rounded-xl border border-gray-200 bg-gray-50/80">
+                          <div className="relative w-24 h-24 sm:w-28 sm:h-28 shrink-0 rounded-xl overflow-hidden border border-gray-200 bg-white shadow-xs">
+                            <img
+                              src={formData.image}
+                              alt="Product preview"
+                              className="w-full h-full object-cover"
+                              onError={(e) => {
+                                (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1589924691995-400dc9ecc119?w=500&auto=format&fit=crop&q=80';
+                              }}
+                            />
+                          </div>
+                          <div className="flex-1 text-center sm:text-left space-y-2 w-full">
+                            <div>
+                              <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800">
+                                <Check className="w-3.5 h-3.5" /> Image Ready
+                              </span>
+                              <p className="text-xs text-gray-500 mt-1">
+                                Product image is loaded and ready. You can change or replace it anytime.
+                              </p>
+                            </div>
+                            <div className="flex items-center justify-center sm:justify-start gap-2 pt-1">
+                              <button
+                                type="button"
+                                onClick={() => fileInputRef.current?.click()}
+                                className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-blue-700 bg-white hover:bg-blue-50 border border-blue-200 rounded-lg shadow-2xs transition-colors cursor-pointer"
+                              >
+                                <Upload className="w-3.5 h-3.5" />
+                                Change Image
+                              </button>
+                              <button
+                                type="button"
+                                onClick={() => setFormData(prev => ({ ...prev, image: '' }))}
+                                className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-red-600 bg-white hover:bg-red-50 border border-red-200 rounded-lg shadow-2xs transition-colors cursor-pointer"
+                              >
+                                <Trash2 className="w-3.5 h-3.5" />
+                                Remove
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      ) : (
+                        <div
+                          onDragOver={handleDragOver}
+                          onDragLeave={handleDragLeave}
+                          onDrop={handleDrop}
+                          onClick={() => fileInputRef.current?.click()}
+                          className={`relative border-2 border-dashed rounded-xl p-6 text-center cursor-pointer transition-all ${
+                            isDragging
+                              ? 'border-blue-500 bg-blue-50/80 scale-[1.01]'
+                              : 'border-gray-300 hover:border-blue-400 bg-gray-50/60 hover:bg-blue-50/30'
+                          }`}
+                        >
+                          <div className="w-12 h-12 mx-auto mb-2.5 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center shadow-2xs">
+                            <Upload className="w-6 h-6" />
+                          </div>
+                          <p className="text-sm font-semibold text-gray-800">
+                            Click to upload image or drag & drop here
+                          </p>
+                          <p className="text-xs text-gray-500 mt-1">
+                            Supports PNG, JPG, JPEG, WEBP or GIF (Up to 5MB)
+                          </p>
+                          <div className="mt-3">
+                            <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-semibold text-blue-700 bg-white border border-blue-200 rounded-lg shadow-xs hover:bg-blue-50 transition-colors">
+                              <ImageIcon className="w-3.5 h-3.5" />
+                              Select Image File
+                            </span>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  ) : (
+                    <div className="space-y-2">
+                      <input
+                        type="url"
+                        value={formData.image}
+                        onChange={(e) => setFormData({ ...formData, image: e.target.value })}
+                        placeholder="https://images.unsplash.com/photo-... or custom URL"
+                        className="w-full px-3.5 py-2.5 rounded-lg border border-gray-200 text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+                      />
+                      {formData.image && (
+                        <div className="flex items-center gap-3 p-2 bg-gray-50 rounded-lg border border-gray-200">
+                          <img
+                            src={formData.image}
+                            alt="URL preview"
+                            className="w-10 h-10 object-cover rounded-md border border-gray-200 bg-white"
+                            onError={(e) => {
+                              (e.target as HTMLImageElement).style.display = 'none';
+                            }}
+                          />
+                          <p className="text-xs text-gray-500 truncate flex-1 font-mono">
+                            {formData.image}
+                          </p>
+                        </div>
+                      )}
+                    </div>
+                  )}
                 </div>
 
                 <div>

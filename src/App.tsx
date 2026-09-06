@@ -13,7 +13,9 @@ import { ProductDetailModal } from './components/ProductDetailModal';
 import { OrderTrackModal } from './components/OrderTrackModal';
 import { AppointmentBookingModal } from './components/AppointmentBookingModal';
 import { AccountModal } from './components/AccountModal';
+import { GroomingReminderToast } from './components/GroomingReminderToast';
 import { FloatingWidgets } from './components/FloatingWidgets';
+import { MobileBottomNav } from './components/MobileBottomNav';
 import { Footer } from './components/Footer';
 import { AdminDashboard } from './components/admin/AdminDashboard';
 import { AdminAuthModal } from './components/AdminAuthModal';
@@ -25,7 +27,7 @@ const StoreContent: React.FC = () => {
   const [selectedAnimal, setSelectedAnimal] = useState<AnimalType>('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [accountModalOpen, setAccountModalOpen] = useState(false);
-  const [accountModalTab, setAccountModalTab] = useState<'account' | 'privilege' | 'giftcards'>('account');
+  const [accountModalTab, setAccountModalTab] = useState<'account' | 'privilege' | 'giftcards' | 'grooming'>('account');
 
   const handleSelectCategory = (cat: ProductCategory | 'All', animal?: AnimalType, searchTag?: string) => {
     setSelectedCategory(cat);
@@ -60,7 +62,7 @@ const StoreContent: React.FC = () => {
     }
   };
 
-  const handleOpenAccountModal = (tab: 'account' | 'privilege' | 'giftcards' = 'account') => {
+  const handleOpenAccountModal = (tab: 'account' | 'privilege' | 'giftcards' | 'grooming' = 'account') => {
     setAccountModalTab(tab);
     setAccountModalOpen(true);
   };
@@ -70,7 +72,7 @@ const StoreContent: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-900 font-sans flex flex-col selection:bg-purple-100 selection:text-purple-900">
+    <div className="min-h-screen bg-slate-50 text-slate-900 font-sans flex flex-col selection:bg-purple-100 selection:text-purple-900 pb-16 md:pb-0">
       
       {/* Primary Navigation with Brand Logo & Pill Search & Account Pill */}
       <Navbar 
@@ -121,6 +123,12 @@ const StoreContent: React.FC = () => {
       {/* Floating Right Docked Cart & Bottom Right Messenger Bubble (Matches Screenshot) */}
       <FloatingWidgets />
 
+      {/* Modern Mobile Bottom Navigation Bar (Shop, Services, Pet Sale, Cart, Account) */}
+      <MobileBottomNav 
+        onOpenAccountModal={handleOpenAccountModal}
+        onSelectCategory={handleSelectCategory}
+      />
+
       {/* Global Drawers & Modals */}
       <CartDrawer />
       <CheckoutModal />
@@ -133,6 +141,9 @@ const StoreContent: React.FC = () => {
         defaultTab={accountModalTab} 
       />
       <AdminAuthModal />
+
+      {/* Local Notification / Toast System for Upcoming Grooming Appointments */}
+      <GroomingReminderToast onOpenAccountModal={() => handleOpenAccountModal('grooming')} />
 
     </div>
   );

@@ -16,6 +16,7 @@ import {
 } from 'lucide-react';
 import { useStore } from '../../context/StoreContext';
 import { CustomerDueRecord } from '../../types';
+import { SamsungEmoji } from '../SamsungEmoji';
 
 export const CustomerDueKhata: React.FC = () => {
   const { customerDues, addCustomerDue, recordDuePayment, deleteCustomerDue } = useStore();
@@ -170,8 +171,9 @@ export const CustomerDueKhata: React.FC = () => {
                 {/* Pet & Notes */}
                 <div className="p-2.5 bg-slate-50 rounded-xl text-xs text-slate-700 space-y-1">
                   {due.petName && (
-                    <p className="font-medium text-slate-800">
-                      🐾 Pet: <span className="font-semibold">{due.petName}</span>
+                    <p className="font-medium text-slate-800 flex items-center gap-1.5">
+                      <SamsungEmoji emoji="🐾" size="xs" />
+                      <span>Pet: <span className="font-semibold">{due.petName}</span></span>
                     </p>
                   )}
                   {due.notes && (

@@ -12,6 +12,7 @@ import {
 } from 'lucide-react';
 import { useStore } from '../../context/StoreContext';
 import { AppointmentBooking } from '../../types';
+import { SamsungEmoji } from '../SamsungEmoji';
 
 export const AppointmentManager: React.FC = () => {
   const { appointments, updateAppointmentStatus } = useStore();
@@ -100,8 +101,9 @@ export const AppointmentManager: React.FC = () => {
                 </div>
 
                 <div className="p-2.5 bg-slate-50 rounded-xl text-xs text-slate-700 space-y-1">
-                  <p className="font-medium">
-                    🐾 Pet: <span className="font-bold text-slate-900">{app.petName}</span> ({app.petType})
+                  <p className="font-medium flex items-center gap-1.5">
+                    <SamsungEmoji emoji="🐾" size="xs" />
+                    <span>Pet: <strong className="font-bold text-slate-900">{app.petName}</strong> ({app.petType})</span>
                   </p>
                   <p className="flex items-center gap-1.5 text-slate-600">
                     <Calendar className="w-3.5 h-3.5 text-purple-600" />

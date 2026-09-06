@@ -7,7 +7,8 @@ import {
   AppointmentBooking,
   ExpenseRecord,
   CustomerDueRecord,
-  SupplierRecord
+  SupplierRecord,
+  PetListing
 } from '../types';
 
 export const STORE_INFO = {
@@ -31,48 +32,223 @@ export const STORE_INFO = {
 
 export const STORE_SERVICES: ServiceItem[] = [
   {
+    id: 'srv-foster',
+    title: 'Pet Foster Care & Boarding',
+    titleBn: 'ফস্টার কেয়ার ও বোর্ডিং (Foster Care & Boarding)',
+    iconName: 'Home',
+    description: 'Safe home-like temporary foster stay, climate-controlled suites, daily video check-ins, routine feeding & playtime in Cox\'s Bazar.',
+    descriptionBn: 'ভ্রমণকালে বিশ্বস্ত ফস্টার কেয়ার, এসি রুম, পুষ্টিকর খাবার এবং সার্বক্ষণিক ভিডিও আপডেট।',
+    startingPrice: 500,
+    duration: 'Daily / Weekly',
+    category: 'Care',
+    badge: 'Popular',
+    features: [
+      'Daily Photo & Video WhatsApp Updates',
+      'AC & Clean Private Enclosure Suites',
+      'Custom Diet & Timely Medication Routine',
+      'Dedicated Pet Caregiver & Gentle Playtime'
+    ]
+  },
+  {
     id: 'srv-grooming',
-    title: 'Basic Grooming & Spa',
-    titleBn: 'Basic Grooming & Spa',
+    title: 'Professional Pet Grooming & Spa',
+    titleBn: 'প্রফেশনাল গ্রুমিং ও স্পা (Pet Grooming & Spa)',
     iconName: 'Scissors',
-    description: 'Nail trimming, ear cleaning, hygienic fur brushing, and medicated anti-tick bath.',
-    descriptionBn: 'Nail trimming, ear cleaning, de-shedding brushing, and medicated anti-tick bath.',
-    startingPrice: 350,
+    description: 'Complete hygiene bath, breed fur styling, deshedding, nail clipping, sanitary trim, and medicated tick/flea bath.',
+    descriptionBn: 'নখ কাটা, কান পরিষ্কার, অ্যান্টি-টিক মেডিসিনাল বাথ এবং প্রফেশনাল হেয়ার কাটিং।',
+    startingPrice: 450,
     duration: '45-60 mins',
-    features: ['Nail Trimming & Paw Pad Care', 'Gentle Deep Ear Cleaning', 'Anti-Tick & Flea Medicinal Bath', 'De-Shedding Fur Brushing']
+    category: 'Care',
+    badge: 'Top Rated',
+    features: [
+      'Medicated Anti-Tick & Flea Deep Bath',
+      'Breed-Specific Coat Trimming & Styling',
+      'Painless Nail Clipping & Paw Balm Care',
+      'Gentle Ear Cleaning & Fresh Scent Mist'
+    ]
   },
   {
-    id: 'srv-diet',
-    title: 'Dietary & Nutrition Advice',
-    titleBn: 'Dietary & Nutrition Advice',
-    iconName: 'Apple',
-    description: 'Customized feeding quantity, breed-specific nutrients, and diet charts for cats and dogs.',
-    descriptionBn: 'Age, weight and breed-appropriate diet charts and balanced feeding guidelines.',
-    startingPrice: 0,
-    duration: '20-30 mins',
-    features: ['Age, Weight & Activity Assessment', 'Kitten/Puppy Growth Chart', 'Digestive Sensitivity Guidance', 'Brand Transition Chart']
+    id: 'srv-petsale',
+    title: 'Pet Sale & Ethical Adoption',
+    titleBn: 'পেট সেল ও ব্রিড অ্যাডপশন (Pet Sale & Adoption)',
+    iconName: 'Sparkles',
+    description: 'Healthy, active Persian cats, purebred puppies, cockatiel birds & exotic fish. 100% vet-checked, dewormed with vaccination passports.',
+    descriptionBn: 'সুস্থ ভ্যাকসিনযুক্ত পার্শিয়ান বিড়াল, কুকুরের ছানা, পাখি ও রঙিন মাছ। হেলথ পাসপোর্ট সহ।',
+    startingPrice: 2500,
+    duration: 'Instant Handover',
+    category: 'Adoption',
+    badge: 'Verified Breeds',
+    features: [
+      'Certified Veterinary Health Passport',
+      'First Round Vaccinations & Deworming Done',
+      'Parent Lineage & Breed Authenticity Guarantee',
+      'Complimentary 7-Day Starter Food Pack'
+    ]
   },
   {
-    id: 'srv-delivery',
-    title: 'Home Delivery (Cox\'s Bazar)',
-    titleBn: 'Home Delivery (Cox\'s Bazar)',
+    id: 'srv-courier',
+    title: 'Pet Courier & Safe Transport',
+    titleBn: 'পেট কুরিয়ার ও ট্রান্সপোর্ট (Pet Courier Service)',
     iconName: 'Truck',
-    description: 'Fast doorstep delivery across Cox\'s Bazar municipality and surrounding neighborhoods.',
-    descriptionBn: 'Fast doorstep delivery across Cox\'s Bazar municipality (within 24 to 48 hours).',
-    startingPrice: 60,
-    duration: '24-48 Hours',
-    features: ['Cox\'s Bazar Municipality coverage', 'Emergency Express delivery', 'Cash on Delivery, bKash, Nagad', 'Carefully sealed boxes']
+    description: 'Stress-free, climate-controlled door-to-door pet courier across Cox\'s Bazar, Chittagong, Dhaka & nationwide with sanitized crates.',
+    descriptionBn: 'কক্সবাজার-চট্টগ্রাম-ঢাকা সহ সারাদেশে নিরাপদ এসি যুক্ত পেট ট্রান্সপোর্ট ও লাইভ ট্র্যাকিং।',
+    startingPrice: 800,
+    duration: 'Same Day / 24h',
+    category: 'Travel',
+    badge: 'Safe Transit',
+    features: [
+      'Air-Conditioned Secured Pet Crate Travel',
+      'Live Location & Welfare Video Updates',
+      'Trained Handler Supervision on Journey',
+      'Doorstep Pickup & Safe Receiver Handover'
+    ]
+  },
+  {
+    id: 'srv-petcafe',
+    title: 'Beachside Pet Cafe & Lounge',
+    titleBn: 'পেট ক্যাফে ও মিটআপ লাউঞ্জ (Pet Cafe & Lounge)',
+    iconName: 'Coffee',
+    description: 'Cox\'s Bazar\'s premier pet-friendly cafe. Enjoy specialty coffee & snacks while your pets play with resident friendly cats & dogs.',
+    descriptionBn: 'সমুদ্রপাড়ে পোষা প্রাণীদের সাথে কফি, স্ন্যাকস, কিউট কিটেনদের সাথে খেলার সুযোগ ও মিটআপ।',
+    startingPrice: 150,
+    duration: 'Open 10 AM - 10 PM',
+    category: 'Social',
+    badge: 'New & Trendy',
+    features: [
+      'Beachside Pet Play & Agility Corner',
+      'Artisanal Coffee & Dedicated Pet Treats Menu',
+      'Meet & Cuddle with Resident Friendly Kittens',
+      'Weekend Pet Parent Meetups & Birthday Events'
+    ]
   },
   {
     id: 'srv-vet',
-    title: 'Vaccination & Vet Liaison',
-    titleBn: 'Vaccination & Vet Liaison',
+    title: 'Vaccination & Veterinary Liaison',
+    titleBn: 'ভেটেরিনারি কেয়ার ও ভ্যাকসিনেশন (Vet & Vaccine)',
     iconName: 'HeartPulse',
-    description: 'Routine vaccination scheduling and registered veterinary doctor liaison support.',
-    descriptionBn: 'Routine vaccination guidance and coordination with registered veterinary surgeons.',
-    startingPrice: 200,
+    description: 'Routine vaccination scheduling, health checkups, and registered veterinary doctor liaison support in Cox\'s Bazar.',
+    descriptionBn: 'রেজিস্টার্ড ভেটেরিনারি সার্জনের সাথে পরামর্শ, ভ্যাকসিনেশন চার্ট ও জরুরি স্বাস্থ্যসেবা।',
+    startingPrice: 300,
     duration: 'Schedule Based',
-    features: ['Vaccination Schedule Cards', 'Registered Vet Doctor Referral', 'Health Checkup Coordination', 'Prescription Guidance']
+    category: 'Health',
+    badge: 'Clinical Care',
+    features: [
+      'Vaccination Schedule Cards & Reminders',
+      'Registered Vet Doctor Consultation Referral',
+      'General Health & Weight Assessment',
+      'Prescription & Post-Care Guidance'
+    ]
+  }
+];
+
+export const INITIAL_PET_LISTINGS: PetListing[] = [
+  {
+    id: 'pet-1',
+    name: 'Snowball',
+    breed: 'Doll-Face Persian Kitten',
+    animalType: 'cat',
+    age: '2.5 Months',
+    gender: 'Female',
+    price: 14500,
+    originalPrice: 16000,
+    imageUrl: 'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=600&auto=format&fit=crop&q=80',
+    vaccinated: true,
+    dewormed: true,
+    healthPassport: true,
+    description: 'Playful and gentle pure white Persian kitten with striking blue eyes, litter-box trained and eating Reflex kitten food.',
+    available: true,
+    location: 'Cox\'s Bazar Store Display',
+    tag: 'Vaccinated & Dewormed'
+  },
+  {
+    id: 'pet-2',
+    name: 'Mochi',
+    breed: 'Golden British Shorthair',
+    animalType: 'cat',
+    age: '3 Months',
+    gender: 'Male',
+    price: 18500,
+    originalPrice: 20000,
+    imageUrl: 'https://images.unsplash.com/photo-1573865526739-10659fec78a5?w=600&auto=format&fit=crop&q=80',
+    vaccinated: true,
+    dewormed: true,
+    healthPassport: true,
+    description: 'Chubby round cheeks, calm temperament, affectionate British Shorthair kitten. Very social and family friendly.',
+    available: true,
+    location: 'Cox\'s Bazar Store Display',
+    tag: 'Certified Lineage'
+  },
+  {
+    id: 'pet-3',
+    name: 'Rocky',
+    breed: 'Golden Retriever Pedigree Puppy',
+    animalType: 'dog',
+    age: '2 Months',
+    gender: 'Male',
+    price: 24000,
+    originalPrice: 26500,
+    imageUrl: 'https://images.unsplash.com/photo-1552053831-71594a27632d?w=600&auto=format&fit=crop&q=80',
+    vaccinated: true,
+    dewormed: true,
+    healthPassport: true,
+    description: 'High energy, exceptionally smart golden retriever puppy with pure breed certificate. Already started basic leash training.',
+    available: true,
+    location: 'Cox\'s Bazar Partner Kennel',
+    tag: 'Purebred Champion'
+  },
+  {
+    id: 'pet-4',
+    name: 'Sunny & Mango',
+    breed: 'Hand-Tamed Cockatiel Pair',
+    animalType: 'bird',
+    age: '4.5 Months',
+    gender: 'Pair',
+    price: 3800,
+    originalPrice: 4200,
+    imageUrl: 'https://images.unsplash.com/photo-1522858547137-f1dcec554f55?w=600&auto=format&fit=crop&q=80',
+    vaccinated: true,
+    dewormed: true,
+    healthPassport: true,
+    description: 'Bright yellow crested whistles, sits on hands and shoulders comfortably. Loves millet treats and singing.',
+    available: true,
+    location: 'Cox\'s Bazar Store Aviary',
+    tag: 'Hand Tamed Pair'
+  },
+  {
+    id: 'pet-5',
+    name: 'Bella',
+    breed: 'Calico Rescue Kitten (Adoption)',
+    animalType: 'cat',
+    age: '2 Months',
+    gender: 'Female',
+    price: 1200,
+    isAdoption: true,
+    imageUrl: 'https://images.unsplash.com/photo-1533738363-b7f9aef128ce?w=600&auto=format&fit=crop&q=80',
+    vaccinated: true,
+    dewormed: true,
+    healthPassport: true,
+    description: 'Sweet rescued tricolor kitten rehabilitated by Cox\'s Bazar Pet Care foster team. Looking for a warm, forever home.',
+    available: true,
+    location: 'Foster Care Unit',
+    tag: 'Adoption Star'
+  },
+  {
+    id: 'pet-6',
+    name: 'Fluffy',
+    breed: 'Holland Lop Dwarf Rabbit',
+    animalType: 'rabbit',
+    age: '2 Months',
+    gender: 'Male',
+    price: 2200,
+    originalPrice: 2500,
+    imageUrl: 'https://images.unsplash.com/photo-1585110396000-c9ffd4e4b308?w=600&auto=format&fit=crop&q=80',
+    vaccinated: true,
+    dewormed: true,
+    healthPassport: true,
+    description: 'Adorable floppy ears, docile and calm pet rabbit. Loves hay treats and is safe around gentle children.',
+    available: true,
+    location: 'Cox\'s Bazar Store Display',
+    tag: 'Docile & Cuddly'
   }
 ];
 

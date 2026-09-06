@@ -17,6 +17,29 @@ export interface ServiceItem {
   startingPrice: number;
   duration: string;
   features: string[];
+  tag?: string;
+  badge?: string;
+  category?: 'Care' | 'Travel' | 'Social' | 'Adoption' | 'Health';
+}
+
+export interface PetListing {
+  id: string;
+  name: string;
+  breed: string;
+  animalType: AnimalType;
+  age: string;
+  gender: 'Male' | 'Female' | 'Pair';
+  price: number;
+  originalPrice?: number;
+  isAdoption?: boolean;
+  imageUrl: string;
+  vaccinated: boolean;
+  dewormed: boolean;
+  healthPassport: boolean;
+  description: string;
+  available: boolean;
+  location: string;
+  tag?: string;
 }
 
 export interface AppointmentBooking {
@@ -148,4 +171,13 @@ export interface Coupon {
   discountAmount?: number;
   minSpend: number;
   description: string;
+}
+
+export interface UserProfile {
+  name: string;
+  phone: string;
+  email: string;
+  city: string;
+  membershipPoints: number;
+  isLoggedIn: boolean;
 }

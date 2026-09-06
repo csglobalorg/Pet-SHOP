@@ -12,11 +12,11 @@ export const FloatingWidgets: React.FC = () => {
 
   return (
     <>
-      {/* 1. Floating Cart Tab on Right Edge (Matches Mew Mew Shop style) */}
+      {/* 1. Floating Cart Tab on Right Edge (Desktop / Tablet) */}
       <aside 
         aria-label="Quick cart"
         onClick={() => setIsCartOpen(true)}
-        className="fixed right-0 top-1/2 -translate-y-1/2 z-40 flex flex-col items-center bg-purple-900 hover:bg-purple-950 text-white rounded-l-2xl shadow-2xl border-y border-l border-purple-700/60 overflow-hidden cursor-pointer group transition-all duration-200"
+        className="hidden sm:flex fixed right-0 top-1/2 -translate-y-1/2 z-40 flex-col items-center bg-purple-900 hover:bg-purple-950 text-white rounded-l-2xl shadow-2xl border-y border-l border-purple-700/60 overflow-hidden cursor-pointer group transition-all duration-200"
       >
         <div className="p-2.5 sm:p-3 flex flex-col items-center justify-center gap-1">
           <div className="relative">
@@ -36,8 +36,8 @@ export const FloatingWidgets: React.FC = () => {
         </div>
       </aside>
 
-      {/* 2. Floating Messenger / Chat Bubble (Bottom Right) */}
-      <div className="fixed right-5 bottom-5 z-40 flex flex-col items-end">
+      {/* 2. Floating Messenger / Chat Bubble (Responsive: bottom-18 on mobile, bottom-5 on desktop) */}
+      <div className="fixed right-4 sm:right-5 bottom-18 sm:bottom-5 z-40 flex flex-col items-end">
         {chatOpen && (
           <div className="mb-3 w-72 sm:w-80 bg-white rounded-2xl shadow-2xl border border-purple-200 overflow-hidden animate-in fade-in slide-in-from-bottom-2">
             <div className="bg-gradient-to-r from-purple-950 via-purple-900 to-indigo-950 text-white p-3.5 flex items-center justify-between">

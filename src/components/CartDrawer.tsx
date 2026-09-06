@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { X, Trash2, Plus, Minus, ShoppingBag, ArrowRight, Tag, Check, AlertCircle } from 'lucide-react';
 import { useStore } from '../context/StoreContext';
 import { COUPONS } from '../data/initialData';
+import { SamsungEmoji } from './SamsungEmoji';
 
 export const CartDrawer: React.FC = () => {
   const { 
@@ -79,32 +80,33 @@ export const CartDrawer: React.FC = () => {
         className="absolute inset-0 bg-slate-950/60 backdrop-blur-xs transition-opacity"
       />
 
-      <div className="fixed inset-y-0 right-0 max-w-full flex pl-10">
-        <div className="w-screen max-w-md bg-white shadow-2xl flex flex-col justify-between">
+      <div className="fixed inset-y-0 right-0 max-w-full flex pl-0 sm:pl-10">
+        <div className="w-full sm:w-screen max-w-md bg-white shadow-2xl flex flex-col justify-between">
           
           {/* Header */}
-          <div className="px-5 py-4 border-b border-purple-100 flex items-center justify-between bg-purple-50/40">
+          <div className="px-4 sm:px-5 py-3.5 sm:py-4 border-b border-purple-100 flex items-center justify-between bg-purple-50/40">
             <div className="flex items-center gap-2">
               <ShoppingBag className="w-5 h-5 text-purple-700" />
-              <h2 className="text-base font-bold text-slate-900">Your Shopping Cart</h2>
-              <span className="bg-purple-100 text-purple-800 text-xs font-semibold px-2 py-0.5 rounded-full">
+              <h2 className="text-sm sm:text-base font-bold text-slate-900">Your Shopping Cart</h2>
+              <span className="bg-purple-100 text-purple-800 text-[11px] sm:text-xs font-semibold px-2 py-0.5 rounded-full">
                 {cart.reduce((s, i) => s + i.quantity, 0)} items
               </span>
             </div>
             <button
               onClick={() => setIsCartOpen(false)}
               className="p-1.5 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition-colors cursor-pointer"
+              aria-label="Close cart"
             >
               <X className="w-5 h-5" />
             </button>
           </div>
 
           {/* Body Content */}
-          <div className="flex-1 overflow-y-auto p-5 space-y-5">
+          <div className="flex-1 overflow-y-auto p-3.5 sm:p-5 space-y-4 sm:space-y-5">
             {cart.length === 0 ? (
               <div className="text-center py-16 space-y-3">
-                <div className="w-16 h-16 rounded-full bg-purple-50 text-purple-700 mx-auto flex items-center justify-center text-2xl border border-purple-100">
-                  🐾
+                <div className="w-16 h-16 rounded-full bg-purple-50 text-purple-700 mx-auto flex items-center justify-center border border-purple-100 shadow-xs">
+                  <SamsungEmoji emoji="🐾" size="lg" />
                 </div>
                 <h3 className="text-base font-bold text-slate-800">Your Cart is Empty</h3>
                 <p className="text-xs text-slate-500 max-w-xs mx-auto">
@@ -264,7 +266,7 @@ export const CartDrawer: React.FC = () => {
 
           {/* Footer Order Summary */}
           {cart.length > 0 && (
-            <div className="p-5 border-t border-purple-100 bg-slate-50/70 space-y-3">
+            <div className="p-4 sm:p-5 border-t border-purple-100 bg-slate-50/70 space-y-2.5 sm:space-y-3">
               <div className="space-y-1.5 text-xs text-slate-600">
                 <div className="flex justify-between">
                   <span>Subtotal:</span>

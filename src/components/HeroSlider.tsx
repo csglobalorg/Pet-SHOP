@@ -11,6 +11,7 @@ import {
 } from 'lucide-react';
 import { ProductCategory, AnimalType } from '../types';
 import { STORE_INFO } from '../data/initialData';
+import { SamsungEmoji } from './SamsungEmoji';
 
 interface HeroSliderProps {
   onSelectCategory: (category: ProductCategory | 'All', animal?: AnimalType, searchTag?: string) => void;
@@ -184,7 +185,7 @@ export const HeroSlider: React.FC<HeroSliderProps> = ({
     <div className="w-full bg-white border-b border-slate-100">
       
       {/* 1. Hero Container */}
-      <div className="max-w-7xl mx-auto px-4 pt-4 pb-6">
+      <div className="max-w-7xl mx-auto px-3 sm:px-4 pt-3 sm:pt-4 pb-4 sm:pb-6">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 items-stretch">
           
           {/* Left Clean Category Sidebar */}
@@ -197,7 +198,7 @@ export const HeroSlider: React.FC<HeroSliderProps> = ({
                   className="w-full px-4 py-2.5 flex items-center justify-between text-left transition-all cursor-pointer group text-xs text-slate-700 hover:text-purple-700 hover:bg-purple-50/40 font-medium"
                 >
                   <div className="flex items-center gap-2.5 truncate">
-                    <span className="text-sm shrink-0">{item.icon}</span>
+                    <SamsungEmoji emoji={item.icon} size="sm" className="shrink-0" />
                     <span className="truncate group-hover:font-semibold transition-all">{item.name}</span>
                   </div>
                   <ChevronRight className="w-3.5 h-3.5 text-slate-300 group-hover:text-purple-600 group-hover:translate-x-0.5 transition-all shrink-0" />
@@ -208,7 +209,7 @@ export const HeroSlider: React.FC<HeroSliderProps> = ({
 
           {/* Right Modern Hero Banner */}
           <div className="lg:col-span-9">
-            <div className="relative rounded-2xl overflow-hidden border border-slate-200/80 bg-slate-900 h-[340px] sm:h-[400px] lg:h-[430px] flex flex-col justify-between shadow-sm">
+            <div className="relative rounded-2xl overflow-hidden border border-slate-200/80 bg-slate-900 min-h-[300px] sm:h-[400px] lg:h-[430px] flex flex-col justify-between shadow-sm">
               
               {/* High-res Clean Background Image with soft dark gradient */}
               <div className="absolute inset-0 z-0">
@@ -221,35 +222,35 @@ export const HeroSlider: React.FC<HeroSliderProps> = ({
               </div>
 
               {/* Slide Content */}
-              <div className="relative z-10 p-6 sm:p-10 lg:p-12 max-w-xl space-y-4 my-auto">
+              <div className="relative z-10 p-4 sm:p-10 lg:p-12 max-w-xl space-y-2.5 sm:space-y-4 my-auto">
                 
                 {/* Clean tag pill */}
-                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-bold bg-purple-500/20 text-purple-300 border border-purple-400/30 uppercase tracking-widest backdrop-blur-xs">
+                <div className="inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-0.5 sm:py-1 rounded-full text-[10px] font-bold bg-purple-500/20 text-purple-300 border border-purple-400/30 uppercase tracking-widest backdrop-blur-xs">
                   <Sparkles className="w-3 h-3 text-purple-300" />
                   <span>{slides[currentSlide].tag}</span>
                 </div>
 
                 {/* Clean, Modern Title */}
-                <div className="space-y-1.5">
-                  <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black tracking-tight text-white leading-tight">
+                <div className="space-y-1">
+                  <h1 className="text-xl sm:text-3xl lg:text-4xl font-black tracking-tight text-white leading-tight">
                     {slides[currentSlide].title}
                   </h1>
-                  <p className="text-[11px] sm:text-xs font-semibold tracking-wider text-purple-300 uppercase">
+                  <p className="text-[10px] sm:text-xs font-semibold tracking-wider text-purple-300 uppercase">
                     {slides[currentSlide].subtitle}
                   </p>
                 </div>
 
-                <p className="text-xs sm:text-sm text-slate-300 leading-relaxed font-normal max-w-md">
+                <p className="text-xs sm:text-sm text-slate-300 leading-relaxed font-normal max-w-md line-clamp-2 sm:line-clamp-none">
                   {slides[currentSlide].description}
                 </p>
 
                 {/* Action Buttons */}
-                <div className="flex flex-wrap items-center gap-3 pt-2">
+                <div className="flex flex-wrap items-center gap-2 sm:gap-3 pt-1 sm:pt-2">
                   <button
                     onClick={slides[currentSlide].buttonAction}
-                    className="px-6 py-2.5 rounded-full bg-purple-600 hover:bg-purple-700 text-white font-semibold text-xs sm:text-sm shadow-md transition-all cursor-pointer flex items-center gap-2 active:scale-95"
+                    className="px-4 sm:px-6 py-2 sm:py-2.5 rounded-full bg-purple-600 hover:bg-purple-700 text-white font-semibold text-xs sm:text-sm shadow-md transition-all cursor-pointer flex items-center gap-1.5 active:scale-95"
                   >
-                    <ShoppingBag className="w-4 h-4" />
+                    <ShoppingBag className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                     <span>{slides[currentSlide].buttonText}</span>
                   </button>
 
@@ -257,9 +258,9 @@ export const HeroSlider: React.FC<HeroSliderProps> = ({
                     href={`https://wa.me/${STORE_INFO.whatsappDigits}?text=${encodeURIComponent('Hello Cox\'s Bazar Pet Shop! I would like to place an order.')}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="px-5 py-2.5 rounded-full bg-white/10 hover:bg-white/20 text-white border border-white/20 font-medium text-xs sm:text-sm backdrop-blur-xs transition-colors flex items-center gap-1.5"
+                    className="px-3.5 sm:px-5 py-2 sm:py-2.5 rounded-full bg-white/10 hover:bg-white/20 text-white border border-white/20 font-medium text-xs sm:text-sm backdrop-blur-xs transition-colors flex items-center gap-1.5"
                   >
-                    <MessageCircle className="w-4 h-4 text-emerald-400" />
+                    <MessageCircle className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-emerald-400" />
                     <span>WhatsApp Order</span>
                   </a>
                 </div>
@@ -267,16 +268,16 @@ export const HeroSlider: React.FC<HeroSliderProps> = ({
               </div>
 
               {/* Bottom Strip: Modern Dots & Location Notice */}
-              <div className="relative z-10 px-6 sm:px-10 py-3 bg-slate-950/60 backdrop-blur-md border-t border-white/10 flex items-center justify-between">
+              <div className="relative z-10 px-4 sm:px-10 py-2 sm:py-3 bg-slate-950/70 backdrop-blur-md border-t border-white/10 flex items-center justify-between gap-2">
                 
                 {/* Dots */}
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
                   {slides.map((_, i) => (
                     <button
                       key={i}
                       onClick={() => setCurrentSlide(i)}
                       className={`h-1.5 rounded-full transition-all cursor-pointer ${
-                        currentSlide === i ? 'w-6 bg-purple-400' : 'w-2 bg-white/30 hover:bg-white/50'
+                        currentSlide === i ? 'w-5 sm:w-6 bg-purple-400' : 'w-2 bg-white/30 hover:bg-white/50'
                       }`}
                       aria-label={`Slide ${i + 1}`}
                     />
@@ -284,7 +285,7 @@ export const HeroSlider: React.FC<HeroSliderProps> = ({
                 </div>
 
                 {/* City delivery info */}
-                <div className="text-[11px] text-slate-400 font-medium">
+                <div className="text-[10px] sm:text-[11px] text-slate-400 font-medium truncate">
                   Cox's Bazar Municipal Delivery • Call <strong className="text-white font-semibold">{STORE_INFO.phone}</strong>
                 </div>
 
@@ -297,14 +298,14 @@ export const HeroSlider: React.FC<HeroSliderProps> = ({
       </div>
 
       {/* 2. Featured Categories Section (Modern, Clean & Minimal) */}
-      <section className="max-w-7xl mx-auto px-4 pt-2 pb-8 space-y-5">
+      <section className="max-w-7xl mx-auto px-3 sm:px-4 pt-2 pb-6 sm:pb-8 space-y-4 sm:space-y-5">
         
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-1 border-b border-slate-100 pb-3">
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-1 border-b border-slate-100 pb-2.5">
           <div>
-            <span className="text-[11px] font-bold uppercase tracking-widest text-purple-700">
+            <span className="text-[10px] sm:text-[11px] font-bold uppercase tracking-widest text-purple-700">
               FEATURED CATEGORIES
             </span>
-            <h2 className="text-lg sm:text-xl font-black text-slate-900 tracking-tight mt-0.5">
+            <h2 className="text-base sm:text-xl font-black text-slate-900 tracking-tight mt-0.5">
               Popular Pet Essentials
             </h2>
           </div>
@@ -313,16 +314,16 @@ export const HeroSlider: React.FC<HeroSliderProps> = ({
           </p>
         </div>
 
-        {/* Row of 5 Modern Clean Cards */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3.5">
+        {/* Row of Modern Clean Cards: Horizontal swipeable row on mobile, 5-col grid on md+ */}
+        <div className="flex overflow-x-auto sm:grid sm:grid-cols-3 md:grid-cols-5 gap-2.5 sm:gap-3.5 pb-2 sm:pb-0 no-scrollbar">
           {featuredCards.map((card, idx) => (
             <div
               key={idx}
               onClick={() => handleCategoryClick(card.category, card.animal, card.tag)}
-              className="group bg-white rounded-2xl p-3.5 border border-slate-200/80 hover:border-purple-300 hover:shadow-md transition-all duration-200 cursor-pointer flex flex-col items-center text-center"
+              className="group shrink-0 w-36 sm:w-auto bg-white rounded-2xl p-3 sm:p-3.5 border border-slate-200/80 hover:border-purple-300 hover:shadow-md transition-all duration-200 cursor-pointer flex flex-col items-center text-center"
             >
               {/* Image Container */}
-              <div className="w-full h-28 sm:h-32 rounded-xl bg-slate-50 p-2.5 flex items-center justify-center overflow-hidden mb-2.5 group-hover:bg-purple-50/40 transition-colors">
+              <div className="w-full h-24 sm:h-32 rounded-xl bg-slate-50 p-2 sm:p-2.5 flex items-center justify-center overflow-hidden mb-2 group-hover:bg-purple-50/40 transition-colors">
                 <img 
                   src={card.image} 
                   alt={card.title} 
@@ -331,10 +332,10 @@ export const HeroSlider: React.FC<HeroSliderProps> = ({
               </div>
 
               {/* Title & Subtitle */}
-              <h3 className="text-xs sm:text-sm font-bold text-slate-800 group-hover:text-purple-700 transition-colors">
+              <h3 className="text-xs sm:text-sm font-bold text-slate-800 group-hover:text-purple-700 transition-colors line-clamp-1">
                 {card.title}
               </h3>
-              <p className="text-[11px] text-slate-400 mt-0.5 line-clamp-1 font-normal">
+              <p className="text-[10px] sm:text-[11px] text-slate-400 mt-0.5 line-clamp-1 font-normal">
                 {card.subtitle}
               </p>
             </div>

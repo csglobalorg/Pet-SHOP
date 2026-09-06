@@ -25,16 +25,16 @@ export const OrderTrackModal: React.FC = () => {
   };
 
   return (
-    <div className="fixed inset-0 z-50 overflow-y-auto bg-slate-950/60 backdrop-blur-xs flex items-center justify-center p-3 sm:p-6">
-      <div className="relative w-full max-w-xl bg-white rounded-2xl shadow-2xl border border-purple-100 overflow-hidden my-6">
+    <div className="fixed inset-0 z-50 overflow-y-auto bg-slate-950/60 backdrop-blur-xs flex items-end sm:items-center justify-center p-0 sm:p-6">
+      <div className="relative w-full max-w-xl bg-white rounded-t-3xl sm:rounded-2xl shadow-2xl border border-purple-100 overflow-hidden my-0 sm:my-6 max-h-[92vh] sm:max-h-[90vh] flex flex-col">
         
         {/* Header */}
-        <div className="px-6 py-4 bg-gradient-to-r from-purple-950 via-purple-900 to-indigo-950 text-white flex items-center justify-between">
+        <div className="px-4 sm:px-6 py-3.5 sm:py-4 bg-gradient-to-r from-purple-950 via-purple-900 to-indigo-950 text-white flex items-center justify-between shrink-0">
           <div className="flex items-center gap-2">
             <Truck className="w-5 h-5 text-purple-300" />
             <div>
-              <h2 className="text-base font-bold">Order Tracking</h2>
-              <span className="text-[11px] text-purple-200">Cox's Bazar Pet Shop & Care</span>
+              <h2 className="text-sm sm:text-base font-bold">Order Tracking</h2>
+              <span className="text-[10px] sm:text-[11px] text-purple-200">Cox's Bazar Pet Shop & Care</span>
             </div>
           </div>
           <button
@@ -44,12 +44,13 @@ export const OrderTrackModal: React.FC = () => {
               setHasSearched(false);
             }}
             className="p-1 rounded-lg text-purple-300 hover:text-white hover:bg-white/10 transition-colors cursor-pointer"
+            aria-label="Close tracking"
           >
             <X className="w-5 h-5" />
           </button>
         </div>
 
-        <div className="p-6 space-y-6">
+        <div className="overflow-y-auto p-4 sm:p-6 space-y-4 sm:space-y-6">
           {/* Search Form */}
           <form onSubmit={handleSearch} className="space-y-2">
             <label className="block text-xs font-semibold text-slate-700">
