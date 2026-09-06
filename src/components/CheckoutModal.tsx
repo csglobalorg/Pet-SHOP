@@ -13,7 +13,8 @@ export const CheckoutModal: React.FC = () => {
     setIsCheckoutOpen, 
     createOrder,
     setActiveView,
-    setAdminTab
+    setAdminTab,
+    currentUser
   } = useStore();
 
   const [name, setName] = useState('');
@@ -23,6 +24,16 @@ export const CheckoutModal: React.FC = () => {
   const [city, setCity] = useState("Cox's Bazar Municipality");
   const [notes, setNotes] = useState('');
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>('Cash on Delivery');
+
+  React.useEffect(() => {
+    if (currentUser?.isLoggedIn) {
+      if (currentUser.name && !name) setName(currentUser.name);
+      if (currentUser.phone && !phone) setPhone(currentUser.phone);
+      if (currentUser.email && !email) setEmail(currentUser.email);
+      if (currentUser.address && !address) setAddress(currentUser.address);
+      if (currentUser.city && !city) setCity(currentUser.city);
+    }
+  }, [currentUser, isCheckoutOpen]);
   const [orderSuccess, setOrderSuccess] = useState<any | null>(null);
 
   if (!isCheckoutOpen) return null;
@@ -201,7 +212,7 @@ export const CheckoutModal: React.FC = () => {
                       required
                       value={name || ''}
                       onChange={(e) => setName(e.target.value)}
-                      placeholder="e.g. Tanvir Ahmed"
+                      placeholder="আপনার নাম লিখুন (e.g. Shakil Ahmed)"
                       className="w-full px-3.5 py-2 rounded-xl border border-slate-200 text-xs focus:ring-2 focus:ring-purple-600 focus:outline-none"
                     />
                   </div>

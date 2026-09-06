@@ -148,33 +148,33 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   });
 
   const [orders, setOrders] = useState<Order[]>(() => {
-    const saved = localStorage.getItem('cbz_pet_orders_v2');
+    const saved = localStorage.getItem('cbz_pet_orders_v3');
     if (saved) {
       try {
         const parsed = JSON.parse(saved);
-        if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+        if (Array.isArray(parsed)) return parsed;
       } catch (e) { console.error(e); }
     }
     return INITIAL_ORDERS;
   });
 
   const [inventoryLogs, setInventoryLogs] = useState<InventoryLog[]>(() => {
-    const saved = localStorage.getItem('cbz_pet_inventory_logs_v2');
+    const saved = localStorage.getItem('cbz_pet_inventory_logs_v3');
     if (saved) {
       try {
         const parsed = JSON.parse(saved);
-        if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+        if (Array.isArray(parsed)) return parsed;
       } catch (e) { console.error(e); }
     }
     return INITIAL_INVENTORY_LOGS;
   });
 
   const [appointments, setAppointments] = useState<AppointmentBooking[]>(() => {
-    const saved = localStorage.getItem('cbz_pet_appointments_v2');
+    const saved = localStorage.getItem('cbz_pet_appointments_v3');
     if (saved) {
       try {
         const parsed = JSON.parse(saved);
-        if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+        if (Array.isArray(parsed)) return parsed;
       } catch (e) { console.error(e); }
     }
     return INITIAL_APPOINTMENTS;
@@ -201,7 +201,7 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         if (Array.isArray(parsed)) return parsed;
       } catch (e) { console.error(e); }
     }
-    return ['prod-1', 'prod-7'];
+    return [];
   });
 
   const [activeView, setActiveView] = useState<'store' | 'admin'>('store');
@@ -286,29 +286,29 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   }, [isAdminAuthenticated]);
 
   // Customer Account & Profile
-  const DEFAULT_USER: UserProfile = {
-    name: 'Tanvir Ahmed',
-    phone: '01854-444344',
-    email: 'tanvir.petcare@gmail.com',
-    city: "Cox's Bazar Municipality",
-    membershipPoints: 450,
-    isLoggedIn: true
+  const GUEST_USER: UserProfile = {
+    name: 'Customer',
+    phone: '',
+    email: '',
+    city: "Cox's Bazar",
+    membershipPoints: 0,
+    isLoggedIn: false
   };
 
   const [currentUser, setCurrentUser] = useState<UserProfile>(() => {
-    const saved = localStorage.getItem('cbz_pet_user_profile_v2');
+    const saved = localStorage.getItem('cbz_pet_user_profile_v3');
     if (saved) {
       try {
         const parsed = JSON.parse(saved);
         if (parsed && typeof parsed.isLoggedIn === 'boolean') return parsed;
       } catch (e) { console.error(e); }
     }
-    return DEFAULT_USER;
+    return GUEST_USER;
   });
 
   useEffect(() => {
     try {
-      localStorage.setItem('cbz_pet_user_profile_v2', JSON.stringify(currentUser));
+      localStorage.setItem('cbz_pet_user_profile_v3', JSON.stringify(currentUser));
     } catch (e) { console.error(e); }
   }, [currentUser]);
 
@@ -333,10 +333,11 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   };
 
   const logoutUser = () => {
-    setCurrentUser(prev => ({
-      ...prev,
-      isLoggedIn: false
-    }));
+    setCurrentUser(GUEST_USER);
+    try {
+      localStorage.removeItem('cbz_auth_token');
+      localStorage.removeItem('cbz_pet_user_profile_v3');
+    } catch (e) { console.error(e); }
     setIsReminderToastOpen(false);
   };
 
@@ -356,7 +357,7 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
   // Dokan Khata States
   const [expenses, setExpenses] = useState<ExpenseRecord[]>(() => {
-    const saved = localStorage.getItem('cbz_pet_expenses_v1');
+    const saved = localStorage.getItem('cbz_pet_expenses_v2');
     if (saved) {
       try {
         const parsed = JSON.parse(saved);
@@ -367,7 +368,7 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   });
 
   const [customerDues, setCustomerDues] = useState<CustomerDueRecord[]>(() => {
-    const saved = localStorage.getItem('cbz_pet_dues_v1');
+    const saved = localStorage.getItem('cbz_pet_dues_v2');
     if (saved) {
       try {
         const parsed = JSON.parse(saved);
@@ -378,7 +379,7 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   });
 
   const [suppliers, setSuppliers] = useState<SupplierRecord[]>(() => {
-    const saved = localStorage.getItem('cbz_pet_suppliers_v1');
+    const saved = localStorage.getItem('cbz_pet_suppliers_v2');
     if (saved) {
       try {
         const parsed = JSON.parse(saved);
@@ -395,15 +396,15 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
   // Sync Dokan Khata to local storage
   useEffect(() => {
-    localStorage.setItem('cbz_pet_expenses_v1', JSON.stringify(expenses));
+    localStorage.setItem('cbz_pet_expenses_v2', JSON.stringify(expenses));
   }, [expenses]);
 
   useEffect(() => {
-    localStorage.setItem('cbz_pet_dues_v1', JSON.stringify(customerDues));
+    localStorage.setItem('cbz_pet_dues_v2', JSON.stringify(customerDues));
   }, [customerDues]);
 
   useEffect(() => {
-    localStorage.setItem('cbz_pet_suppliers_v1', JSON.stringify(suppliers));
+    localStorage.setItem('cbz_pet_suppliers_v2', JSON.stringify(suppliers));
   }, [suppliers]);
 
   useEffect(() => {
@@ -416,15 +417,15 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   }, [products]);
 
   useEffect(() => {
-    localStorage.setItem('cbz_pet_orders_v2', JSON.stringify(orders));
+    localStorage.setItem('cbz_pet_orders_v3', JSON.stringify(orders));
   }, [orders]);
 
   useEffect(() => {
-    localStorage.setItem('cbz_pet_inventory_logs_v2', JSON.stringify(inventoryLogs));
+    localStorage.setItem('cbz_pet_inventory_logs_v3', JSON.stringify(inventoryLogs));
   }, [inventoryLogs]);
 
   useEffect(() => {
-    localStorage.setItem('cbz_pet_appointments_v2', JSON.stringify(appointments));
+    localStorage.setItem('cbz_pet_appointments_v3', JSON.stringify(appointments));
   }, [appointments]);
 
   useEffect(() => {
@@ -858,17 +859,20 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     setSuppliers(INITIAL_SUPPLIERS);
     setDrawerOpeningCash(5000);
     setCart([]);
-    setWishlist(['prod-1', 'prod-7']);
+    setWishlist([]);
+    setCurrentUser(GUEST_USER);
     localStorage.removeItem('cbz_pet_products_v2');
-    localStorage.removeItem('cbz_pet_orders_v2');
-    localStorage.removeItem('cbz_pet_inventory_logs_v2');
-    localStorage.removeItem('cbz_pet_appointments_v2');
+    localStorage.removeItem('cbz_pet_orders_v3');
+    localStorage.removeItem('cbz_pet_inventory_logs_v3');
+    localStorage.removeItem('cbz_pet_appointments_v3');
     localStorage.removeItem('cbz_pet_cart_v2');
     localStorage.removeItem('cbz_pet_wishlist_v2');
-    localStorage.removeItem('cbz_pet_expenses_v1');
-    localStorage.removeItem('cbz_pet_dues_v1');
-    localStorage.removeItem('cbz_pet_suppliers_v1');
+    localStorage.removeItem('cbz_pet_expenses_v2');
+    localStorage.removeItem('cbz_pet_dues_v2');
+    localStorage.removeItem('cbz_pet_suppliers_v2');
     localStorage.removeItem('cbz_pet_opening_cash_v1');
+    localStorage.removeItem('cbz_pet_user_profile_v3');
+    localStorage.removeItem('cbz_auth_token');
   };
 
   return (

@@ -43,15 +43,7 @@ export async function seedDatabase() {
     );
   }
 
-  // Demo Customer User
-  const existingCustomer = dbManager.get('SELECT id FROM users WHERE phone = ?', '01712345678');
-  if (!existingCustomer) {
-    dbManager.run(
-      `INSERT INTO users (id, phone, email, name, password_hash, role, membership_points)
-       VALUES ('USR-CUST-01', '01712345678', 'customer@example.com', 'Fahim Chowdhury', ?, 'customer', 150)`,
-      customerPasswordHash
-    );
-  }
+
 
   // 2. Seed Products
   console.log(`📦 Seeding ${INITIAL_PRODUCTS.length} products...`);

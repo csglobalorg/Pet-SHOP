@@ -289,7 +289,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               </button>
             )}
 
-            {/* Hello User, Account button */}
+            {/* User Account / Sign In & Sign Up button */}
             <button
               onClick={() => onOpenAccountModal?.('account')}
               className="hidden md:flex items-center gap-2 px-4 py-2 rounded-full border border-slate-300 hover:border-purple-400 hover:bg-purple-50/50 text-slate-700 text-xs font-semibold transition-all cursor-pointer shadow-xs"
@@ -297,8 +297,8 @@ export const Navbar: React.FC<NavbarProps> = ({
               <User className="w-4 h-4 text-purple-700" />
               <span>
                 {currentUser.isLoggedIn 
-                  ? `Hello ${currentUser.name.split(' ')[0] || 'User'} , Account` 
-                  : 'Sign In / Account'}
+                  ? `Hello ${currentUser.name.split(' ')[0] || 'User'} | Account` 
+                  : 'Sign In / Sign Up'}
               </span>
               {currentUser.isLoggedIn && upcomingGroomingAppointments.length > 0 && (
                 <span className="w-2 h-2 rounded-full bg-amber-500 shrink-0" title="Upcoming appointment reminder" />
@@ -566,7 +566,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               className="flex items-center gap-2 text-xs font-bold text-purple-900"
             >
               <User className="w-4 h-4 text-purple-700" />
-              <span>{currentUser.isLoggedIn ? `Account (${currentUser.name.split(' ')[0]})` : 'Sign In / Account'}</span>
+              <span>{currentUser.isLoggedIn ? `Account (${currentUser.name.split(' ')[0]})` : 'Sign In / Sign Up'}</span>
             </button>
             <button
               onClick={() => {

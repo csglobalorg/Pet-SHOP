@@ -174,10 +174,14 @@ export interface Coupon {
 }
 
 export interface UserProfile {
+  id?: string;
   name: string;
   phone: string;
   email: string;
   city: string;
+  address?: string;
+  petName?: string;
+  petType?: 'cat' | 'dog' | 'bird' | 'other';
   membershipPoints: number;
   isLoggedIn: boolean;
 }

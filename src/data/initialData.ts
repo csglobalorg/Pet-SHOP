@@ -730,124 +730,11 @@ export const INITIAL_PRODUCTS: Product[] = [
   }
 ];
 
-export const INITIAL_ORDERS: Order[] = [
-  {
-    id: 'ord-101',
-    orderNumber: 'CBP-2001',
-    date: '2026-09-05T11:30:00',
-    customerName: 'Md. Arman Chowdhury',
-    customerPhone: '01854444344',
-    customerEmail: 'arman.cb@gmail.com',
-    deliveryAddress: 'Hotel Motel Zone, Kolatoli, Cox\'s Bazar',
-    city: 'Cox\'s Bazar Municipality',
-    notes: 'Please call before delivery',
-    items: [
-      {
-        productId: 'prod-1',
-        sku: 'REF-KIT-15KG',
-        title: 'Reflex Plus Kitten Food - Chicken Formula 1.5kg',
-        price: 980,
-        quantity: 1,
-        image: 'https://images.unsplash.com/photo-1568640347023-a616a30bc3bd?w=600&auto=format&fit=crop&q=80',
-        category: 'Pet Food'
-      },
-      {
-        productId: 'prod-7',
-        sku: 'LIT-BENT-LAV-5L',
-        title: 'Premium Natural Bentonite Clumping Cat Litter - Lavender 5L',
-        price: 490,
-        quantity: 2,
-        image: 'https://images.unsplash.com/photo-1543852786-1cf6624b9987?w=600&auto=format&fit=crop&q=80',
-        category: 'Litter & Hygiene'
-      }
-    ],
-    subtotal: 1960,
-    deliveryFee: 60,
-    discount: 196,
-    couponCode: 'CBZPET10',
-    total: 1824,
-    paymentMethod: 'bKash',
-    paymentStatus: 'Paid',
-    orderStatus: 'Processing'
-  },
-  {
-    id: 'ord-102',
-    orderNumber: 'CBP-2002',
-    date: '2026-09-05T13:45:00',
-    customerName: 'Nusrat Jahan Rimi',
-    customerPhone: '01712998877',
-    customerEmail: 'rimijahan@yahoo.com',
-    deliveryAddress: 'Jhawtala Road, Ward 2, Cox\'s Bazar Sadar',
-    city: 'Cox\'s Bazar Municipality',
-    items: [
-      {
-        productId: 'prod-3',
-        sku: 'WHISK-TUNA-85G',
-        title: 'Whiskas Adult Wet Pouch - Tuna in Savory Jelly 85g',
-        price: 85,
-        quantity: 6,
-        image: 'https://images.unsplash.com/photo-1589924691995-400dc9ecc119?w=600&auto=format&fit=crop&q=80',
-        category: 'Pet Food'
-      },
-      {
-        productId: 'prod-15',
-        sku: 'SHMP-BIO-FLEA-250ML',
-        title: 'Bioline Anti-Tick & Flea Medicated Pet Shampoo 250ml',
-        price: 460,
-        quantity: 1,
-        image: 'https://images.unsplash.com/photo-1576201836106-db1758fd1c97?w=600&auto=format&fit=crop&q=80',
-        category: 'Grooming Essentials'
-      }
-    ],
-    subtotal: 970,
-    deliveryFee: 60,
-    discount: 0,
-    total: 1030,
-    paymentMethod: 'Cash on Delivery',
-    paymentStatus: 'Pending',
-    orderStatus: 'Pending'
-  }
-];
+export const INITIAL_ORDERS: Order[] = [];
 
-export const INITIAL_INVENTORY_LOGS: InventoryLog[] = [
-  {
-    id: 'log-1',
-    timestamp: '2026-09-05 13:45',
-    productId: 'prod-1',
-    productTitle: 'Reflex Plus Kitten Food - Chicken 1.5kg',
-    changeType: 'sale',
-    quantityChange: -1,
-    resultingStock: 28,
-    note: 'Fulfilled in Order #CBP-2001'
-  },
-  {
-    id: 'log-2',
-    timestamp: '2026-09-05 10:00',
-    productId: 'prod-7',
-    productTitle: 'Premium Natural Bentonite Clumping Litter 5L',
-    changeType: 'restock',
-    quantityChange: +40,
-    resultingStock: 55,
-    note: 'Fresh shipment received at Cox\'s Bazar warehouse'
-  }
-];
+export const INITIAL_INVENTORY_LOGS: InventoryLog[] = [];
 
-export const INITIAL_APPOINTMENTS: AppointmentBooking[] = [
-  {
-    id: 'apt-101',
-    serviceId: 'srv-grooming',
-    serviceName: 'Basic Grooming & Spa',
-    ownerName: 'Tanvir Ahmed',
-    ownerPhone: '01854444344',
-    petName: 'Milo',
-    petType: 'cat',
-    preferredDate: '2026-09-07',
-    preferredTime: '11:00 AM',
-    notes: 'Persian cat, needs special care with nail trimming',
-    status: 'Confirmed',
-    createdAt: '2026-09-05 12:00'
-  }
-];
+export const INITIAL_APPOINTMENTS: AppointmentBooking[] = [];
 
 export const COUPONS: Coupon[] = [
   {
@@ -1123,87 +1010,13 @@ export const TESTIMONIALS = [
   }
 ];
 
-// Dokan Daily Expenses
-export const INITIAL_EXPENSES: ExpenseRecord[] = [
-  {
-    id: 'exp-1',
-    date: new Date().toISOString().slice(0, 10),
-    category: 'Tea & Snacks',
-    title: 'Staff tea, biscuits and customer hospitality',
-    amount: 180,
-    paymentSource: 'Drawer Cash',
-    notes: 'Afternoon refreshment'
-  },
-  {
-    id: 'exp-2',
-    date: new Date().toISOString().slice(0, 10),
-    category: 'Courier & Transport',
-    title: 'Local doorstep parcel delivery van & transport fare',
-    amount: 150,
-    paymentSource: 'Drawer Cash',
-    notes: '3 home delivery orders in Kolatoli & Jhawtola'
-  },
-  {
-    id: 'exp-3',
-    date: new Date(Date.now() - 86400000).toISOString().slice(0, 10),
-    category: 'Packaging & Bags',
-    title: 'Custom shopping poly bags & parcel packaging roll (200 pcs)',
-    amount: 550,
-    paymentSource: 'Drawer Cash',
-    notes: 'Wholesale purchase from Cox\'s Bazar main market'
-  },
-  {
-    id: 'exp-4',
-    date: new Date(Date.now() - 86400000 * 2).toISOString().slice(0, 10),
-    category: 'Electricity & Bills',
-    title: 'Store electricity bill & high-speed Wi-Fi internet',
-    amount: 2200,
-    paymentSource: 'bKash/Bank',
-    notes: 'Prepaid meter recharge'
-  }
-];
+// Dokan Daily Expenses (Production Ready - Zero Demo Data)
+export const INITIAL_EXPENSES: ExpenseRecord[] = [];
 
-// Customer Credit / Due Ledger
-export const INITIAL_CUSTOMER_DUES: CustomerDueRecord[] = [
-  {
-    id: 'due-1',
-    customerName: 'Kamrul Hasan',
-    customerPhone: '01819-458921',
-    petName: 'Persian Cat (Lucy)',
-    totalDue: 1450,
-    lastUpdated: '2026-09-03',
-    notes: 'Reflex 1.5kg cat food and bentonite litter taken on credit; promised Friday'
-  },
-  {
-    id: 'due-2',
-    customerName: 'Dr. Tanvir Ahmed',
-    customerPhone: '01712-389140',
-    petName: 'Golden Retriever (Max)',
-    totalDue: 2200,
-    lastUpdated: '2026-09-02',
-    notes: 'Drools 3kg puppy food and anti-tick medicated shampoo'
-  },
-  {
-    id: 'due-3',
-    customerName: 'Nusrat Jahan',
-    customerPhone: '01680-112233',
-    petName: 'Mixed Kitten (Tom)',
-    totalDue: 480,
-    lastUpdated: '2026-09-04',
-    notes: 'SmartHeart kitten pouch and cat grass seeds'
-  },
-  {
-    id: 'due-4',
-    customerName: 'Rafiqul Islam',
-    customerPhone: '01822-990011',
-    petName: 'Local Rescue Cat',
-    totalDue: 850,
-    lastUpdated: '2026-09-01',
-    notes: 'Litter box tray and claw trimmer'
-  }
-];
+// Customer Credit / Due Ledger (Production Ready - Zero Demo Data)
+export const INITIAL_CUSTOMER_DUES: CustomerDueRecord[] = [];
 
-// Suppliers & Wholesaler Ledger
+// Suppliers & Wholesaler Directory
 export const INITIAL_SUPPLIERS: SupplierRecord[] = [
   {
     id: 'sup-1',
@@ -1211,10 +1024,10 @@ export const INITIAL_SUPPLIERS: SupplierRecord[] = [
     brandOrGoods: 'Reflex Plus Cat & Dog Dry Food',
     phone: '01711-223344',
     address: 'Kadamtali Commercial Area, Chittagong',
-    totalPurchased: 85000,
-    totalPaid: 65000,
-    balanceDue: 20000,
-    lastOrderDate: '2026-08-28'
+    totalPurchased: 0,
+    totalPaid: 0,
+    balanceDue: 0,
+    lastOrderDate: ''
   },
   {
     id: 'sup-2',
@@ -1222,10 +1035,10 @@ export const INITIAL_SUPPLIERS: SupplierRecord[] = [
     brandOrGoods: 'Drools, SmartHeart & Me-O Food',
     phone: '01819-887766',
     address: 'Muradpur, Chittagong',
-    totalPurchased: 62000,
-    totalPaid: 52000,
-    balanceDue: 10000,
-    lastOrderDate: '2026-08-30'
+    totalPurchased: 0,
+    totalPaid: 0,
+    balanceDue: 0,
+    lastOrderDate: ''
   },
   {
     id: 'sup-3',
@@ -1233,10 +1046,10 @@ export const INITIAL_SUPPLIERS: SupplierRecord[] = [
     brandOrGoods: 'Bentonite Litter, Cages, Leashes & Grooming Tools',
     phone: '01912-334455',
     address: 'Chawkbazar, Dhaka',
-    totalPurchased: 45000,
-    totalPaid: 45000,
+    totalPurchased: 0,
+    totalPaid: 0,
     balanceDue: 0,
-    lastOrderDate: '2026-08-25'
+    lastOrderDate: ''
   }
 ];
 
