@@ -61,7 +61,7 @@ export const OrderTrackModal: React.FC = () => {
                 <input
                   type="text"
                   required
-                  value={searchInput}
+                  value={searchInput || ''}
                   onChange={(e) => setSearchInput(e.target.value)}
                   placeholder="e.g. CBZ-1094 or 01854444344"
                   className="w-full px-3.5 py-2 rounded-xl border border-slate-200 text-xs uppercase font-medium focus:ring-2 focus:ring-purple-600 focus:outline-none"

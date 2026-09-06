@@ -404,7 +404,7 @@ export const DokanOverview: React.FC = () => {
                 <input
                   type="number"
                   min="0"
-                  value={openingCashInput}
+                  value={openingCashInput || ''}
                   onChange={(e) => setOpeningCashInput(e.target.value)}
                   className="w-full px-3 py-2 border border-slate-300 rounded-xl text-lg font-mono font-bold text-slate-900 focus:outline-none focus:border-purple-600"
                   required

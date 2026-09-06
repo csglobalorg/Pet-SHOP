@@ -199,7 +199,7 @@ export const CheckoutModal: React.FC = () => {
                     <input
                       type="text"
                       required
-                      value={name}
+                      value={name || ''}
                       onChange={(e) => setName(e.target.value)}
                       placeholder="e.g. Tanvir Ahmed"
                       className="w-full px-3.5 py-2 rounded-xl border border-slate-200 text-xs focus:ring-2 focus:ring-purple-600 focus:outline-none"
@@ -215,7 +215,7 @@ export const CheckoutModal: React.FC = () => {
                       <input
                         type="tel"
                         required
-                        value={phone}
+                        value={phone || ''}
                         onChange={(e) => setPhone(e.target.value)}
                         placeholder="01XXXXXXXXX"
                         className="w-full pl-9 pr-3.5 py-2 rounded-xl border border-slate-200 text-xs focus:ring-2 focus:ring-purple-600 focus:outline-none"
@@ -229,7 +229,7 @@ export const CheckoutModal: React.FC = () => {
                     </label>
                     <input
                       type="email"
-                      value={email}
+                      value={email || ''}
                       onChange={(e) => setEmail(e.target.value)}
                       placeholder="name@example.com"
                       className="w-full px-3.5 py-2 rounded-xl border border-slate-200 text-xs focus:ring-2 focus:ring-purple-600 focus:outline-none"
@@ -251,7 +251,7 @@ export const CheckoutModal: React.FC = () => {
                       Select Area <span className="text-red-500">*</span>
                     </label>
                     <select
-                      value={city}
+                      value={city || "Cox's Bazar Municipality"}
                       onChange={(e) => setCity(e.target.value)}
                       className="w-full px-3 py-2 rounded-xl border border-slate-200 text-xs font-medium focus:ring-2 focus:ring-purple-600 focus:outline-none bg-slate-50"
                     >
@@ -270,7 +270,7 @@ export const CheckoutModal: React.FC = () => {
                     <textarea
                       required
                       rows={2}
-                      value={address}
+                      value={address || ''}
                       onChange={(e) => setAddress(e.target.value)}
                       placeholder="House/Apartment number, Road, Landmark (e.g. Hotel Motel Zone, Kolatoli Road)"
                       className="w-full px-3.5 py-2 rounded-xl border border-slate-200 text-xs focus:ring-2 focus:ring-purple-600 focus:outline-none"
@@ -283,7 +283,7 @@ export const CheckoutModal: React.FC = () => {
                     </label>
                     <input
                       type="text"
-                      value={notes}
+                      value={notes || ''}
                       onChange={(e) => setNotes(e.target.value)}
                       placeholder="e.g. Deliver to 2nd floor reception"
                       className="w-full px-3.5 py-2 rounded-xl border border-slate-200 text-xs focus:ring-2 focus:ring-purple-600 focus:outline-none"

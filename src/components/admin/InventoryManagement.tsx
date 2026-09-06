@@ -250,7 +250,7 @@ export const InventoryManagement: React.FC = () => {
             <Search className="w-3.5 h-3.5 text-gray-400 absolute left-3 top-2.5" />
             <input
               type="text"
-              value={logSearchQuery}
+              value={logSearchQuery || ''}
               onChange={(e) => setLogSearchQuery(e.target.value)}
               placeholder="Search audit logs..."
               className="w-full pl-8 pr-3 py-1.5 rounded-lg border border-gray-200 text-xs text-gray-800 placeholder:text-gray-400 focus:ring-2 focus:ring-blue-500 focus:outline-none"
@@ -346,7 +346,7 @@ export const InventoryManagement: React.FC = () => {
               <div>
                 <label className="block font-medium text-gray-700 mb-1">Select Product SKU *</label>
                 <select
-                  value={selectedProductId}
+                  value={selectedProductId || ''}
                   onChange={(e) => setSelectedProductId(e.target.value)}
                   className="w-full px-3 py-2.5 rounded-lg border border-gray-200 bg-gray-50 focus:ring-2 focus:ring-blue-500 focus:outline-none font-medium text-gray-800"
                 >
@@ -364,7 +364,7 @@ export const InventoryManagement: React.FC = () => {
                   type="number"
                   required
                   min={1}
-                  value={restockQty}
+                  value={restockQty ?? ''}
                   onChange={(e) => setRestockQty(Number(e.target.value))}
                   className="w-full px-3 py-2.5 rounded-lg border border-gray-200 font-semibold text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none"
                 />
@@ -374,7 +374,7 @@ export const InventoryManagement: React.FC = () => {
                 <label className="block font-medium text-gray-700 mb-1">Restock Reason / Invoice Reference</label>
                 <input
                   type="text"
-                  value={restockNote}
+                  value={restockNote || ''}
                   onChange={(e) => setRestockNote(e.target.value)}
                   placeholder="e.g. Supplier container import, customs clearance release"
                   className="w-full px-3 py-2.5 rounded-lg border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:outline-none"

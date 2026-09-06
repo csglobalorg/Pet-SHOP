@@ -261,7 +261,7 @@ export const SalesReportTracker: React.FC = () => {
               <Search className="w-3.5 h-3.5 text-gray-400 absolute left-3 top-2.5" />
               <input
                 type="text"
-                value={searchQuery}
+                value={searchQuery || ''}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Search order ID or phone..."
                 className="w-full pl-8 pr-3 py-1.5 rounded-lg border border-gray-200 text-xs text-gray-800 placeholder:text-gray-400 focus:ring-2 focus:ring-blue-500 focus:outline-none"
@@ -269,7 +269,7 @@ export const SalesReportTracker: React.FC = () => {
             </div>
 
             <select
-              value={statusFilter}
+              value={statusFilter || 'all'}
               onChange={(e) => setStatusFilter(e.target.value)}
               className="px-3 py-1.5 rounded-lg border border-gray-200 text-xs font-medium text-gray-700 bg-gray-50 focus:outline-none cursor-pointer"
             >
@@ -343,7 +343,7 @@ export const SalesReportTracker: React.FC = () => {
                         {order.paymentMethod}
                       </span>
                       <select
-                        value={order.paymentStatus}
+                        value={order.paymentStatus || 'Pending'}
                         onChange={(e) => updatePaymentStatus(order.id, e.target.value as any)}
                         className={`text-[10px] font-bold px-2 py-0.5 rounded border focus:outline-none cursor-pointer ${
                           order.paymentStatus === 'Paid' ? 'bg-green-50 text-green-700 border-green-200' :
@@ -361,7 +361,7 @@ export const SalesReportTracker: React.FC = () => {
                   {/* Fulfillment Status Selector */}
                   <td className="py-3 px-3">
                     <select
-                      value={order.orderStatus}
+                      value={order.orderStatus || 'Pending'}
                       onChange={(e) => updateOrderStatus(order.id, e.target.value as OrderStatus)}
                       className={`text-xs font-medium px-2.5 py-1 rounded-lg border focus:outline-none cursor-pointer ${
                         order.orderStatus === 'Delivered' ? 'bg-green-50 text-green-700 border-green-200' :

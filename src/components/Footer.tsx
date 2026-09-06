@@ -11,7 +11,8 @@ import {
   Clock, 
   Calendar,
   ExternalLink,
-  Lock
+  Lock,
+  BookOpen
 } from 'lucide-react';
 import { ProductCategory } from '../types';
 import { STORE_INFO, STORE_POLICIES } from '../data/initialData';
@@ -229,6 +230,16 @@ export const Footer: React.FC<FooterProps> = ({ onSelectCategory, onOpenAdmin })
                   No antibiotics or prescription medicines are sold without a registered veterinary surgeon's prescription.
                 </p>
               </div>
+
+              <div className="pt-1">
+                <a
+                  href="#pet-care-blog-section"
+                  className="inline-flex items-center gap-1.5 text-xs text-purple-300 hover:text-purple-200 transition-colors font-semibold"
+                >
+                  <BookOpen className="w-3.5 h-3.5 text-purple-400" />
+                  <span>Read Pet Care Guides & Doctor's Advice →</span>
+                </a>
+              </div>
             </div>
 
             {/* Social Links */}
@@ -257,24 +268,29 @@ export const Footer: React.FC<FooterProps> = ({ onSelectCategory, onOpenAdmin })
         </div>
 
         {/* Bottom copyright and admin */}
-        <div className="mt-12 pt-6 border-t border-slate-900 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500">
-          <div>
-            © {new Date().getFullYear()} {STORE_INFO.name} ({STORE_INFO.brandName}). All rights reserved. Chittagong, Cox's Bazar - 4700.
+        <div className="mt-12 pt-6 border-t border-slate-900 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-slate-500">
+          <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-3 text-center sm:text-left">
+            <span>
+              © {new Date().getFullYear()} {STORE_INFO.name} ({STORE_INFO.brandName}). All rights reserved.
+            </span>
+            <span className="hidden sm:inline text-slate-700">•</span>
+            <span className="text-slate-400">
+              Developed by <strong className="text-purple-300 font-semibold">{STORE_INFO.developerName}</strong>
+            </span>
           </div>
 
           <div className="flex items-center gap-4">
-            <span className="text-purple-400/80 font-serif italic text-xs">
+            <span className="text-purple-400/80 font-serif italic text-xs hidden sm:inline">
               "{STORE_INFO.tagline}"
             </span>
-            <span>•</span>
-            <button
+            {/* Secret discreet dot trigger for staff */}
+            <span 
               onClick={onOpenAdmin}
-              className="text-slate-600 hover:text-slate-400 transition-colors cursor-pointer text-xs flex items-center gap-1.5"
-              title="Staff Access (Protected by Passcode)"
+              className="hidden sm:inline text-slate-800 hover:text-slate-600 cursor-default select-none text-[10px] transition-colors"
+              title=""
             >
-              <Lock className="w-3 h-3 text-purple-500/70" />
-              <span>Staff Portal</span>
-            </button>
+              •
+            </span>
           </div>
         </div>
       </div>

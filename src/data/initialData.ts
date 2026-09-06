@@ -8,7 +8,9 @@ import {
   ExpenseRecord,
   CustomerDueRecord,
   SupplierRecord,
-  PetListing
+  PetListing,
+  BlogPost,
+  Testimonial
 } from '../types';
 
 export const STORE_INFO = {
@@ -27,7 +29,9 @@ export const STORE_INFO = {
   operatingHours: "Daily 10:00 AM – 10:00 PM (Everyday)",
   aboutBengali: "Cox's Bazar Pet Shop & Care is the premier one-stop destination for pet parents in Cox's Bazar. From world-class nutrition and essentials to caring grooming and hygiene services, we are dedicated to keeping your cats, dogs, and pets healthy, joyful, and thriving.",
   heroHeadline: "All Your Pet Care Solutions in One Place",
-  heroSubheadline: "Cox's Bazar's premier pet store & grooming center — authentic international food brands, accessories, hygiene products, and dedicated care."
+  heroSubheadline: "Cox's Bazar's premier pet store & grooming center — authentic international food brands, accessories, hygiene products, and dedicated care.",
+  developerName: "CGI IT Company",
+  developerInfo: "Developed & Maintained by CGI IT Company"
 };
 
 export const STORE_SERVICES: ServiceItem[] = [
@@ -877,35 +881,217 @@ export const POPULAR_BRANDS = [
   { name: 'Sanicat', origin: 'European Odor-Lock Litter', logoText: 'SANICAT' }
 ];
 
-export const BLOG_POSTS = [
+export const BLOG_POSTS: BlogPost[] = [
   {
     id: 'blog-1',
     title: 'Coastal Weather Pet Care: Protecting Pets from Humidity and Seasonal Fleas',
+    titleBn: 'উপকূলীয় আবহাওয়ায় পোষা প্রাণীর যত্ন: আর্দ্রতা ও মাছি-টিক প্রতিরোধ',
     date: 'September 4, 2026',
-    category: 'Pet Care Guide',
+    category: 'Seasonal Care',
     excerpt: 'Essential guidelines to safeguard cats and dogs from coastal dampness, fungal skin irritations, and ticks in Cox\'s Bazar.',
-    image: 'https://images.unsplash.com/photo-1548767797-d8c844163c4c?w=600&auto=format&fit=crop&q=80',
-    readTime: '4 min read'
+    image: 'https://images.unsplash.com/photo-1548767797-d8c844163c4c?w=800&auto=format&fit=crop&q=80',
+    readTime: '4 min read',
+    author: 'Dr. Rashedul Islam',
+    authorRole: 'Consultant Veterinarian (DVM), Cox\'s Bazar',
+    tags: ['Coastal Care', 'Fleas & Ticks', 'Persian Cats', 'Monsoon Care'],
+    recommendedCategory: 'Healthcare & First Aid',
+    keyTakeaways: [
+      'Dry coats immediately after outdoor ocean breeze exposure to prevent fungal buildup.',
+      'Apply anti-tick spot-on treatments (e.g. Fipronil) once every 30 days during high humidity.',
+      'Keep indoor grooming tools sanitized and brush Persian cat coats daily.',
+      'Check paw pads and ear canals weekly for damp sand or moisture buildup.'
+    ],
+    content: [
+      {
+        heading: 'The Unique Challenges of Cox\'s Bazar Coastal Climate',
+        text: 'Cox\'s Bazar experiences high relative humidity and salty sea breezes almost all year round. While humans love the coastal wind, the humid microclimate trapped beneath the dense fur of long-haired breeds (such as Persian cats and Golden Retrievers) provides an ideal breeding ground for dermatophytosis (ringworm), fungal dermatitis, and ectoparasites.'
+      },
+      {
+        heading: 'Effective Flea & Tick Prevention Protocol',
+        text: 'Warm moisture accelerates the flea life cycle from egg to biting adult in under two weeks. We recommend using veterinary-approved monthly spot-on treatments such as Fipronil or Bioline anti-parasite sprays. Never use dog flea medication on cats, as permethrins are severely toxic to feline livers.'
+      },
+      {
+        heading: 'Daily Post-Walk Routine & Hygiene',
+        text: 'After returning from a walk near Laboni, Sugandha, or Kolatoli beach, always wipe your pet\'s paws and lower belly with lukewarm water and a dry microfiber towel. Sand crystals trapped between paw pads cause irritation and licking, leading to severe pododermatitis.'
+      },
+      {
+        heading: 'Nutrition for Coastal Coat Strength',
+        text: 'Incorporate Omega-3 and Omega-6 fatty acids into your pet\'s meals through premium salmon oil or high-grade nutrition like Reflex Plus Hairball & Skin care. This keeps the protective lipid barrier of their skin resilient against environmental allergens.'
+      }
+    ]
   },
   {
     id: 'blog-2',
     title: 'Balanced Feeding Guide: Dry Food vs Wet Food Proportions',
+    titleBn: 'সুষম খাবার ও ডায়েট রুটিন: ড্রাই ফুড বনাম ওয়েট ফুড',
     date: 'August 30, 2026',
     category: 'Nutrition Advice',
-    excerpt: 'How to combine crunchy kibbles with savory hydration pouches according to age, weight, and activity level.',
-    image: 'https://images.unsplash.com/photo-1568640347023-a616a30bc3bd?w=600&auto=format&fit=crop&q=80',
-    readTime: '5 min read'
+    excerpt: 'How to combine crunchy kibbles with savory hydration pouches according to age, weight, and activity level for optimum kidney health.',
+    image: 'https://images.unsplash.com/photo-1568640347023-a616a30bc3bd?w=800&auto=format&fit=crop&q=80',
+    readTime: '5 min read',
+    author: 'Tanjima Karim',
+    authorRole: 'Feline Nutrition Specialist',
+    tags: ['Pet Nutrition', 'Hydration', 'Reflex Plus', 'Urinary Care'],
+    recommendedCategory: 'Pet Food',
+    keyTakeaways: [
+      'Cats naturally have a low thirst drive and rely heavily on moisture in their diet.',
+      'Recommended daily ratio: 65-70% dry kibble + 30-35% wet gravy food or hydration broth.',
+      'Always provide fresh, running filtered water using a pet water fountain.',
+      'Never feed cooked animal bones, onion, garlic, or excessive milk.'
+    ],
+    content: [
+      {
+        heading: 'Why Felines Need Consistent Wet Food Hydration',
+        text: 'Domestic cats evolved from desert-dwelling ancestors whose primary source of water was the prey they consumed. Because of their naturally suppressed thirst mechanism, cats fed strictly dry kibble often live in a state of chronic sub-clinical dehydration, drastically multiplying the risk of Feline Lower Urinary Tract Disease (FLUTD) and chronic kidney issues.'
+      },
+      {
+        heading: 'The Golden Proportional Feeding Rule',
+        text: 'A balanced daily feeding strategy for adult cats includes crunchy dry kibbles (like Reflex Plus Chicken or Royal Canin Fit 32) in measured portions in the morning and evening, complemented by half or one full pouch of savory wet gravy (like Me-O or Reflex Pouch) mid-day. The crunchy kibble exercises the jaw and reduces plaque, while wet food supplies vital water content.'
+      },
+      {
+        heading: 'Preventing Obesity in Spayed and Neutered Pets',
+        text: 'After sterilization, a pet\'s metabolic energy requirements drop by approximately 20 to 25%, while appetite often spikes. Choose specialized sterilized diet formulations that feature L-carnitine and elevated dietary fiber to promote satiety without excess caloric load.'
+      }
+    ]
   },
   {
     id: 'blog-3',
     title: 'Cat Litter Best Practices: Maximum Hygiene & Odor Neutralization',
+    titleBn: 'ক্যাট লিটার ট্রেনিং ও হাইজিন: গন্ধমুক্ত ঘরের সহজ সমাধান',
     date: 'August 21, 2026',
     category: 'Litter & Hygiene',
-    excerpt: 'Simple clumping bentonite and activated charcoal techniques to maintain a fresh, hygienic home environment.',
-    image: 'https://images.unsplash.com/photo-1543852786-1cf6624b9987?w=600&auto=format&fit=crop&q=80',
-    readTime: '4 min read'
+    excerpt: 'Simple clumping bentonite and activated charcoal techniques to maintain a fresh, hygienic home environment without dust.',
+    image: 'https://images.unsplash.com/photo-1543852786-1cf6624b9987?w=800&auto=format&fit=crop&q=80',
+    readTime: '4 min read',
+    author: 'Shafiqul Alam',
+    authorRole: 'Store Manager & Feline Behaviorist',
+    tags: ['Litter Box', 'Bentonite Litter', 'Home Hygiene', 'Odor Control'],
+    recommendedCategory: 'Litter & Hygiene',
+    keyTakeaways: [
+      'Maintain 2 to 3 inches of clean litter depth for firm, instantaneous clumping.',
+      'Scoop waste clumps at least twice daily and replace the entire batch monthly.',
+      'The "N+1" rule: Have one more litter box than the total number of cats in your home.',
+      'Avoid harsh chemical bleaches; use enzymatic pet-safe cleaners to prevent box aversion.'
+    ],
+    content: [
+      {
+        heading: 'Choosing Between Bentonite, Tofu, and Crystal Litter',
+        text: 'Sodium bentonite clay remains the gold standard in Bangladesh due to its tight moisture clumping and cost efficiency. For households with young kittens who might ingest litter, or pet parents sensitive to dust, biodegradable natural tofu litter provides a flushable, dust-free alternative.'
+      },
+      {
+        heading: 'Location Matters More Than You Think',
+        text: 'Cats instinctively seek privacy yet demand clear escape routes when relieving themselves. Place litter trays in well-ventilated, quiet corners far from food and water bowls. Avoid putting the box next to noisy washing machines or busy doorways.'
+      },
+      {
+        heading: 'Activated Carbon and Odor Trapping',
+        text: 'Unscented or lightly baby-powder-scented litters with embedded activated charcoal micro-granules absorb ammonia compounds before they disperse into your room. Avoid heavy artificial perfumes, which irritate sensitive feline respiratory systems.'
+      }
+    ]
+  },
+  {
+    id: 'blog-4',
+    title: 'Vaccination & Deworming Protocol for Pets in Bangladesh',
+    titleBn: 'বাংলাদেশে বিড়াল ও কুকুরের টিকা ও কৃমিনাশক শিডিউল',
+    date: 'August 10, 2026',
+    category: 'Veterinary Care',
+    excerpt: 'Complete schedule for core vaccines (Tri-cat, Rabies, Distemper) and 3-month deworming routine for pet longevity.',
+    image: 'https://images.unsplash.com/photo-1628009368231-7bb7cfcb0def?w=800&auto=format&fit=crop&q=80',
+    readTime: '6 min read',
+    author: 'Dr. Farhana Yasmin',
+    authorRole: 'Veterinary Surgeon (MS in Surgery)',
+    tags: ['Vaccination', 'Deworming', 'Rabies', 'Pet Health'],
+    recommendedCategory: 'Healthcare & First Aid',
+    keyTakeaways: [
+      'First deworming begins at 4-6 weeks of age, followed by routine deworming every 90 days.',
+      'Kitten core vaccination starts at 8-9 weeks (FPV/FHV/FCV Tri-cat vaccine).',
+      'Rabies vaccination is mandatory at 12-16 weeks and boosted annually.',
+      'Always receive an official Health & Vaccination Passport signed by a registered vet.'
+    ],
+    content: [
+      {
+        heading: 'Why Timely Vaccination is Non-Negotiable',
+        text: 'Feline Panleukopenia (FPV) and Canine Parvovirus are highly contagious and devastating viral infections endemic throughout Bangladesh. Routine core vaccinations build robust humoral immunity, transforming potentially lethal exposures into minor or asymptomatic encounters.'
+      },
+      {
+        heading: 'The Standard Feline Vaccination Timeline',
+        text: 'Kittens should receive their 1st Tri-cat dose at 8 to 9 weeks, followed by a booster dose 21 to 28 days later. At 12 to 14 weeks, the single-dose Rabies vaccine is administered. Following the puppy/kitten series, an annual booster dose maintains strong antibody titers.'
+      },
+      {
+        heading: 'Deworming Before Vaccination',
+        text: 'Never vaccinate a pet burdened with internal parasites. Worms suppress the immune system, preventing the vaccine from generating sufficient antibodies. Administer veterinary broad-spectrum anthelmintics (like Fenbendazole or Praziquantel) 7 to 10 days before any vaccination.'
+      }
+    ]
+  },
+  {
+    id: 'blog-5',
+    title: 'Kitten & Puppy First 30 Days: The Ultimate Welcoming Guide',
+    titleBn: 'নতুন ছানা ঘরে আনার প্রথম ৩০ দিনের সম্পূর্ণ গাইড',
+    date: 'July 28, 2026',
+    category: 'Pet Care Guide',
+    excerpt: 'Step-by-step onboarding for newly adopted kittens and puppies: safe spaces, feeding schedules, and avoiding common rookie mistakes.',
+    image: 'https://images.unsplash.com/photo-1574158622682-e40e69881006?w=800&auto=format&fit=crop&q=80',
+    readTime: '5 min read',
+    author: 'Shafiqul Alam',
+    authorRole: 'Senior Pet Consultant, Cox\'s Bazar',
+    tags: ['Kitten Care', 'Puppy Care', 'Adoption', 'Training'],
+    recommendedCategory: 'Accessories & Toys',
+    keyTakeaways: [
+      'Create a single "safe room" for the first 3-5 days before granting whole-house access.',
+      'Never give cow milk to kittens or puppies; use specialized pet milk replacers (KMR).',
+      'Begin litter and pee-pad training immediately with positive reinforcement.',
+      'Pet-proof all loose electrical cords, poisonous houseplants, and open balconies.'
+    ],
+    content: [
+      {
+        heading: 'Creating the Safe Basecamp',
+        text: 'Leaving their mother and siblings is the most stressful day of a young animal\'s life. Set up a calm, draft-free room equipped with warm bedding, a low-entry litter tray, fresh water, and a cozy hideout. Let them explore this safe zone quietly for 48 hours without overwhelming crowds or handling.'
+      },
+      {
+        heading: 'The Dangerous Cow Milk Myth in Bangladesh',
+        text: 'One of the most widespread and fatal mistakes in Bangladesh is feeding boiled cow or buffalo milk to young kittens. Felines lack sufficient lactase enzymes to digest bovine lactose, resulting in violent diarrhea, dehydration, and rapid death. Feed specialized kitten milk replacers (like Royal Canin Babycat or Beaphar Lactol) or mother\'s starter mousse.'
+      },
+      {
+        heading: 'Socialization and Gentle Play',
+        text: 'Between 3 and 12 weeks of age, positive exposure to household sounds (fans, vacuum cleaners, doorbells) and gentle hand petting builds calm, confident adult temperaments. Never use bare hands as biting toys; always redirect teeth to appropriate plush or teaser toys.'
+      }
+    ]
+  },
+  {
+    id: 'blog-6',
+    title: 'Heatstroke Prevention for Pets During Warm Summer Months',
+    titleBn: 'তীব্র গরমে পোষা প্রাণীর হিটস্ট্রোক প্রতিরোধ ও প্রাথমিক চিকিৎসা',
+    date: 'July 14, 2026',
+    category: 'Seasonal Care',
+    excerpt: 'How to keep your furry friends cool during humid summer days in Cox\'s Bazar, recognize critical warning signs, and provide instant first aid.',
+    image: 'https://images.unsplash.com/photo-1537151608828-ea2b11777ee8?w=800&auto=format&fit=crop&q=80',
+    readTime: '4 min read',
+    author: 'Dr. Rashedul Islam',
+    authorRole: 'Consultant Veterinarian (DVM)',
+    tags: ['Summer Care', 'Heatstroke', 'Hydration', 'First Aid'],
+    recommendedCategory: 'Healthcare & First Aid',
+    keyTakeaways: [
+      'Pets cannot sweat like humans; they rely on panting and paw pads for thermoregulation.',
+      'Brachycephalic breeds (Persian cats, Pugs, Bulldogs) are at highest risk of heat exhaustion.',
+      'Warning signs: Excessive heavy panting, bright red gums, drooling, weakness, and vomiting.',
+      'First aid: Move to cool shaded spot, apply room-temperature damp cloths to paws and groin. Never use ice water!'
+    ],
+    content: [
+      {
+        heading: 'How Heatstroke Happens in Cats and Dogs',
+        text: 'Unlike humans who possess sweat glands across the body, pets only possess sweat glands in their paw pads. When ambient temperatures and humidity soar, panting becomes ineffective at evaporating heat. A body temperature exceeding 104°F (40°C) initiates severe cellular damage within minutes.'
+      },
+      {
+        heading: 'Crucial Prevention Measures',
+        text: 'Keep pets in well-ventilated rooms with active ceiling fans or air conditioning during peak afternoon hours (12:00 PM to 4:00 PM). Ensure clean ceramic or stainless steel water bowls are refreshed several times daily. Provide self-cooling gel mats for pets to lie upon.'
+      },
+      {
+        heading: 'Emergency First Aid Steps',
+        text: 'If your pet collapses, is panting uncontrollably, or appears disoriented, immediately move them to a cool room. Wet their paws, belly, and groin with cool (room-temperature) water. Never plunge them into ice-cold water, as this constricts peripheral blood vessels and traps core heat. Contact Cox\'s Bazar Pet Shop & Care or our on-call vet immediately at 01854-444344.'
+      }
+    ]
   }
 ];
+
 
 export const TESTIMONIALS = [
   {

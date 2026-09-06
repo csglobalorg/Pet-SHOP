@@ -110,7 +110,7 @@ const StoreContent: React.FC = () => {
         <CuratedSections onSelectCategory={handleSelectCategory} />
 
         {/* Pet Care Blog Guides & Customer Reviews */}
-        <PetCareBlogAndReviews />
+        <PetCareBlogAndReviews onSelectCategory={handleSelectCategory} />
 
       </main>
 

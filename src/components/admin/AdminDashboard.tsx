@@ -90,7 +90,7 @@ export const AdminDashboard: React.FC = () => {
                 type={showPin ? 'text' : 'password'}
                 autoFocus
                 maxLength={8}
-                value={pinInput}
+                value={pinInput || ''}
                 onChange={(e) => {
                   setPinInput(e.target.value);
                   setPinError('');
@@ -380,7 +380,7 @@ export const AdminDashboard: React.FC = () => {
       </header>
 
       {/* Main Admin Content */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 pt-5">
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 pt-5 pb-12">
         {adminTab === 'dokan' && <DokanOverview />}
         {adminTab === 'pos' && <POSTerminal />}
         {adminTab === 'dues' && <CustomerDueKhata />}
@@ -390,6 +390,15 @@ export const AdminDashboard: React.FC = () => {
         {adminTab === 'suppliers' && <SupplierLedger />}
         {adminTab === 'appointments' && <AppointmentManager />}
         {adminTab === 'sales' && <SalesReportTracker />}
+
+        <div className="mt-12 pt-6 border-t border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-500">
+          <div>
+            Cox's Bazar Pet Shop & Care ERP • Dokan POS & Accounts Management System
+          </div>
+          <div className="text-slate-400">
+            System Developed by <span className="font-semibold text-purple-400">CGI IT Company</span>
+          </div>
+        </div>
       </main>
     </div>
   );

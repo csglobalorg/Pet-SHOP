@@ -131,7 +131,7 @@ export const ExpenseKhata: React.FC = () => {
           <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
           <input
             type="text"
-            value={searchQuery}
+            value={searchQuery || ''}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search expense description or notes..."
             className="w-full pl-10 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-800 focus:outline-none focus:border-rose-500"
@@ -139,7 +139,7 @@ export const ExpenseKhata: React.FC = () => {
         </div>
 
         <select
-          value={selectedCategory}
+          value={selectedCategory || 'All'}
           onChange={(e) => setSelectedCategory(e.target.value)}
           className="w-full sm:w-auto px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium text-slate-700 focus:outline-none"
         >
@@ -247,7 +247,7 @@ export const ExpenseKhata: React.FC = () => {
                 <input
                   type="text"
                   required
-                  value={title}
+                  value={title || ''}
                   onChange={(e) => setTitle(e.target.value)}
                   placeholder="e.g. Afternoon tea & biscuits for staff and customers"
                   className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 focus:outline-none focus:border-rose-500"
@@ -258,7 +258,7 @@ export const ExpenseKhata: React.FC = () => {
                 <div>
                   <label className="block text-slate-700 font-semibold mb-1">Category *</label>
                   <select
-                    value={category}
+                    value={category || 'Tea & Snacks'}
                     onChange={(e) => setCategory(e.target.value as ExpenseRecord['category'])}
                     className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 focus:outline-none focus:border-rose-500"
                   >
@@ -278,7 +278,7 @@ export const ExpenseKhata: React.FC = () => {
                     type="number"
                     min="1"
                     required
-                    value={amount}
+                    value={amount ?? ''}
                     onChange={(e) => setAmount(e.target.value === '' ? '' : Number(e.target.value))}
                     placeholder="0"
                     className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl font-bold font-mono text-slate-900 focus:outline-none focus:border-rose-500"
@@ -295,6 +295,7 @@ export const ExpenseKhata: React.FC = () => {
                     <input
                       type="radio"
                       name="source"
+                      value="Drawer Cash"
                       checked={paymentSource === 'Drawer Cash'}
                       onChange={() => setPaymentSource('Drawer Cash')}
                       className="hidden"
@@ -309,6 +310,7 @@ export const ExpenseKhata: React.FC = () => {
                     <input
                       type="radio"
                       name="source"
+                      value="bKash/Bank"
                       checked={paymentSource === 'bKash/Bank'}
                       onChange={() => setPaymentSource('bKash/Bank')}
                       className="hidden"
@@ -323,7 +325,7 @@ export const ExpenseKhata: React.FC = () => {
                 <label className="block text-slate-700 font-semibold mb-1">Additional Notes (Optional)</label>
                 <input
                   type="text"
-                  value={notes}
+                  value={notes || ''}
                   onChange={(e) => setNotes(e.target.value)}
                   placeholder="Receipt number, supplier, or reason..."
                   className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 focus:outline-none focus:border-rose-500"

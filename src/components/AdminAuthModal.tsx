@@ -106,7 +106,7 @@ export const AdminAuthModal: React.FC = () => {
                 type={showPin ? 'text' : 'password'}
                 autoFocus
                 maxLength={8}
-                value={pin}
+                value={pin || ''}
                 onChange={(e) => {
                   setPin(e.target.value);
                   setErrorMsg('');

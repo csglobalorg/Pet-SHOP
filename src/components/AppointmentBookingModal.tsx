@@ -148,7 +148,7 @@ export const AppointmentBookingModal: React.FC = () => {
                 Select Service *
               </label>
               <select
-                value={serviceId}
+                value={serviceId || ''}
                 onChange={(e) => setServiceId(e.target.value)}
                 className="w-full text-sm border border-slate-200 rounded-xl px-3.5 py-2.5 bg-slate-50/50 hover:bg-white text-slate-900 focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent font-medium transition-all"
               >
@@ -185,7 +185,7 @@ export const AppointmentBookingModal: React.FC = () => {
                     type="text"
                     required
                     placeholder="e.g. Asif Mahmud"
-                    value={ownerName}
+                    value={ownerName || ''}
                     onChange={(e) => setOwnerName(e.target.value)}
                     className="w-full pl-9 pr-3 py-2 text-sm border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
                   />
@@ -202,7 +202,7 @@ export const AppointmentBookingModal: React.FC = () => {
                     type="tel"
                     required
                     placeholder="01854-444344"
-                    value={ownerPhone}
+                    value={ownerPhone || ''}
                     onChange={(e) => setOwnerPhone(e.target.value)}
                     className="w-full pl-9 pr-3 py-2 text-sm border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
                   />
@@ -220,7 +220,7 @@ export const AppointmentBookingModal: React.FC = () => {
                   type="text"
                   required
                   placeholder="e.g. Milo / Kitty / Tommy"
-                  value={petName}
+                  value={petName || ''}
                   onChange={(e) => setPetName(e.target.value)}
                   className="w-full px-3 py-2 text-sm border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
                 />
@@ -231,7 +231,7 @@ export const AppointmentBookingModal: React.FC = () => {
                   Pet Type
                 </label>
                 <select
-                  value={petType}
+                  value={petType || 'cat'}
                   onChange={(e) => setPetType(e.target.value as AnimalType)}
                   className="w-full px-3 py-2 text-sm border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent bg-white"
                 >
@@ -254,7 +254,7 @@ export const AppointmentBookingModal: React.FC = () => {
                 <input
                   type="date"
                   required
-                  value={preferredDate}
+                  value={preferredDate || ''}
                   min={new Date().toISOString().split('T')[0]}
                   onChange={(e) => setPreferredDate(e.target.value)}
                   className="w-full px-3 py-2 text-sm border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent bg-white"
@@ -267,7 +267,7 @@ export const AppointmentBookingModal: React.FC = () => {
                   Preferred Time *
                 </label>
                 <select
-                  value={preferredTime}
+                  value={preferredTime || '11:00 AM'}
                   onChange={(e) => setPreferredTime(e.target.value)}
                   className="w-full px-3 py-2 text-sm border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent bg-white"
                 >
@@ -286,7 +286,7 @@ export const AppointmentBookingModal: React.FC = () => {
               <textarea
                 rows={2}
                 placeholder="e.g., Sensitive paws, nervous with nail clipping, needs tick bath..."
-                value={notes}
+                value={notes || ''}
                 onChange={(e) => setNotes(e.target.value)}
                 className="w-full px-3 py-2 text-sm border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent resize-none"
               />

@@ -120,21 +120,21 @@ export const ProductManagement: React.FC = () => {
 
   const openEditModal = (p: Product) => {
     setEditingProduct(p);
-    setUploadMethod('upload');
+    setUploadMethod(p.image && p.image.startsWith('data:') ? 'upload' : (p.image ? 'url' : 'upload'));
     setFormData({
-      title: p.title,
-      category: p.category,
-      price: p.price,
-      originalPrice: p.originalPrice || 0,
-      stock: p.stock,
-      sku: p.sku,
-      brand: p.brand,
-      animalType: p.animalType,
-      description: p.description,
+      title: p.title || '',
+      category: p.category || 'Pet Food',
+      price: p.price ?? 0,
+      originalPrice: p.originalPrice ?? 0,
+      stock: p.stock ?? 0,
+      sku: p.sku || '',
+      brand: p.brand || '',
+      animalType: p.animalType || 'cat',
+      description: p.description || '',
       weightOrSize: p.weightOrSize || '',
       badgeText: p.badgeText || '',
       isFlashSale: !!p.isFlashSale,
-      image: p.image
+      image: p.image || ''
     });
     setIsModalOpen(true);
   };
@@ -394,7 +394,7 @@ export const ProductManagement: React.FC = () => {
                   <input
                     type="text"
                     required
-                    value={formData.title}
+                    value={formData.title || ''}
                     onChange={(e) => setFormData({ ...formData, title: e.target.value })}
                     placeholder="e.g. Reflex Plus Adult Cat Food Salmon"
                     className="w-full px-3.5 py-2.5 rounded-lg border border-gray-200 text-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:outline-none"
@@ -405,7 +405,7 @@ export const ProductManagement: React.FC = () => {
                   <div>
                     <label className="block font-medium text-gray-700 mb-1">Category *</label>
                     <select
-                      value={formData.category}
+                      value={formData.category || 'Pet Food'}
                       onChange={(e) => setFormData({ ...formData, category: e.target.value as ProductCategory })}
                       className="w-full px-3 py-2.5 rounded-lg border border-gray-200 bg-gray-50 focus:outline-none font-medium text-gray-800"
                     >
@@ -418,7 +418,7 @@ export const ProductManagement: React.FC = () => {
                   <div>
                     <label className="block font-medium text-gray-700 mb-1">Pet Type</label>
                     <select
-                      value={formData.animalType}
+                      value={formData.animalType || 'cat'}
                       onChange={(e) => setFormData({ ...formData, animalType: e.target.value as any })}
                       className="w-full px-3 py-2.5 rounded-lg border border-gray-200 bg-gray-50 focus:outline-none text-gray-800"
                     >
@@ -433,7 +433,7 @@ export const ProductManagement: React.FC = () => {
                     <label className="block font-medium text-gray-700 mb-1">Brand Name</label>
                     <input
                       type="text"
-                      value={formData.brand}
+                      value={formData.brand || ''}
                       onChange={(e) => setFormData({ ...formData, brand: e.target.value })}
                       placeholder="e.g. Reflex Plus"
                       className="w-full px-3 py-2.5 rounded-lg border border-gray-200 text-gray-900 focus:outline-none"
@@ -448,7 +448,7 @@ export const ProductManagement: React.FC = () => {
                       type="number"
                       required
                       min={10}
-                      value={formData.price}
+                      value={formData.price ?? ''}
                       onChange={(e) => setFormData({ ...formData, price: Number(e.target.value) })}
                       className="w-full px-3 py-2 rounded-lg border border-gray-200 text-gray-900 focus:outline-none font-semibold"
                     />
@@ -459,7 +459,7 @@ export const ProductManagement: React.FC = () => {
                     <input
                       type="number"
                       min={0}
-                      value={formData.originalPrice}
+                      value={formData.originalPrice ?? ''}
                       onChange={(e) => setFormData({ ...formData, originalPrice: Number(e.target.value) })}
                       className="w-full px-3 py-2 rounded-lg border border-gray-200 text-gray-900 focus:outline-none"
                     />
@@ -471,7 +471,7 @@ export const ProductManagement: React.FC = () => {
                       type="number"
                       required
                       min={0}
-                      value={formData.stock}
+                      value={formData.stock ?? ''}
                       onChange={(e) => setFormData({ ...formData, stock: Number(e.target.value) })}
                       className="w-full px-3 py-2 rounded-lg border border-gray-200 text-blue-600 focus:outline-none font-bold"
                     />
@@ -481,7 +481,7 @@ export const ProductManagement: React.FC = () => {
                     <label className="block font-medium text-gray-700 mb-1">SKU Code</label>
                     <input
                       type="text"
-                      value={formData.sku}
+                      value={formData.sku || ''}
                       onChange={(e) => setFormData({ ...formData, sku: e.target.value })}
                       className="w-full px-3 py-2 rounded-lg border border-gray-200 text-gray-900 focus:outline-none font-mono"
                     />
@@ -493,7 +493,7 @@ export const ProductManagement: React.FC = () => {
                     <label className="block font-medium text-gray-700 mb-1">Weight / Pack Size</label>
                     <input
                       type="text"
-                      value={formData.weightOrSize}
+                      value={formData.weightOrSize || ''}
                       onChange={(e) => setFormData({ ...formData, weightOrSize: e.target.value })}
                       placeholder="e.g. 1.5 kg or 10 L"
                       className="w-full px-3.5 py-2 rounded-lg border border-gray-200 text-gray-900 focus:outline-none"
@@ -504,7 +504,7 @@ export const ProductManagement: React.FC = () => {
                     <label className="block font-medium text-gray-700 mb-1">Badge Label (Optional)</label>
                     <input
                       type="text"
-                      value={formData.badgeText}
+                      value={formData.badgeText || ''}
                       onChange={(e) => setFormData({ ...formData, badgeText: e.target.value })}
                       placeholder="e.g. Best Seller, New, 20% OFF"
                       className="w-full px-3.5 py-2 rounded-lg border border-gray-200 text-gray-900 focus:outline-none"
@@ -634,7 +634,7 @@ export const ProductManagement: React.FC = () => {
                     <div className="space-y-2">
                       <input
                         type="url"
-                        value={formData.image}
+                        value={formData.image || ''}
                         onChange={(e) => setFormData({ ...formData, image: e.target.value })}
                         placeholder="https://images.unsplash.com/photo-... or custom URL"
                         className="w-full px-3.5 py-2.5 rounded-lg border border-gray-200 text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
@@ -662,7 +662,7 @@ export const ProductManagement: React.FC = () => {
                   <label className="block font-medium text-gray-700 mb-1">Description</label>
                   <textarea
                     rows={3}
-                    value={formData.description}
+                    value={formData.description || ''}
                     onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                     className="w-full px-3.5 py-2 rounded-lg border border-gray-200 text-gray-900 focus:outline-none"
                   />
@@ -672,7 +672,7 @@ export const ProductManagement: React.FC = () => {
                   <input
                     type="checkbox"
                     id="flashSaleCheck"
-                    checked={formData.isFlashSale}
+                    checked={!!formData.isFlashSale}
                     onChange={(e) => setFormData({ ...formData, isFlashSale: e.target.checked })}
                     className="rounded text-blue-600 focus:ring-blue-500 h-4 w-4"
                   />

@@ -180,7 +180,7 @@ export const ProductCatalog: React.FC<ProductCatalogProps> = ({
             <div className="flex items-center gap-1.5 bg-white px-3 py-1.5 rounded-xl border border-slate-200/80 shadow-xs">
               <ArrowUpDown className="w-3.5 h-3.5 text-slate-400" />
               <select
-                value={sortBy}
+                value={sortBy || 'popular'}
                 onChange={(e) => setSortBy(e.target.value as any)}
                 className="text-xs font-medium text-slate-700 bg-transparent focus:outline-none cursor-pointer"
               >

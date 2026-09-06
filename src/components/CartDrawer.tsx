@@ -225,7 +225,7 @@ export const CartDrawer: React.FC = () => {
                     <Tag className="w-3.5 h-3.5 text-slate-400 absolute left-3 top-2.5" />
                     <input
                       type="text"
-                      value={couponInput}
+                      value={couponInput || ''}
                       onChange={(e) => setCouponInput(e.target.value)}
                       placeholder="Voucher: CBZPET10"
                       className="w-full pl-8 pr-3 py-2 rounded-xl border border-slate-200 text-xs uppercase font-medium focus:ring-2 focus:ring-purple-600 focus:outline-none"

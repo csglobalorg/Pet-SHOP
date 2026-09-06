@@ -251,16 +251,38 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     }
   };
 
-  // Keyboard shortcut listener for staff access (Ctrl+Shift+A or Alt+A)
+  // Keyboard shortcut listener for staff access (Ctrl+Shift+A, Ctrl+Shift+P, Alt+A)
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if ((e.altKey && e.key.toLowerCase() === 'a') || (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'a')) {
+      const isKeyA = e.key.toLowerCase() === 'a';
+      const isKeyP = e.key.toLowerCase() === 'p';
+      if ((e.altKey && isKeyA) || (e.ctrlKey && e.shiftKey && (isKeyA || isKeyP))) {
         e.preventDefault();
-        openAdminPortal();
+        openAdminPortal(isKeyP ? 'pos' : 'dokan');
       }
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isAdminAuthenticated]);
+
+  // URL trigger listener for staff: /?admin, /?pos, /?erp, #admin, #pos
+  useEffect(() => {
+    const checkUrlForAdmin = () => {
+      if (typeof window !== 'undefined') {
+        const params = new URLSearchParams(window.location.search);
+        const hash = (window.location.hash || '').toLowerCase();
+        if (params.has('admin') || hash === '#admin') {
+          openAdminPortal('dokan');
+        } else if (params.has('pos') || hash === '#pos') {
+          openAdminPortal('pos');
+        } else if (params.has('erp') || hash === '#erp') {
+          openAdminPortal('dokan');
+        }
+      }
+    };
+    checkUrlForAdmin();
+    window.addEventListener('hashchange', checkUrlForAdmin);
+    return () => window.removeEventListener('hashchange', checkUrlForAdmin);
   }, [isAdminAuthenticated]);
 
   // Customer Account & Profile

@@ -256,7 +256,7 @@ export const CustomerDueKhata: React.FC = () => {
                 <input
                   type="text"
                   required
-                  value={newName}
+                  value={newName || ''}
                   onChange={(e) => setNewName(e.target.value)}
                   placeholder="e.g. Kamrul Hasan"
                   className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 focus:outline-none focus:border-amber-600"
@@ -269,7 +269,7 @@ export const CustomerDueKhata: React.FC = () => {
                   <input
                     type="text"
                     required
-                    value={newPhone}
+                    value={newPhone || ''}
                     onChange={(e) => setNewPhone(e.target.value)}
                     placeholder="018XXXXXXXX"
                     className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 font-mono focus:outline-none focus:border-amber-600"
@@ -279,7 +279,7 @@ export const CustomerDueKhata: React.FC = () => {
                   <label className="font-bold text-slate-700 block mb-1">Pet Name / Breed</label>
                   <input
                     type="text"
-                    value={newPet}
+                    value={newPet || ''}
                     onChange={(e) => setNewPet(e.target.value)}
                     placeholder="e.g. Persian Cat"
                     className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 focus:outline-none focus:border-amber-600"
@@ -295,7 +295,7 @@ export const CustomerDueKhata: React.FC = () => {
                     type="number"
                     min="1"
                     required
-                    value={newAmount}
+                    value={newAmount ?? ''}
                     onChange={(e) => setNewAmount(e.target.value === '' ? '' : Number(e.target.value))}
                     placeholder="0"
                     className="w-full pl-8 pr-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-base font-bold font-mono text-slate-900 focus:outline-none focus:border-amber-600"
@@ -307,7 +307,7 @@ export const CustomerDueKhata: React.FC = () => {
                 <label className="font-bold text-slate-700 block mb-1">Items Taken & Notes</label>
                 <textarea
                   rows={2}
-                  value={newNotes}
+                  value={newNotes || ''}
                   onChange={(e) => setNewNotes(e.target.value)}
                   placeholder="e.g. Took Reflex 1.5kg and bentonite cat litter; promised to pay next week"
                   className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 focus:outline-none focus:border-amber-600"
@@ -365,7 +365,7 @@ export const CustomerDueKhata: React.FC = () => {
                   min="1"
                   max={selectedDue.totalDue}
                   required
-                  value={payAmount}
+                  value={payAmount ?? ''}
                   onChange={(e) => setPayAmount(e.target.value === '' ? '' : Number(e.target.value))}
                   className="w-full px-3 py-2 bg-white border border-emerald-500 rounded-xl text-lg font-bold font-mono text-emerald-950 focus:outline-none"
                 />

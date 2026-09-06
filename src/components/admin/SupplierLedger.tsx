@@ -256,7 +256,7 @@ export const SupplierLedger: React.FC = () => {
                 <input
                   type="text"
                   required
-                  value={name}
+                  value={name || ''}
                   onChange={(e) => setName(e.target.value)}
                   placeholder="e.g. Reflex Bangladesh Official Depot"
                   className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 focus:outline-none focus:border-purple-600"
@@ -268,7 +268,7 @@ export const SupplierLedger: React.FC = () => {
                 <input
                   type="text"
                   required
-                  value={brand}
+                  value={brand || ''}
                   onChange={(e) => setBrand(e.target.value)}
                   placeholder="e.g. Reflex Plus Dry & Wet Food"
                   className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 focus:outline-none focus:border-purple-600"
@@ -281,7 +281,7 @@ export const SupplierLedger: React.FC = () => {
                   <input
                     type="text"
                     required
-                    value={phone}
+                    value={phone || ''}
                     onChange={(e) => setPhone(e.target.value)}
                     placeholder="017XXXXXXXX"
                     className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 font-mono focus:outline-none focus:border-purple-600"
@@ -291,7 +291,7 @@ export const SupplierLedger: React.FC = () => {
                   <label className="font-bold text-slate-700 block mb-1">Depot / Warehouse Address</label>
                   <input
                     type="text"
-                    value={address}
+                    value={address || ''}
                     onChange={(e) => setAddress(e.target.value)}
                     placeholder="e.g. Kadamtali, Chittagong"
                     className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 focus:outline-none focus:border-purple-600"
@@ -305,7 +305,7 @@ export const SupplierLedger: React.FC = () => {
                   <input
                     type="number"
                     min="0"
-                    value={totalPurchased}
+                    value={totalPurchased ?? ''}
                     onChange={(e) => setTotalPurchased(e.target.value === '' ? '' : Number(e.target.value))}
                     placeholder="0"
                     className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 font-mono font-bold focus:outline-none focus:border-purple-600"
@@ -316,7 +316,7 @@ export const SupplierLedger: React.FC = () => {
                   <input
                     type="number"
                     min="0"
-                    value={totalPaid}
+                    value={totalPaid ?? ''}
                     onChange={(e) => setTotalPaid(e.target.value === '' ? '' : Number(e.target.value))}
                     placeholder="0"
                     className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 font-mono font-bold focus:outline-none focus:border-purple-600"
@@ -375,7 +375,7 @@ export const SupplierLedger: React.FC = () => {
                   min="1"
                   max={selectedSupplier.balanceDue}
                   required
-                  value={payAmount}
+                  value={payAmount ?? ''}
                   onChange={(e) => setPayAmount(e.target.value === '' ? '' : Number(e.target.value))}
                   className="w-full px-3 py-2 bg-white border border-purple-500 rounded-xl text-lg font-bold font-mono text-purple-950 focus:outline-none"
                 />

@@ -415,7 +415,7 @@ export const POSTerminal: React.FC = () => {
                 <input
                   ref={barcodeInputRef}
                   type="text"
-                  value={barcodeInput}
+                  value={barcodeInput || ''}
                   onChange={(e) => setBarcodeInput(e.target.value)}
                   placeholder="Scan Barcode / Enter SKU (e.g. REFLEX-CAT-15KG or press /)..."
                   className="w-full pl-10 pr-24 py-2.5 bg-purple-50/40 border border-purple-200 focus:border-purple-600 focus:bg-white rounded-xl text-xs font-mono font-semibold text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-purple-200 transition-all"
@@ -439,7 +439,7 @@ export const POSTerminal: React.FC = () => {
                 <Search className="w-3.5 h-3.5 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
                 <input
                   type="text"
-                  value={searchQuery}
+                  value={searchQuery || ''}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   placeholder="Filter name or brand..."
                   className="w-full pl-8 pr-3 py-1.5 bg-slate-50 border border-slate-200 rounded-lg text-xs text-slate-800 focus:outline-none focus:border-purple-500"
@@ -634,14 +634,14 @@ export const POSTerminal: React.FC = () => {
             <div className="grid grid-cols-2 gap-2 text-xs">
               <input
                 type="text"
-                value={customerName}
+                value={customerName || ''}
                 onChange={(e) => setCustomerName(e.target.value)}
                 placeholder="Customer Name..."
                 className="px-2.5 py-1.5 bg-white border border-slate-200 rounded-lg text-xs text-slate-800 focus:outline-none focus:border-purple-600"
               />
               <input
                 type="text"
-                value={customerPhone}
+                value={customerPhone || ''}
                 onChange={(e) => setCustomerPhone(e.target.value)}
                 placeholder="Mobile (018...)"
                 className="px-2.5 py-1.5 bg-white border border-slate-200 rounded-lg text-xs text-slate-800 focus:outline-none focus:border-purple-600 font-mono"
@@ -651,7 +651,7 @@ export const POSTerminal: React.FC = () => {
             <div className="flex items-center gap-2 text-xs">
               <input
                 type="text"
-                value={petDetails}
+                value={petDetails || ''}
                 onChange={(e) => setPetDetails(e.target.value)}
                 placeholder="Pet breed / name (e.g. Persian Cat - Bella)"
                 className="flex-1 px-2.5 py-1 bg-white border border-slate-200 rounded-lg text-xs text-slate-700 focus:outline-none focus:border-purple-600"
@@ -856,7 +856,7 @@ export const POSTerminal: React.FC = () => {
                     <span className="absolute left-2 top-1/2 -translate-y-1/2 text-slate-400 font-mono">৳</span>
                     <input
                       type="number"
-                      value={tenderedAmount}
+                      value={tenderedAmount ?? ''}
                       onChange={(e) => setTenderedAmount(e.target.value === '' ? '' : Number(e.target.value))}
                       placeholder={grandTotal.toString()}
                       className="w-28 pl-6 pr-2 py-1 bg-white border border-emerald-300 rounded font-mono font-bold text-right text-emerald-950 focus:outline-none focus:ring-1 focus:ring-emerald-500"
@@ -891,7 +891,7 @@ export const POSTerminal: React.FC = () => {
                 </div>
                 <input
                   type="text"
-                  value={trxId}
+                  value={trxId || ''}
                   onChange={(e) => setTrxId(e.target.value.toUpperCase())}
                   placeholder="Enter Transaction ID (TrxID) e.g. BKT9821..."
                   className="w-full px-2.5 py-1.5 bg-white border border-purple-300 rounded-lg font-mono font-bold uppercase text-purple-950 placeholder-purple-300 focus:outline-none"
@@ -1082,6 +1082,9 @@ export const POSTerminal: React.FC = () => {
                 </p>
                 <p className="text-[8px] text-slate-400">
                   Your Pet, Our Passion • www.coxsbazarpet.shop
+                </p>
+                <p className="text-[7.5px] text-slate-400 font-mono">
+                  POS Software by CGI IT Company
                 </p>
               </div>
 

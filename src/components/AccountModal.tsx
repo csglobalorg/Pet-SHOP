@@ -243,7 +243,7 @@ export const AccountModal: React.FC<AccountModalProps> = ({
                   <input
                     type="tel"
                     required
-                    value={inputPhone}
+                    value={inputPhone || ''}
                     onChange={(e) => setInputPhone(e.target.value)}
                     placeholder="e.g. 01854-444344"
                     className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-purple-600"
@@ -253,7 +253,7 @@ export const AccountModal: React.FC<AccountModalProps> = ({
                   <label className="block text-xs text-slate-600 mb-1">Full Name</label>
                   <input
                     type="text"
-                    value={inputName}
+                    value={inputName || ''}
                     onChange={(e) => setInputName(e.target.value)}
                     placeholder="e.g. Tanvir Ahmed"
                     className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-purple-600"

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { 
   ShoppingBag, 
   Search, 
@@ -49,7 +49,8 @@ export const Navbar: React.FC<NavbarProps> = ({
     setSelectedProductForDetail,
     currentUser,
     upcomingGroomingAppointments,
-    triggerGroomingReminderCheck
+    triggerGroomingReminderCheck,
+    isAdminAuthenticated
   } = useStore();
 
   const [searchQuery, setSearchQuery] = useState('');
@@ -58,6 +59,23 @@ export const Navbar: React.FC<NavbarProps> = ({
   const [catFoodOpen, setCatFoodOpen] = useState(false);
   const [dogFoodOpen, setDogFoodOpen] = useState(false);
   const [catLitterOpen, setCatLitterOpen] = useState(false);
+
+  // Secret Staff Trigger: Triple-clicking logo unlocks Admin PIN portal
+  const logoClickRef = useRef<{ count: number; timer: any }>({ count: 0, timer: null });
+  const handleLogoClick = () => {
+    setActiveView('store');
+    logoClickRef.current.count += 1;
+    if (logoClickRef.current.count >= 3) {
+      logoClickRef.current.count = 0;
+      clearTimeout(logoClickRef.current.timer);
+      openAdminPortal();
+      return;
+    }
+    clearTimeout(logoClickRef.current.timer);
+    logoClickRef.current.timer = setTimeout(() => {
+      logoClickRef.current.count = 0;
+    }, 1500);
+  };
 
   const totalCartCount = cart.reduce((sum, item) => sum + item.quantity, 0);
 
@@ -141,26 +159,29 @@ export const Navbar: React.FC<NavbarProps> = ({
               <Truck className="w-3 h-3 text-purple-400" />
               <span className="hidden xs:inline">Track Order</span>
             </button>
-            <span className="hidden sm:inline text-slate-700">|</span>
-            
-            {/* View Switcher: Storefront vs Admin Protected Portal */}
-            {activeView === 'admin' ? (
-              <button
-                onClick={() => setActiveView('store')}
-                className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-700 hover:bg-emerald-600 text-white text-[11px] font-bold transition-all shadow-xs cursor-pointer"
-              >
-                <Store className="w-3 h-3 text-amber-300" />
-                <span>Storefront</span>
-              </button>
-            ) : (
-              <button
-                onClick={() => openAdminPortal()}
-                className="hidden sm:flex items-center gap-1 px-2 py-0.5 rounded-full text-slate-400 hover:text-slate-200 text-[11px] font-medium transition-colors cursor-pointer hover:bg-slate-800"
-                title="Staff Portal (Passcode Protected)"
-              >
-                <Lock className="w-2.5 h-2.5 text-purple-400" />
-                <span>Staff Access</span>
-              </button>
+            {/* View Switcher: ONLY visible to authenticated staff, HIDDEN for visitors */}
+            {isAdminAuthenticated && (
+              <>
+                <span className="hidden sm:inline text-slate-700">|</span>
+                {activeView === 'admin' ? (
+                  <button
+                    onClick={() => setActiveView('store')}
+                    className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-700 hover:bg-emerald-600 text-white text-[11px] font-bold transition-all shadow-xs cursor-pointer"
+                  >
+                    <Store className="w-3 h-3 text-amber-300" />
+                    <span>Storefront</span>
+                  </button>
+                ) : (
+                  <button
+                    onClick={() => setActiveView('admin')}
+                    className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-purple-900 hover:bg-purple-800 text-purple-200 text-[11px] font-bold transition-all shadow-xs cursor-pointer"
+                    title="Open Dokan ERP & POS Management"
+                  >
+                    <Lock className="w-2.5 h-2.5 text-amber-400" />
+                    <span>Admin ERP</span>
+                  </button>
+                )}
+              </>
             )}
           </div>
         </div>
@@ -170,10 +191,11 @@ export const Navbar: React.FC<NavbarProps> = ({
       <div className="max-w-7xl mx-auto px-3 sm:px-4 py-2.5 sm:py-4">
         <div className="flex items-center justify-between gap-2 sm:gap-6">
           
-          {/* Circular Brand Logo */}
+          {/* Circular Brand Logo (Triple-click activates hidden Admin PIN unlock) */}
           <div 
-            onClick={() => setActiveView('store')}
+            onClick={handleLogoClick}
             className="flex items-center gap-2 sm:gap-3 cursor-pointer select-none shrink-0"
+            title="Cox's Bazar Pet Shop & Care"
           >
             <div className="w-10 h-10 sm:w-14 sm:h-14 rounded-full bg-white border border-purple-200 p-0.5 shadow-sm flex items-center justify-center overflow-hidden ring-2 ring-purple-100 hover:scale-105 transition-transform">
               <Logo className="w-full h-full object-contain rounded-full" />
@@ -196,7 +218,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             <div className="relative w-full">
               <input
                 type="text"
-                value={searchQuery}
+                value={searchQuery || ''}
                 onChange={handleSearchChange}
                 onFocus={() => setShowSearchDropdown(true)}
                 onBlur={() => setTimeout(() => setShowSearchDropdown(false), 200)}

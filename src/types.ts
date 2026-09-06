@@ -181,3 +181,33 @@ export interface UserProfile {
   membershipPoints: number;
   isLoggedIn: boolean;
 }
+
+export interface BlogPost {
+  id: string;
+  title: string;
+  titleBn?: string;
+  date: string;
+  category: 'Pet Care Guide' | 'Nutrition Advice' | 'Litter & Hygiene' | 'Veterinary Care' | 'Seasonal Care';
+  excerpt: string;
+  image: string;
+  readTime: string;
+  author: string;
+  authorRole: string;
+  content: {
+    heading?: string;
+    text: string;
+  }[];
+  keyTakeaways: string[];
+  recommendedCategory?: ProductCategory;
+  tags: string[];
+}
+
+export interface Testimonial {
+  name: string;
+  location: string;
+  pet: string;
+  rating: number;
+  date: string;
+  comment: string;
+  avatar: string;
+}
