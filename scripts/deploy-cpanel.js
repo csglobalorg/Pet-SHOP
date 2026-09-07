@@ -24,6 +24,60 @@ function promptInput(question) {
   });
 }
 
+async function deployViaCpanelUapi(host, user, token, zipPath) {
+  console.log(`\n🌐 Deploying directly to cPanel via HTTPS UAPI (No FTP)...`);
+  console.log(`🔗 Target: https://${host}:2083/execute/Fileman`);
+
+  const fileBuffer = fs.readFileSync(zipPath);
+  const blob = new Blob([fileBuffer], { type: 'application/zip' });
+  const formData = new FormData();
+  formData.append('dir', 'public_html');
+  formData.append('file-1', blob, 'cpanel_deploy.zip');
+  formData.append('overwrite', '1');
+
+  // Step A: Upload zip
+  console.log('📤 Uploading cpanel_deploy.zip over HTTPS port 2083...');
+  const uploadRes = await fetch(`https://${host}:2083/execute/Fileman/upload_files`, {
+    method: 'POST',
+    headers: {
+      'Authorization': `cpanel ${user}:${token}`
+    },
+    body: formData
+  });
+
+  const uploadJson = await uploadRes.json();
+  if (uploadJson.status !== 1) {
+    throw new Error(uploadJson.errors ? uploadJson.errors.join(', ') : 'Upload failed via cPanel UAPI');
+  }
+  console.log('✅ Archive uploaded to cPanel public_html successfully!');
+
+  // Step B: Extract archive
+  console.log('📦 Extracting archive in public_html...');
+  const extractUrl = `https://${host}:2083/execute/Fileman/extract_archive?dir=public_html&file=cpanel_deploy.zip&overwrite=1`;
+  const extractRes = await fetch(extractUrl, {
+    headers: {
+      'Authorization': `cpanel ${user}:${token}`
+    }
+  });
+
+  const extractJson = await extractRes.json();
+  if (extractJson.status !== 1) {
+    throw new Error(extractJson.errors ? extractJson.errors.join(', ') : 'Extract failed via cPanel UAPI');
+  }
+  console.log('✅ Extracted all files in public_html!');
+
+  // Step C: Delete remote zip
+  try {
+    await fetch(`https://${host}:2083/execute/Fileman/fileop?op=unlink&source_1=public_html/cpanel_deploy.zip`, {
+      headers: {
+        'Authorization': `cpanel ${user}:${token}`
+      }
+    });
+  } catch (ignored) {}
+
+  return true;
+}
+
 async function main() {
   console.log('\n====================================================');
   console.log('🚀 Cox\'s Bazar Pet Shop & Care - Namecheap cPanel Deploy');
@@ -45,87 +99,102 @@ async function main() {
     fs.copyFileSync(htaccessSrc, htaccessDest);
   }
 
-  // Step 2: Prepare FTP credentials
-  const host = process.env.CPANEL_FTP_HOST || 'server407.web-hosting.com';
-  const user = process.env.CPANEL_FTP_USER || 'coxswdtb';
-  const port = Number(process.env.CPANEL_FTP_PORT || 21);
-  const remoteDir = process.env.CPANEL_FTP_REMOTE_DIR || '/public_html';
-
-  let password = process.env.CPANEL_FTP_PASSWORD;
-
-  if (!password) {
-    console.log(`\n🌐 cPanel Server: ${host}`);
-    console.log(`👤 cPanel Username: ${user}`);
-    password = await promptInput('🔐 Please enter your Namecheap cPanel password: ');
-
-    if (!password) {
-      console.error('❌ Password cannot be empty.');
-      process.exit(1);
-    }
-
-    const saveChoice = await promptInput('💾 Would you like to save this password in .env for one-click future deploys? (y/n): ');
-    if (saveChoice.toLowerCase() === 'y' || saveChoice.toLowerCase() === 'yes') {
-      const envPath = path.join(rootDir, '.env');
-      let envContent = fs.existsSync(envPath) ? fs.readFileSync(envPath, 'utf8') : '';
-      if (envContent.includes('CPANEL_FTP_PASSWORD=')) {
-        envContent = envContent.replace(/CPANEL_FTP_PASSWORD=.*(?:\r?\n|$)/, `CPANEL_FTP_PASSWORD=${password}\n`);
-      } else {
-        envContent += `\n# Namecheap cPanel FTP Deployment\nCPANEL_FTP_HOST=${host}\nCPANEL_FTP_USER=${user}\nCPANEL_FTP_PASSWORD=${password}\nCPANEL_FTP_PORT=21\nCPANEL_FTP_REMOTE_DIR=/public_html\n`;
-      }
-      fs.writeFileSync(envPath, envContent, 'utf8');
-      console.log('✅ Password saved to .env securely (remember .env is git-ignored).\n');
-    }
-  }
-
-  // Step 3: Connect and upload via basic-ftp
-  const client = new ftp.Client();
-  client.ftp.verbose = false;
-
-  const startTime = Date.now();
-  console.log(`\n🌐 Step 2/3: Connecting to ${host}:${port} as ${user}...`);
-
+  // Bundle cpanel_deploy.zip
+  console.log('📦 Packaging cpanel_deploy.zip for cPanel public_html...');
+  const zipPath = path.join(rootDir, 'cpanel_deploy.zip');
   try {
-    try {
-      await client.access({
-        host,
-        user,
-        password,
-        port,
-        secure: 'explicit'
-      });
-    } catch (tlsErr) {
-      await client.access({
-        host,
-        user,
-        password,
-        port,
-        secure: false
-      });
-    }
-
-    console.log('✅ Connected to Namecheap cPanel server successfully!');
-    console.log(`\n📤 Step 3/3: Uploading dist/ files to ${remoteDir}...`);
-
-    await client.ensureDir(remoteDir);
-    await client.uploadFromDir(path.join(rootDir, 'dist'), remoteDir);
-
-    const elapsed = ((Date.now() - startTime) / 1000).toFixed(1);
-    console.log('\n====================================================');
-    console.log(`🎉 DEPLOYMENT SUCCESSFUL! (Completed in ${elapsed}s)`);
-    console.log('✨ All files have been updated in cPanel public_html!');
-    console.log('🌐 Visit your live website now!');
-    console.log('🔐 Admin portal: /#/admin');
-    console.log('====================================================\n');
-
-  } catch (err) {
-    console.error('\n❌ FTP Deployment Error:', err.message);
-    console.log('\n💡 Troubleshooting Tips:');
-    console.log('1. Verify host is server407.web-hosting.com (or IP 104.207.79.74)');
-    console.log('2. Verify your cPanel username (coxswdtb) and password.');
-    console.log('3. If cPanel has FTP Restrictions, check cPanel -> "FTP Accounts".');
-  } finally {
-    client.close();
+    execSync(`powershell -Command "Compress-Archive -Path 'dist\\*', 'dist\\.htaccess' -DestinationPath cpanel_deploy.zip -Force"`, { cwd: rootDir });
+    console.log('✅ cpanel_deploy.zip ready in root directory.');
+  } catch (zErr) {
+    console.warn('⚠️ Could not run Compress-Archive; continuing with existing zip if present.');
   }
+
+  const host = process.env.CPANEL_HOST || process.env.CPANEL_FTP_HOST || 'server407.web-hosting.com';
+  const user = process.env.CPANEL_USERNAME || process.env.CPANEL_FTP_USER || 'coxswdtb';
+  const port = Number(process.env.CPANEL_PORT || process.env.CPANEL_FTP_PORT || 21);
+  const remoteDir = process.env.CPANEL_DIR || process.env.CPANEL_FTP_REMOTE_DIR || '/public_html';
+  const apiToken = process.env.CPANEL_API_TOKEN;
+
+  // METHOD 1: cPanel Direct HTTPS API (100% No FTP)
+  if (apiToken) {
+    const startTime = Date.now();
+    try {
+      await deployViaCpanelUapi(host, user, apiToken, zipPath);
+      const elapsed = ((Date.now() - startTime) / 1000).toFixed(1);
+      console.log('\n====================================================');
+      console.log(`🎉 100% DIRECT CPANEL DEPLOYMENT SUCCESSFUL! (${elapsed}s)`);
+      console.log('✨ All files updated directly in cPanel without FTP!');
+      console.log('🌐 Visit: https://coxsbazarpet.shop');
+      console.log('🔐 Admin portal: https://coxsbazarpet.shop/#/admin');
+      console.log('====================================================\n');
+      return;
+    } catch (apiErr) {
+      console.error('❌ cPanel Direct API Error:', apiErr.message);
+      console.log('Falling back to FTP or manual upload...\n');
+    }
+  }
+
+  // METHOD 2: FTP Connection
+  const password = process.env.CPANEL_PASSWORD || process.env.CPANEL_FTP_PASSWORD;
+  if (password && password.trim() !== '') {
+    const client = new ftp.Client();
+    client.ftp.verbose = false;
+    const startTime = Date.now();
+    console.log(`\n🌐 Attempting FTP connection to ${host}:${port} as ${user}...`);
+
+    try {
+      try {
+        await client.access({
+          host,
+          user,
+          password,
+          port,
+          secure: 'explicit'
+        });
+      } catch (tlsErr) {
+        await client.access({
+          host,
+          user,
+          password,
+          port,
+          secure: false
+        });
+      }
+
+      console.log('✅ Connected to Namecheap cPanel server successfully!');
+      console.log(`\n📤 Uploading dist/ files to ${remoteDir}...`);
+
+      await client.ensureDir(remoteDir);
+      await client.uploadFromDir(path.join(rootDir, 'dist'), remoteDir);
+
+      const elapsed = ((Date.now() - startTime) / 1000).toFixed(1);
+      console.log('\n====================================================');
+      console.log(`🎉 DEPLOYMENT SUCCESSFUL! (Completed in ${elapsed}s)`);
+      console.log('✨ All files have been updated in cPanel public_html!');
+      console.log('🌐 Visit: https://coxsbazarpet.shop');
+      console.log('🔐 Admin portal: https://coxsbazarpet.shop/#/admin');
+      console.log('====================================================\n');
+      client.close();
+      return;
+    } catch (err) {
+      client.close();
+      console.warn('⚠️ FTP authentication failed or is restricted by cPanel host.');
+    }
+  }
+
+  // METHOD 3: 1-Click File Manager Instructions (Zero FTP)
+  console.log('\n====================================================');
+  console.log('📂 1-CLICK CPANEL DIRECT DEPLOYMENT (NO FTP NEEDED)');
+  console.log('====================================================');
+  console.log('Your production bundle is built and ready at:');
+  console.log(`👉 ${zipPath}`);
+  console.log('\nSteps to deploy to coxsbazarpet.shop right now:');
+  console.log('1. Go to Namecheap Dashboard -> Hosting List -> Click "Go to cPanel"');
+  console.log('2. Open File Manager -> Enter public_html folder');
+  console.log('3. Click "Upload" and drop "cpanel_deploy.zip"');
+  console.log('4. Right-click "cpanel_deploy.zip" in cPanel and click "Extract"');
+  console.log('Done! Your site will be 100% live on https://coxsbazarpet.shop immediately!');
+  console.log('====================================================\n');
 }
 
 main();
