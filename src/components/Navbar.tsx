@@ -114,32 +114,30 @@ export const Navbar: React.FC<NavbarProps> = ({
   };
 
   return (
-    <header className="sticky top-0 z-40 bg-white border-b border-slate-200/80 shadow-xs">
+    <header className="sticky top-0 z-40 bg-white border-b border-slate-200 shadow-xs">
       
-      {/* Top Announcement Bar */}
-      <div className="bg-slate-900 text-slate-300 text-xs px-3 sm:px-4 py-1.5 border-b border-slate-800">
+      {/* Top Notice Bar matching deep purple Mew Mew Shop style */}
+      <div className="bg-[#4a154b] text-white text-xs px-3 sm:px-4 py-1.5 border-b border-[#3c103d]">
         <div className="max-w-7xl mx-auto flex items-center justify-between gap-2">
           
           {/* Left contact info */}
-          <div className="flex items-center gap-2 sm:gap-4">
+          <div className="flex items-center gap-2 sm:gap-4 text-[11px] font-medium">
+            <span className="hidden xs:inline text-purple-200">★</span>
             <a 
               href={`tel:${STORE_INFO.phone}`} 
-              className="flex items-center gap-1.5 hover:text-white transition-colors font-medium text-[11px]"
+              className="flex items-center gap-1.5 hover:text-purple-200 transition-colors"
             >
-              <PhoneCall className="w-3 h-3 text-purple-400" />
+              <PhoneCall className="w-3 h-3 text-purple-300" />
               <span>{STORE_INFO.phone}</span>
             </a>
-            <span className="hidden sm:inline text-slate-700">|</span>
-            <div className="hidden sm:flex items-center gap-1.5 text-slate-400 text-[11px]">
-              <MapPin className="w-3 h-3 text-purple-400" />
+            <span className="hidden sm:inline text-purple-300/40">|</span>
+            <div className="hidden sm:flex items-center gap-1.5 text-purple-200 text-[11px]">
+              <MapPin className="w-3 h-3 text-purple-300" />
               <span>Cox's Bazar, Bangladesh</span>
             </div>
-          </div>
-
-          {/* Center discount ticker */}
-          <div className="hidden md:flex items-center gap-2 font-medium text-white text-[11px]">
-            <Sparkles className="w-3 h-3 text-purple-400" />
-            <span>Use Code: <strong className="bg-purple-900/80 px-1.5 py-0.5 rounded text-purple-200 font-mono tracking-wider">CBZPET10</strong> for 10% OFF</span>
+            <span className="hidden md:inline text-purple-200 font-bold">
+              • ফ্রি ডেলিভারি ও অরিজিনাল পেট ফুড
+            </span>
           </div>
 
           {/* Right quick links */}
@@ -148,27 +146,27 @@ export const Navbar: React.FC<NavbarProps> = ({
               href={`https://wa.me/${STORE_INFO.whatsappDigits}?text=${encodeURIComponent('Hello Cox\'s Bazar Pet Shop!')}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-1 text-emerald-400 hover:text-emerald-300 font-medium transition-colors"
+              className="flex items-center gap-1 text-emerald-300 hover:text-emerald-200 font-medium transition-colors"
             >
               <MessageCircle className="w-3 h-3" />
               <span>WhatsApp</span>
             </a>
-            <span className="text-slate-700">|</span>
+            <span className="text-purple-300/40">|</span>
             <button 
               onClick={() => setIsOrderTrackOpen(true)}
-              className="flex items-center gap-1 hover:text-white transition-colors font-medium cursor-pointer"
+              className="flex items-center gap-1 hover:text-purple-200 transition-colors font-medium cursor-pointer"
             >
-              <Truck className="w-3 h-3 text-purple-400" />
-              <span className="hidden xs:inline">Track Order</span>
+              <Truck className="w-3 h-3 text-purple-300" />
+              <span>Track Order</span>
             </button>
-            {/* View Switcher: ONLY visible to authenticated staff, HIDDEN for visitors */}
+            {/* View Switcher: ONLY visible to authenticated staff */}
             {isAdminAuthenticated && (
               <>
-                <span className="hidden sm:inline text-slate-700">|</span>
+                <span className="text-purple-300/40">|</span>
                 {activeView === 'admin' ? (
                   <button
                     onClick={() => setActiveView('store')}
-                    className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-700 hover:bg-emerald-600 text-white text-[11px] font-bold transition-all shadow-xs cursor-pointer"
+                    className="flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-600 hover:bg-emerald-500 text-white text-[10px] font-bold transition-all shadow-xs cursor-pointer"
                   >
                     <Store className="w-3 h-3 text-amber-300" />
                     <span>Storefront</span>
@@ -176,7 +174,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                 ) : (
                   <button
                     onClick={() => setActiveView('admin')}
-                    className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-purple-900 hover:bg-purple-800 text-purple-200 text-[11px] font-bold transition-all shadow-xs cursor-pointer"
+                    className="flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-purple-900 hover:bg-purple-800 text-purple-200 text-[10px] font-bold transition-all shadow-xs cursor-pointer"
                     title="Open Dokan ERP & POS Management"
                   >
                     <Lock className="w-2.5 h-2.5 text-amber-400" />
@@ -189,22 +187,79 @@ export const Navbar: React.FC<NavbarProps> = ({
         </div>
       </div>
 
-      {/* Main Header (Exact Mew Mew Shop style: Circular Logo, Pill Search, Account Pill, Basket Pill) */}
-      <div className="max-w-7xl mx-auto px-3 sm:px-4 py-2.5 sm:py-4">
-        <div className="flex items-center justify-between gap-2 sm:gap-6">
+      {/* ================= MOBILE HEADER (Exact Mew Mew Shop layout from user screenshot) ================= */}
+      <div className="md:hidden px-3 pt-2.5 pb-2.5 bg-white">
+        {/* Row 1: Left Menu button with text, Center round Logo, Right Cart bag with red badge */}
+        <div className="flex items-center justify-between">
           
-          {/* Circular Brand Logo (Triple-click activates hidden Admin PIN unlock) */}
+          <button 
+            onClick={() => setMobileMenuOpen(true)}
+            className="flex flex-col items-center justify-center text-slate-700 hover:text-[#4a154b] p-1 cursor-pointer"
+            aria-label="Open menu"
+          >
+            <Menu className="w-6 h-6 text-slate-800" />
+            <span className="text-[10px] font-semibold text-slate-500 leading-none mt-0.5">Menu</span>
+          </button>
+
           <div 
             onClick={handleLogoClick}
-            className="flex items-center gap-2 sm:gap-3 cursor-pointer select-none shrink-0"
+            className="cursor-pointer select-none"
             title="Cox's Bazar Pet Shop & Care"
           >
-            <div className="w-10 h-10 sm:w-14 sm:h-14 rounded-full bg-white border border-purple-200 p-0.5 shadow-sm flex items-center justify-center overflow-hidden ring-2 ring-purple-100 hover:scale-105 transition-transform">
+            <div className="w-12 h-12 rounded-full bg-white border border-purple-200 p-0.5 shadow-xs flex items-center justify-center overflow-hidden">
               <Logo className="w-full h-full object-contain rounded-full" />
             </div>
-            <div className="hidden sm:block">
-              <span className="text-lg sm:text-xl font-black tracking-tight text-slate-900 font-sans block leading-tight">
-                Cox's Bazar <span className="text-purple-700">Pet Shop</span>
+          </div>
+
+          <button 
+            onClick={() => setIsCartOpen(true)}
+            className="relative p-1 text-slate-800 cursor-pointer"
+            aria-label={`Cart with ${totalCartCount} items`}
+          >
+            <ShoppingBag className="w-7 h-7 text-slate-800" strokeWidth={1.5} />
+            <span className="absolute -top-1 -right-1 bg-rose-600 text-white text-[10px] font-bold min-w-[18px] h-[18px] px-1 rounded-full flex items-center justify-center shadow-xs">
+              {totalCartCount}
+            </span>
+          </button>
+        </div>
+
+        {/* Row 2: Search input with placeholder 'What can we help you find?' */}
+        <form onSubmit={handleSearchSubmit} className="mt-2.5 relative">
+          <input
+            type="text"
+            value={searchQuery || ''}
+            onChange={handleSearchChange}
+            onFocus={() => setShowSearchDropdown(true)}
+            onBlur={() => setTimeout(() => setShowSearchDropdown(false), 200)}
+            placeholder="What can we help you find?"
+            className="w-full pl-3.5 pr-10 py-2 rounded-lg border border-slate-300 bg-white text-xs text-slate-800 placeholder:text-slate-400 focus:outline-none focus:border-[#4a154b] focus:ring-1 focus:ring-[#4a154b] shadow-2xs transition-all"
+          />
+          <button 
+            type="submit"
+            className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-[#4a154b] cursor-pointer p-1"
+            aria-label="Search"
+          >
+            <Search className="w-4 h-4" />
+          </button>
+        </form>
+      </div>
+
+      {/* ================= DESKTOP HEADER ================= */}
+      <div className="hidden md:block max-w-7xl mx-auto px-4 py-3.5">
+        <div className="flex items-center justify-between gap-6">
+          
+          {/* Circular Brand Logo */}
+          <div 
+            onClick={handleLogoClick}
+            className="flex items-center gap-3 cursor-pointer select-none shrink-0"
+            title="Cox's Bazar Pet Shop & Care"
+          >
+            <div className="w-14 h-14 rounded-full bg-white border-2 border-[#4a154b]/30 p-0.5 shadow-sm flex items-center justify-center overflow-hidden hover:scale-105 transition-transform">
+              <Logo className="w-full h-full object-contain rounded-full" />
+            </div>
+            <div>
+              <span className="text-xl font-black tracking-tight text-slate-900 font-sans block leading-tight">
+                Cox's Bazar <span className="text-[#4a154b]">Pet Shop</span>
               </span>
               <span className="text-[10px] text-slate-400 font-medium tracking-wide">
                 YOUR PET, OUR PASSION
@@ -212,7 +267,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             </div>
           </div>
 
-          {/* Centered Pill Search Bar */}
+          {/* Centered Search Bar */}
           <form 
             onSubmit={handleSearchSubmit}
             className="flex-1 max-w-2xl relative min-w-0"
@@ -224,22 +279,22 @@ export const Navbar: React.FC<NavbarProps> = ({
                 onChange={handleSearchChange}
                 onFocus={() => setShowSearchDropdown(true)}
                 onBlur={() => setTimeout(() => setShowSearchDropdown(false), 200)}
-                placeholder="Search food, toys, care..."
-                className="w-full pl-3.5 sm:pl-5 pr-8 sm:pr-12 py-2 sm:py-2.5 rounded-full border border-slate-300 bg-white hover:border-purple-300 focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-purple-600 text-xs sm:text-sm text-slate-800 placeholder:text-slate-400 shadow-xs transition-all"
+                placeholder="What can we help you find?"
+                className="w-full pl-5 pr-12 py-2.5 rounded-lg border border-slate-300 bg-white hover:border-[#4a154b]/50 focus:outline-none focus:ring-2 focus:ring-[#4a154b] focus:border-[#4a154b] text-sm text-slate-800 placeholder:text-slate-400 shadow-xs transition-all"
               />
               <button 
                 type="submit"
-                className="absolute right-2.5 sm:right-3.5 top-1/2 -translate-y-1/2 text-slate-500 hover:text-purple-700 cursor-pointer transition-colors p-1"
+                className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-500 hover:text-[#4a154b] cursor-pointer transition-colors p-1"
                 aria-label="Search"
               >
-                <Search className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                <Search className="w-4 h-4" />
               </button>
             </div>
 
             {/* Live Autocomplete Dropdown */}
             {showSearchDropdown && filteredSearchProducts.length > 0 && (
               <div className="absolute left-0 right-0 top-full mt-2 bg-white rounded-2xl shadow-xl border border-purple-100 py-2 z-50 overflow-hidden">
-                <div className="px-4 py-1.5 text-[10px] font-bold text-purple-700 uppercase tracking-wider bg-purple-50/70">
+                <div className="px-4 py-1.5 text-[10px] font-bold text-[#4a154b] uppercase tracking-wider bg-purple-50/70">
                   Matching Products ({filteredSearchProducts.length})
                 </div>
                 {filteredSearchProducts.map(product => (
@@ -261,7 +316,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                         {product.title}
                       </h4>
                       <p className="text-[11px] text-slate-400">
-                        {product.brand} • <span className="text-purple-700 font-medium">{product.category}</span>
+                        {product.brand} • <span className="text-[#4a154b] font-medium">{product.category}</span>
                       </p>
                     </div>
                     <div className="text-right shrink-0">
@@ -274,69 +329,30 @@ export const Navbar: React.FC<NavbarProps> = ({
           </form>
 
           {/* Right Buttons: Hello User, Account & My Basket(0) */}
-          <div className="flex items-center gap-1.5 sm:gap-3 shrink-0">
+          <div className="flex items-center gap-3 shrink-0">
             
-            {/* Upcoming Grooming Alert Bell */}
-            {currentUser.isLoggedIn && upcomingGroomingAppointments.length > 0 && (
-              <button
-                type="button"
-                onClick={() => triggerGroomingReminderCheck()}
-                title={`You have ${upcomingGroomingAppointments.length} upcoming grooming reminder(s). Click to view!`}
-                className="relative p-1.5 sm:p-2 rounded-full border border-purple-200 bg-purple-50 text-purple-700 hover:bg-purple-100 hover:border-purple-300 transition-all cursor-pointer shadow-xs"
-              >
-                <Bell className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-                <span className="absolute -top-1 -right-1 bg-purple-700 text-white text-[9px] font-bold w-4 h-4 rounded-full flex items-center justify-center animate-bounce shadow-xs">
-                  {upcomingGroomingAppointments.length}
-                </span>
-              </button>
-            )}
-
-            {/* User Account / Sign In & Sign Up button */}
+            {/* User Account */}
             <button
               onClick={() => onOpenAccountModal?.('account')}
-              className="hidden md:flex items-center gap-2 px-4 py-2 rounded-full border border-slate-300 hover:border-purple-400 hover:bg-purple-50/50 text-slate-700 text-xs font-semibold transition-all cursor-pointer shadow-xs"
+              className="flex items-center gap-2 px-4 py-2 rounded-full border border-slate-300 hover:border-[#4a154b] hover:bg-purple-50/30 text-slate-700 text-xs font-semibold transition-all cursor-pointer shadow-xs"
             >
-              <User className="w-4 h-4 text-purple-700" />
+              <User className="w-4 h-4 text-[#4a154b]" />
               <span>
                 {currentUser.isLoggedIn 
-                  ? `Hello ${currentUser.name.split(' ')[0] || 'User'} | Account` 
-                  : 'Sign In / Sign Up'}
+                  ? `Hello ${currentUser.name.split(' ')[0] || 'User'}` 
+                  : 'Sign In / Account'}
               </span>
-              {currentUser.isLoggedIn && upcomingGroomingAppointments.length > 0 && (
-                <span className="w-2 h-2 rounded-full bg-amber-500 shrink-0" title="Upcoming appointment reminder" />
-              )}
             </button>
 
-            {/* My Basket button: sleek circular button with badge on mobile, full pill on sm+ */}
+            {/* My Basket button */}
             <button
               onClick={() => setIsCartOpen(true)}
-              aria-label={`Cart with ${totalCartCount} items`}
-              className="sm:hidden relative w-9 h-9 rounded-full border border-slate-300 hover:border-purple-500 hover:bg-purple-50 flex items-center justify-center text-slate-800 transition-all cursor-pointer shadow-xs"
+              className="flex items-center gap-2 px-4 py-2 rounded-full border border-slate-300 hover:border-[#4a154b] hover:bg-purple-50/30 text-slate-800 text-xs font-bold transition-all cursor-pointer shadow-xs"
             >
-              <ShoppingBag className="w-4 h-4 text-purple-700" />
-              {totalCartCount > 0 && (
-                <span className="absolute -top-1 -right-1 bg-purple-700 text-white text-[9px] font-bold min-w-[16px] h-4 px-1 rounded-full flex items-center justify-center">
-                  {totalCartCount}
-                </span>
-              )}
-            </button>
-
-            <button
-              onClick={() => setIsCartOpen(true)}
-              className="hidden sm:flex items-center gap-2 px-4 py-2 rounded-full border border-slate-300 hover:border-purple-500 hover:bg-purple-50 text-slate-800 text-xs font-bold transition-all cursor-pointer shadow-xs"
-            >
-              <ShoppingBag className="w-4 h-4 text-purple-700" />
+              <ShoppingBag className="w-4 h-4 text-[#4a154b]" />
               <span>My Basket({totalCartCount})</span>
             </button>
 
-            {/* Mobile Menu Toggle */}
-            <button
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="md:hidden p-1.5 sm:p-2 text-slate-700 hover:bg-slate-100 rounded-xl cursor-pointer"
-              aria-label="Toggle menu"
-            >
-              {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-            </button>
           </div>
         </div>
       </div>

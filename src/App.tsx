@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { StoreProvider, useStore } from './context/StoreContext';
 import { Navbar } from './components/Navbar';
-import { HeroSection } from './components/HeroSection';
+import { HeroBanner } from './components/HeroBanner';
+import { FeaturedCategories } from './components/FeaturedCategories';
 import { ProductCatalog } from './components/ProductCatalog';
 import { ServicesAndPolicies } from './components/ServicesAndPolicies';
 import { CartDrawer } from './components/CartDrawer';
@@ -35,14 +36,18 @@ const StoreContent: React.FC = () => {
     }
     if (searchTag && !searchTag.toLowerCase().includes('food') && !searchTag.toLowerCase().includes('accessories')) {
       setSearchQuery(searchTag);
-    } else if (searchTag?.toLowerCase().includes('treat')) {
-      setSearchQuery('treat');
+    } else if (searchTag?.toLowerCase().includes('adult')) {
+      setSearchQuery('adult');
+    } else if (searchTag?.toLowerCase().includes('kitten')) {
+      setSearchQuery('kitten');
     } else if (searchTag?.toLowerCase().includes('collar')) {
       setSearchQuery('collar');
     } else if (searchTag?.toLowerCase().includes('litter')) {
       setSearchQuery('litter');
     } else if (searchTag?.toLowerCase().includes('bowl')) {
       setSearchQuery('bowl');
+    } else if (searchTag?.toLowerCase().includes('shampoo')) {
+      setSearchQuery('shampoo');
     }
 
     // Smooth scroll down to catalog
@@ -69,9 +74,9 @@ const StoreContent: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-slate-50/70 text-slate-900 font-sans flex flex-col selection:bg-slate-200 selection:text-slate-900 pb-16 md:pb-0">
+    <div className="min-h-screen bg-[#fbf9f8] text-slate-900 font-sans flex flex-col selection:bg-purple-100 selection:text-[#4a154b] pb-16 md:pb-0">
       
-      {/* Primary Navigation with Brand Logo, Search Bar, WhatsApp & Basket */}
+      {/* Primary Navigation matching Mew Mew Shop layout */}
       <Navbar 
         onSearch={setSearchQuery}
         onSelectCategory={handleSelectCategory}
@@ -80,15 +85,20 @@ const StoreContent: React.FC = () => {
       />
 
       {/* Main Storefront Flow */}
-      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 py-6 sm:py-8 space-y-12 sm:space-y-16">
+      <main className="flex-1 max-w-7xl w-full mx-auto px-3 sm:px-6 py-4 sm:py-6 space-y-6 sm:space-y-10">
         
-        {/* Modern Minimal Boutique Hero */}
-        <HeroSection 
+        {/* Mew Mew Shop Style Hero Banner */}
+        <HeroBanner 
           onSelectCategory={handleSelectCategory} 
           onScrollToCatalog={handleScrollToCatalog}
         />
 
-        {/* Main Product Catalog with live filtering & boutique empty state */}
+        {/* Featured Categories (Centered Headline + Card Grid matching screenshot) */}
+        <FeaturedCategories 
+          onSelectCategory={handleSelectCategory}
+        />
+
+        {/* Main Product Catalog with live filtering & boutique state */}
         <ProductCatalog 
           selectedCategory={selectedCategory}
           onSelectCategory={setSelectedCategory}
@@ -97,12 +107,12 @@ const StoreContent: React.FC = () => {
           externalSearchQuery={searchQuery}
         />
 
-        {/* Real Services (Grooming Spa, Foster Boarding, Safe Transport, Pet Cafe) & Store Policies */}
+        {/* Real Services & Store Policies */}
         <ServicesAndPolicies />
 
       </main>
 
-      {/* Modern Clean Footer with Authentic Store Details & Hidden Admin Trigger */}
+      {/* Footer */}
       <Footer 
         onSelectCategory={handleSelectCategory} 
         onOpenAdmin={() => openAdminPortal()} 
@@ -111,7 +121,7 @@ const StoreContent: React.FC = () => {
       {/* Floating Right Docked Cart & Bottom Right Messenger Bubble */}
       <FloatingWidgets />
 
-      {/* Modern Mobile Bottom Navigation Bar (Shop, Services, Cart, Account) */}
+      {/* Mobile Bottom Navigation Bar (Categories, My Basket, Center Home, My Profile, Chat) */}
       <MobileBottomNav 
         onOpenAccountModal={handleOpenAccountModal}
         onSelectCategory={handleSelectCategory}
@@ -130,7 +140,7 @@ const StoreContent: React.FC = () => {
       />
       <AdminAuthModal />
 
-      {/* Local Notification / Toast System for Upcoming Grooming Appointments */}
+      {/* Local Notification for Real Grooming Appointments */}
       <GroomingReminderToast onOpenAccountModal={() => handleOpenAccountModal('grooming')} />
 
     </div>
