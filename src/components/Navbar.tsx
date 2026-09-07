@@ -421,33 +421,33 @@ export const Navbar: React.FC<NavbarProps> = ({
 
       {/* Sub-navbar / Menu bar (Matches Mew Mew Shop navigation) */}
       <nav className="border-t border-slate-200 bg-white hidden md:block">
-        <div className="max-w-7xl mx-auto px-4 flex items-center justify-between">
+        <div className="max-w-7xl mx-auto px-4 flex items-center justify-between gap-3">
           
-          <div className="flex items-center space-x-1 lg:space-x-4 text-xs font-semibold text-slate-700">
+          <div className="flex items-center gap-0.5 lg:gap-1.5 xl:gap-2.5 text-[13px] font-medium text-slate-700 overflow-x-auto no-scrollbar py-0.5">
             
             {/* Categories dropdown toggle button */}
-            <div ref={browseCategoriesRef} className="relative">
+            <div ref={browseCategoriesRef} className="relative shrink-0 mr-1 xl:mr-2">
               <button 
                 type="button"
                 onClick={() => setIsBrowseCategoriesOpen(prev => !prev)}
-                className={`w-64 py-2.5 px-4 bg-[#4a154b] text-white flex items-center justify-between font-bold cursor-pointer select-none transition-all ${
+                className={`w-52 xl:w-60 py-2.5 px-3.5 bg-[#4a154b] text-white flex items-center justify-between font-bold cursor-pointer select-none transition-all whitespace-nowrap ${
                   isBrowseCategoriesOpen ? 'rounded-t-xl bg-[#3c103d]' : 'rounded-xl hover:bg-[#3c103d]'
                 }`}
                 aria-expanded={isBrowseCategoriesOpen}
                 aria-label="Toggle Categories Dropdown"
               >
                 <div className="flex items-center gap-2">
-                  <Menu className="w-4 h-4 text-purple-200" />
-                  <span className="tracking-wide">Browse Categories</span>
+                  <Menu className="w-4 h-4 text-purple-200 shrink-0" />
+                  <span className="tracking-wide text-xs xl:text-sm">Browse Categories</span>
                 </div>
-                <ChevronDown className={`w-3.5 h-3.5 text-purple-200 transition-transform duration-200 ${
+                <ChevronDown className={`w-3.5 h-3.5 text-purple-200 transition-transform duration-200 shrink-0 ${
                   isBrowseCategoriesOpen ? 'rotate-180' : ''
                 }`} />
               </button>
 
               {/* Dropdown Menu - Toggles & Hides smoothly on click / outside click */}
               {isBrowseCategoriesOpen && (
-                <div className="absolute left-0 top-full w-64 bg-white rounded-b-2xl border-x border-b border-purple-200 shadow-2xl z-50 overflow-hidden divide-y divide-slate-100 animate-in fade-in slide-in-from-top-1 duration-150">
+                <div className="absolute left-0 top-full w-52 xl:w-60 bg-white rounded-b-2xl border-x border-b border-purple-200 shadow-2xl z-50 overflow-hidden divide-y divide-slate-100 animate-in fade-in slide-in-from-top-1 duration-150">
                   {browseCategoriesList.map((item, idx) => {
                     const Icon = item.icon;
                     return (
@@ -461,15 +461,15 @@ export const Navbar: React.FC<NavbarProps> = ({
                           }
                           const catSection = document.getElementById('product-catalog-section');
                           catSection?.scrollIntoView({ behavior: 'smooth' });
-                          setIsBrowseCategoriesOpen(false); // <--- Closes/hides immediately upon clicking!
+                          setIsBrowseCategoriesOpen(false); // Closes/hides immediately upon clicking!
                         }}
-                        className="w-full px-4 py-2.5 flex items-center justify-between hover:bg-purple-50 hover:text-[#4a154b] transition-colors cursor-pointer group text-left"
+                        className="w-full px-3.5 py-2.5 flex items-center justify-between hover:bg-purple-50 hover:text-[#4a154b] transition-colors cursor-pointer group text-left whitespace-nowrap"
                       >
                         <div className="flex items-center gap-2.5">
-                          <Icon className="w-3.5 h-3.5 text-purple-600 group-hover:scale-110 transition-transform" />
+                          <Icon className="w-3.5 h-3.5 text-purple-600 group-hover:scale-110 transition-transform shrink-0" />
                           <span className="truncate text-xs font-semibold text-slate-700 group-hover:text-[#4a154b]">{item.name}</span>
                         </div>
-                        <ChevronRight className="w-3.5 h-3.5 text-slate-400 group-hover:translate-x-1 group-hover:text-[#4a154b] transition-all" />
+                        <ChevronRight className="w-3.5 h-3.5 text-slate-400 group-hover:translate-x-1 group-hover:text-[#4a154b] transition-all shrink-0" />
                       </button>
                     );
                   })}
@@ -477,10 +477,10 @@ export const Navbar: React.FC<NavbarProps> = ({
               )}
             </div>
 
-            {/* Nav Menu Links */}
+            {/* Nav Menu Links - Perfectly formatted in a single row without text wrapping */}
             <button 
               onClick={() => handleCategoryClick('All')}
-              className={`py-2.5 px-2 hover:text-[#4a154b] transition-colors cursor-pointer ${
+              className={`py-3 px-2 xl:px-2.5 hover:text-[#4a154b] transition-colors cursor-pointer whitespace-nowrap ${
                 selectedCategory === 'All' ? 'text-[#4a154b] font-bold' : ''
               }`}
             >
@@ -489,7 +489,7 @@ export const Navbar: React.FC<NavbarProps> = ({
 
             <button 
               onClick={() => onOpenAccountModal?.('privilege')}
-              className="py-2.5 px-2 hover:text-purple-700 transition-colors cursor-pointer text-slate-700"
+              className="py-3 px-2 xl:px-2.5 hover:text-[#4a154b] transition-colors cursor-pointer text-slate-700 whitespace-nowrap"
             >
               Privilege Club
             </button>
@@ -502,36 +502,36 @@ export const Navbar: React.FC<NavbarProps> = ({
             >
               <button 
                 onClick={() => handleCategoryClick('Pet Food')}
-                className={`py-2.5 px-2 flex items-center gap-1 hover:text-purple-700 transition-colors cursor-pointer ${
-                  selectedCategory === 'Pet Food' ? 'text-purple-700 font-bold' : ''
+                className={`py-3 px-2 xl:px-2.5 inline-flex items-center gap-1 hover:text-[#4a154b] transition-colors cursor-pointer whitespace-nowrap ${
+                  selectedCategory === 'Pet Food' ? 'text-[#4a154b] font-bold' : 'text-slate-700'
                 }`}
               >
                 <span>Cat Food</span>
                 <ChevronDown className="w-3.5 h-3.5 text-slate-400" />
               </button>
               {catFoodOpen && (
-                <div className="absolute left-0 top-full w-48 bg-white rounded-xl shadow-xl border border-slate-100 py-2 z-50 animate-in fade-in">
+                <div className="absolute left-0 top-full w-52 bg-white rounded-xl shadow-xl border border-slate-100 py-2 z-50 animate-in fade-in">
                   <button 
                     onClick={() => { handleCategoryClick('Pet Food'); setCatFoodOpen(false); }}
-                    className="w-full text-left px-4 py-2 hover:bg-purple-50 text-slate-700 text-xs font-medium"
+                    className="w-full text-left px-4 py-2 hover:bg-purple-50 text-slate-700 text-xs font-medium whitespace-nowrap"
                   >
                     Dry Cat Food (Kibble)
                   </button>
                   <button 
                     onClick={() => { handleCategoryClick('Pet Food'); setCatFoodOpen(false); }}
-                    className="w-full text-left px-4 py-2 hover:bg-purple-50 text-slate-700 text-xs font-medium"
+                    className="w-full text-left px-4 py-2 hover:bg-purple-50 text-slate-700 text-xs font-medium whitespace-nowrap"
                   >
                     Wet Pouches & Gravy
                   </button>
                   <button 
                     onClick={() => { handleCategoryClick('Pet Food'); setCatFoodOpen(false); }}
-                    className="w-full text-left px-4 py-2 hover:bg-purple-50 text-slate-700 text-xs font-medium"
+                    className="w-full text-left px-4 py-2 hover:bg-purple-50 text-slate-700 text-xs font-medium whitespace-nowrap"
                   >
                     Kitten Growth Food
                   </button>
                   <button 
                     onClick={() => { handleCategoryClick('Pet Food'); setCatFoodOpen(false); }}
-                    className="w-full text-left px-4 py-2 hover:bg-purple-50 text-slate-700 text-xs font-medium"
+                    className="w-full text-left px-4 py-2 hover:bg-purple-50 text-slate-700 text-xs font-medium whitespace-nowrap"
                   >
                     Cat Treats & Puree
                   </button>
@@ -547,28 +547,28 @@ export const Navbar: React.FC<NavbarProps> = ({
             >
               <button 
                 onClick={() => handleCategoryClick('Pet Food')}
-                className="py-2.5 px-2 flex items-center gap-1 hover:text-purple-700 transition-colors cursor-pointer text-slate-700"
+                className="py-3 px-2 xl:px-2.5 inline-flex items-center gap-1 hover:text-[#4a154b] transition-colors cursor-pointer text-slate-700 whitespace-nowrap"
               >
                 <span>Dog Food</span>
                 <ChevronDown className="w-3.5 h-3.5 text-slate-400" />
               </button>
               {dogFoodOpen && (
-                <div className="absolute left-0 top-full w-48 bg-white rounded-xl shadow-xl border border-slate-100 py-2 z-50 animate-in fade-in">
+                <div className="absolute left-0 top-full w-52 bg-white rounded-xl shadow-xl border border-slate-100 py-2 z-50 animate-in fade-in">
                   <button 
                     onClick={() => { handleCategoryClick('Pet Food'); setDogFoodOpen(false); }}
-                    className="w-full text-left px-4 py-2 hover:bg-purple-50 text-slate-700 text-xs font-medium"
+                    className="w-full text-left px-4 py-2 hover:bg-purple-50 text-slate-700 text-xs font-medium whitespace-nowrap"
                   >
                     Adult Dog Kibbles
                   </button>
                   <button 
                     onClick={() => { handleCategoryClick('Pet Food'); setDogFoodOpen(false); }}
-                    className="w-full text-left px-4 py-2 hover:bg-purple-50 text-slate-700 text-xs font-medium"
+                    className="w-full text-left px-4 py-2 hover:bg-purple-50 text-slate-700 text-xs font-medium whitespace-nowrap"
                   >
                     Puppy Nutrition
                   </button>
                   <button 
                     onClick={() => { handleCategoryClick('Pet Food'); setDogFoodOpen(false); }}
-                    className="w-full text-left px-4 py-2 hover:bg-purple-50 text-slate-700 text-xs font-medium"
+                    className="w-full text-left px-4 py-2 hover:bg-purple-50 text-slate-700 text-xs font-medium whitespace-nowrap"
                   >
                     Chew Sticks & Biscuits
                   </button>
@@ -579,8 +579,8 @@ export const Navbar: React.FC<NavbarProps> = ({
             {/* Cat Toys */}
             <button 
               onClick={() => handleCategoryClick('Accessories & Toys')}
-              className={`py-2.5 px-2 hover:text-purple-700 transition-colors cursor-pointer ${
-                selectedCategory === 'Accessories & Toys' ? 'text-purple-700 font-bold' : ''
+              className={`py-3 px-2 xl:px-2.5 hover:text-[#4a154b] transition-colors cursor-pointer whitespace-nowrap ${
+                selectedCategory === 'Accessories & Toys' ? 'text-[#4a154b] font-bold' : 'text-slate-700'
               }`}
             >
               Cat Toys
@@ -594,30 +594,30 @@ export const Navbar: React.FC<NavbarProps> = ({
             >
               <button 
                 onClick={() => handleCategoryClick('Litter & Hygiene')}
-                className={`py-2.5 px-2 flex items-center gap-1 hover:text-purple-700 transition-colors cursor-pointer ${
-                  selectedCategory === 'Litter & Hygiene' ? 'text-purple-700 font-bold' : ''
+                className={`py-3 px-2 xl:px-2.5 inline-flex items-center gap-1 hover:text-[#4a154b] transition-colors cursor-pointer whitespace-nowrap ${
+                  selectedCategory === 'Litter & Hygiene' ? 'text-[#4a154b] font-bold' : 'text-slate-700'
                 }`}
               >
                 <span>Cat Litter</span>
                 <ChevronDown className="w-3.5 h-3.5 text-slate-400" />
               </button>
               {catLitterOpen && (
-                <div className="absolute left-0 top-full w-48 bg-white rounded-xl shadow-xl border border-slate-100 py-2 z-50 animate-in fade-in">
+                <div className="absolute left-0 top-full w-52 bg-white rounded-xl shadow-xl border border-slate-100 py-2 z-50 animate-in fade-in">
                   <button 
                     onClick={() => { handleCategoryClick('Litter & Hygiene'); setCatLitterOpen(false); }}
-                    className="w-full text-left px-4 py-2 hover:bg-purple-50 text-slate-700 text-xs font-medium"
+                    className="w-full text-left px-4 py-2 hover:bg-purple-50 text-slate-700 text-xs font-medium whitespace-nowrap"
                   >
                     Bentonite Clumping Litter
                   </button>
                   <button 
                     onClick={() => { handleCategoryClick('Litter & Hygiene'); setCatLitterOpen(false); }}
-                    className="w-full text-left px-4 py-2 hover:bg-purple-50 text-slate-700 text-xs font-medium"
+                    className="w-full text-left px-4 py-2 hover:bg-purple-50 text-slate-700 text-xs font-medium whitespace-nowrap"
                   >
                     Odor Control Charcoal Silica
                   </button>
                   <button 
                     onClick={() => { handleCategoryClick('Litter & Hygiene'); setCatLitterOpen(false); }}
-                    className="w-full text-left px-4 py-2 hover:bg-purple-50 text-slate-700 text-xs font-medium"
+                    className="w-full text-left px-4 py-2 hover:bg-purple-50 text-slate-700 text-xs font-medium whitespace-nowrap"
                   >
                     Litter Trays & Scoops
                   </button>
@@ -632,7 +632,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                 const catSection = document.getElementById('product-catalog-section');
                 catSection?.scrollIntoView({ behavior: 'smooth' });
               }}
-              className="py-2.5 px-2 hover:text-purple-700 transition-colors cursor-pointer font-bold text-purple-700"
+              className="py-3 px-2 xl:px-2.5 hover:text-[#3c103d] transition-colors cursor-pointer font-bold text-[#4a154b] whitespace-nowrap"
             >
               Reflex
             </button>
@@ -640,24 +640,24 @@ export const Navbar: React.FC<NavbarProps> = ({
             {/* Services */}
             <a 
               href="#services-and-policies-section"
-              className="py-2.5 px-2 hover:text-purple-700 transition-colors cursor-pointer text-purple-900 font-bold flex items-center gap-1"
+              className="py-3 px-2 xl:px-2.5 hover:text-[#4a154b] transition-colors cursor-pointer text-[#4a154b] font-bold inline-flex items-center gap-1 whitespace-nowrap"
             >
-              <Sparkles className="w-3.5 h-3.5 text-amber-500" />
+              <Sparkles className="w-3.5 h-3.5 text-amber-500 shrink-0" />
               <span>Services</span>
             </a>
 
-            {/* Pet Sale & Adoption */}
+            {/* Pet Adoption */}
             <a 
               href="#pet-sale-showcase-section"
-              className="py-2.5 px-2 hover:text-purple-700 transition-colors cursor-pointer text-slate-700 font-semibold"
+              className="py-3 px-2 xl:px-2.5 hover:text-[#4a154b] transition-colors cursor-pointer text-slate-700 whitespace-nowrap"
             >
-              Pet Sale & Adoption
+              Pet Adoption
             </a>
 
             {/* Blog */}
             <a 
               href="#pet-care-blog-section"
-              className="py-2.5 px-2 hover:text-purple-700 transition-colors cursor-pointer text-slate-700"
+              className="py-3 px-2 xl:px-2.5 hover:text-[#4a154b] transition-colors cursor-pointer text-slate-700 whitespace-nowrap"
             >
               Blog
             </a>
@@ -665,25 +665,11 @@ export const Navbar: React.FC<NavbarProps> = ({
             {/* Gift Cards */}
             <button 
               onClick={() => onOpenAccountModal?.('giftcards')}
-              className="py-2.5 px-2 hover:text-purple-700 transition-colors cursor-pointer text-slate-700"
+              className="py-3 px-2 xl:px-2.5 hover:text-[#4a154b] transition-colors cursor-pointer text-slate-700 whitespace-nowrap"
             >
               Gift Cards
             </button>
 
-          </div>
-
-          <div className="text-xs font-semibold flex items-center gap-3">
-            <a 
-              href={`tel:${STORE_INFO.phone}`}
-              className="hidden lg:flex items-center gap-1.5 text-[#4a154b] hover:text-[#3c103d] font-bold"
-            >
-              <PhoneCall className="w-3.5 h-3.5 text-[#4a154b]" />
-              <span>Hotline: {STORE_INFO.phone}</span>
-            </a>
-            <div className="text-purple-800 flex items-center gap-1.5 text-[11px]">
-              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-              <span>Open (10 AM - 10 PM)</span>
-            </div>
           </div>
 
         </div>
