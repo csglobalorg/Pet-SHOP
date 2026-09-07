@@ -85,13 +85,23 @@ async function main() {
   console.log(`\n🌐 Step 2/3: Connecting to ${host}:${port} as ${user}...`);
 
   try {
-    await client.access({
-      host,
-      user,
-      password,
-      port,
-      secure: false
-    });
+    try {
+      await client.access({
+        host,
+        user,
+        password,
+        port,
+        secure: 'explicit'
+      });
+    } catch (tlsErr) {
+      await client.access({
+        host,
+        user,
+        password,
+        port,
+        secure: false
+      });
+    }
 
     console.log('✅ Connected to Namecheap cPanel server successfully!');
     console.log(`\n📤 Step 3/3: Uploading dist/ files to ${remoteDir}...`);
