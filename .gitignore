@@ -11,3 +11,4 @@ coverage/
 *.db-journal
 database/*.db
 .vercel
+*.zip
