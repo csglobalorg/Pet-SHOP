@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { 
   ShoppingBag, 
   Search, 
@@ -8,6 +8,7 @@ import {
   Menu, 
   X, 
   ChevronDown, 
+  ChevronRight,
   Sparkles,
   User,
   MessageCircle,
@@ -19,7 +20,17 @@ import {
   Scissors,
   Home,
   Coffee,
-  Heart
+  Heart,
+  Fish,
+  Bone,
+  Layers,
+  Utensils,
+  ShieldCheck,
+  Sparkle,
+  Activity,
+  Smile,
+  Package,
+  Tag
 } from 'lucide-react';
 import { useStore } from '../context/StoreContext';
 import { ProductCategory } from '../types';
@@ -62,6 +73,43 @@ export const Navbar: React.FC<NavbarProps> = ({
   const [catFoodOpen, setCatFoodOpen] = useState(false);
   const [dogFoodOpen, setDogFoodOpen] = useState(false);
   const [catLitterOpen, setCatLitterOpen] = useState(false);
+
+  // Toggle state for Browse Categories dropdown
+  const [isBrowseCategoriesOpen, setIsBrowseCategoriesOpen] = useState(false);
+  const browseCategoriesRef = useRef<HTMLDivElement>(null);
+
+  // Close dropdown on click outside or on ESC key
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (browseCategoriesRef.current && !browseCategoriesRef.current.contains(e.target as Node)) {
+        setIsBrowseCategoriesOpen(false);
+      }
+    };
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setIsBrowseCategoriesOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener('keydown', handleKeyDown);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, []);
+
+  const browseCategoriesList = [
+    { name: 'Cat Food', category: 'Pet Food' as ProductCategory, searchTag: 'cat', icon: Fish },
+    { name: 'Dog Food', category: 'Pet Food' as ProductCategory, searchTag: 'dog', icon: Bone },
+    { name: 'Cat Litter & Hygiene', category: 'Litter & Hygiene' as ProductCategory, searchTag: 'litter', icon: Layers },
+    { name: 'Feeding & Bowls', category: 'Accessories & Toys' as ProductCategory, searchTag: 'bowl', icon: Utensils },
+    { name: 'Collar & Harness', category: 'Accessories & Toys' as ProductCategory, searchTag: 'collar', icon: ShieldCheck },
+    { name: 'Grooming & Care', category: 'Grooming Essentials' as ProductCategory, searchTag: 'shampoo', icon: Sparkle },
+    { name: 'Flea & Tick Control', category: 'Healthcare & First Aid' as ProductCategory, searchTag: 'flea', icon: Activity },
+    { name: 'Cat & Dog Toys', category: 'Accessories & Toys' as ProductCategory, searchTag: 'toy', icon: Smile },
+    { name: 'Cages & Carriers', category: 'Accessories & Toys' as ProductCategory, searchTag: 'carrier', icon: Package },
+    { name: 'Special Offers', category: 'Pet Food' as ProductCategory, searchTag: 'flash sale', icon: Tag }
+  ];
 
   // Secret Staff Trigger: Triple-clicking logo unlocks Admin PIN portal
   const logoClickRef = useRef<{ count: number; timer: any }>({ count: 0, timer: null });
@@ -377,13 +425,56 @@ export const Navbar: React.FC<NavbarProps> = ({
           
           <div className="flex items-center space-x-1 lg:space-x-4 text-xs font-semibold text-slate-700">
             
-            {/* Categories button (aligned with sidebar below) */}
-            <div className="w-64 py-2.5 px-4 bg-[#4a154b] text-white rounded-t-xl flex items-center justify-between font-bold cursor-pointer">
-              <div className="flex items-center gap-2">
-                <Menu className="w-4 h-4 text-purple-200" />
-                <span className="tracking-wide">Browse Categories</span>
-              </div>
-              <ChevronDown className="w-3.5 h-3.5 text-purple-200" />
+            {/* Categories dropdown toggle button */}
+            <div ref={browseCategoriesRef} className="relative">
+              <button 
+                type="button"
+                onClick={() => setIsBrowseCategoriesOpen(prev => !prev)}
+                className={`w-64 py-2.5 px-4 bg-[#4a154b] text-white flex items-center justify-between font-bold cursor-pointer select-none transition-all ${
+                  isBrowseCategoriesOpen ? 'rounded-t-xl bg-[#3c103d]' : 'rounded-xl hover:bg-[#3c103d]'
+                }`}
+                aria-expanded={isBrowseCategoriesOpen}
+                aria-label="Toggle Categories Dropdown"
+              >
+                <div className="flex items-center gap-2">
+                  <Menu className="w-4 h-4 text-purple-200" />
+                  <span className="tracking-wide">Browse Categories</span>
+                </div>
+                <ChevronDown className={`w-3.5 h-3.5 text-purple-200 transition-transform duration-200 ${
+                  isBrowseCategoriesOpen ? 'rotate-180' : ''
+                }`} />
+              </button>
+
+              {/* Dropdown Menu - Toggles & Hides smoothly on click / outside click */}
+              {isBrowseCategoriesOpen && (
+                <div className="absolute left-0 top-full w-64 bg-white rounded-b-2xl border-x border-b border-purple-200 shadow-2xl z-50 overflow-hidden divide-y divide-slate-100 animate-in fade-in slide-in-from-top-1 duration-150">
+                  {browseCategoriesList.map((item, idx) => {
+                    const Icon = item.icon;
+                    return (
+                      <button
+                        key={idx}
+                        type="button"
+                        onClick={() => {
+                          onSelectCategory?.(item.category);
+                          if (onSearch && item.searchTag) {
+                            onSearch(item.searchTag);
+                          }
+                          const catSection = document.getElementById('product-catalog-section');
+                          catSection?.scrollIntoView({ behavior: 'smooth' });
+                          setIsBrowseCategoriesOpen(false); // <--- Closes/hides immediately upon clicking!
+                        }}
+                        className="w-full px-4 py-2.5 flex items-center justify-between hover:bg-purple-50 hover:text-[#4a154b] transition-colors cursor-pointer group text-left"
+                      >
+                        <div className="flex items-center gap-2.5">
+                          <Icon className="w-3.5 h-3.5 text-purple-600 group-hover:scale-110 transition-transform" />
+                          <span className="truncate text-xs font-semibold text-slate-700 group-hover:text-[#4a154b]">{item.name}</span>
+                        </div>
+                        <ChevronRight className="w-3.5 h-3.5 text-slate-400 group-hover:translate-x-1 group-hover:text-[#4a154b] transition-all" />
+                      </button>
+                    );
+                  })}
+                </div>
+              )}
             </div>
 
             {/* Nav Menu Links */}
