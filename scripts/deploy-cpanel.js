@@ -53,7 +53,8 @@ async function deployViaCpanelUapi(host, user, token, zipPath) {
 
   // Step B: Extract archive via cPanel API2 Fileman::fileop
   console.log('📦 Extracting archive in public_html...');
-  const extractUrl = `https://${host}:2083/json-api/cpanel?cpanel_jsonapi_user=${user}&cpanel_jsonapi_apiversion=2&cpanel_jsonapi_module=Fileman&cpanel_jsonapi_func=fileop&op=extract&sourcefiles=public_html%2Fcpanel_deploy.zip&destfiles=public_html`;
+  const destDir = encodeURIComponent(`/home/${user}/public_html`);
+  const extractUrl = `https://${host}:2083/json-api/cpanel?cpanel_jsonapi_user=${user}&cpanel_jsonapi_apiversion=2&cpanel_jsonapi_module=Fileman&cpanel_jsonapi_func=fileop&op=extract&sourcefiles=public_html%2Fcpanel_deploy.zip&destfiles=${destDir}`;
   const extractRes = await fetch(extractUrl, {
     headers: {
       'Authorization': `cpanel ${user}:${token}`

@@ -8,7 +8,6 @@ import {
   Mail, 
   KeyRound, 
   AlertCircle,
-  Sparkles,
   Store,
   CheckCircle2,
   ShieldAlert
@@ -88,12 +87,6 @@ export const AdminLoginPage: React.FC = () => {
         setPassword('');
       }
     }, 400);
-  };
-
-  const handleFillCredentials = () => {
-    setEmail('admin@cbp.com');
-    setPassword('@F6f8y6d9@');
-    setErrorMsg('');
   };
 
   const handleReturnToStore = () => {
@@ -209,18 +202,11 @@ export const AdminLoginPage: React.FC = () => {
             </div>
           </div>
 
-          {/* Quick Fill Credentials Helper */}
-          <div className="pt-1 flex items-center justify-between">
-            <button
-              type="button"
-              onClick={handleFillCredentials}
-              className="text-[11px] text-purple-400 hover:text-purple-300 hover:underline flex items-center gap-1 transition-colors cursor-pointer"
-            >
-              <Sparkles className="w-3 h-3" />
-              <span>Fill Credentials (admin@cbp.com)</span>
-            </button>
-            <span className="text-[10px] text-slate-500 font-mono">
-              256-Bit TLS
+          {/* Security Assurance */}
+          <div className="pt-1 flex items-center justify-end">
+            <span className="text-[10px] text-slate-500 font-mono flex items-center gap-1">
+              <ShieldCheck className="w-3 h-3 text-emerald-500/70" />
+              256-Bit Encrypted Session
             </span>
           </div>
 
