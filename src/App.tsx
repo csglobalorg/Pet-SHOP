@@ -1,12 +1,9 @@
 import React, { useState } from 'react';
 import { StoreProvider, useStore } from './context/StoreContext';
 import { Navbar } from './components/Navbar';
-import { HeroSlider } from './components/HeroSlider';
-import { FlashSaleSection } from './components/FlashSaleSection';
-import { CuratedSections } from './components/CuratedSections';
+import { HeroSection } from './components/HeroSection';
 import { ProductCatalog } from './components/ProductCatalog';
 import { ServicesAndPolicies } from './components/ServicesAndPolicies';
-import { PetCareBlogAndReviews } from './components/PetCareBlogAndReviews';
 import { CartDrawer } from './components/CartDrawer';
 import { CheckoutModal } from './components/CheckoutModal';
 import { ProductDetailModal } from './components/ProductDetailModal';
@@ -22,7 +19,7 @@ import { AdminAuthModal } from './components/AdminAuthModal';
 import { ProductCategory, AnimalType } from './types';
 
 const StoreContent: React.FC = () => {
-  const { activeView, setActiveView, openAdminPortal } = useStore();
+  const { activeView, openAdminPortal } = useStore();
   const [selectedCategory, setSelectedCategory] = useState<ProductCategory | 'All'>('All');
   const [selectedAnimal, setSelectedAnimal] = useState<AnimalType>('all');
   const [searchQuery, setSearchQuery] = useState('');
@@ -72,9 +69,9 @@ const StoreContent: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-900 font-sans flex flex-col selection:bg-purple-100 selection:text-purple-900 pb-16 md:pb-0">
+    <div className="min-h-screen bg-slate-50/70 text-slate-900 font-sans flex flex-col selection:bg-slate-200 selection:text-slate-900 pb-16 md:pb-0">
       
-      {/* Primary Navigation with Brand Logo & Pill Search & Account Pill */}
+      {/* Primary Navigation with Brand Logo, Search Bar, WhatsApp & Basket */}
       <Navbar 
         onSearch={setSearchQuery}
         onSelectCategory={handleSelectCategory}
@@ -82,19 +79,16 @@ const StoreContent: React.FC = () => {
         onOpenAccountModal={handleOpenAccountModal}
       />
 
-      {/* Hero with Sidebar & Banner + Featured Categories (Exact Mew Mew Shop layout) */}
-      <HeroSlider 
-        onSelectCategory={handleSelectCategory} 
-        onScrollToCatalog={handleScrollToCatalog}
-      />
-
       {/* Main Storefront Flow */}
-      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 py-6 space-y-12">
+      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 py-6 sm:py-8 space-y-12 sm:space-y-16">
         
-        {/* Live Flash Deals with Countdown */}
-        <FlashSaleSection onExploreAll={() => handleSelectCategory('All')} />
+        {/* Modern Minimal Boutique Hero */}
+        <HeroSection 
+          onSelectCategory={handleSelectCategory} 
+          onScrollToCatalog={handleScrollToCatalog}
+        />
 
-        {/* Main Product Catalog with live filtering & sort */}
+        {/* Main Product Catalog with live filtering & boutique empty state */}
         <ProductCatalog 
           selectedCategory={selectedCategory}
           onSelectCategory={setSelectedCategory}
@@ -103,27 +97,21 @@ const StoreContent: React.FC = () => {
           externalSearchQuery={searchQuery}
         />
 
-        {/* Services & Standard Policies & Guidelines */}
+        {/* Real Services (Grooming Spa, Foster Boarding, Safe Transport, Pet Cafe) & Store Policies */}
         <ServicesAndPolicies />
-
-        {/* Curated Pet Corners (Dear Cat, Dear Dog, Tick & Flea, VIP Platinum Card, Brands) */}
-        <CuratedSections onSelectCategory={handleSelectCategory} />
-
-        {/* Pet Care Blog Guides & Customer Reviews */}
-        <PetCareBlogAndReviews onSelectCategory={handleSelectCategory} />
 
       </main>
 
-      {/* Footer with Full Contact & Policy Details */}
+      {/* Modern Clean Footer with Authentic Store Details & Hidden Admin Trigger */}
       <Footer 
         onSelectCategory={handleSelectCategory} 
         onOpenAdmin={() => openAdminPortal()} 
       />
 
-      {/* Floating Right Docked Cart & Bottom Right Messenger Bubble (Matches Screenshot) */}
+      {/* Floating Right Docked Cart & Bottom Right Messenger Bubble */}
       <FloatingWidgets />
 
-      {/* Modern Mobile Bottom Navigation Bar (Shop, Services, Pet Sale, Cart, Account) */}
+      {/* Modern Mobile Bottom Navigation Bar (Shop, Services, Cart, Account) */}
       <MobileBottomNav 
         onOpenAccountModal={handleOpenAccountModal}
         onSelectCategory={handleSelectCategory}

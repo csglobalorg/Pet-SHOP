@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
-import { X, CheckCircle2, ShoppingBag, ShieldCheck, MapPin, Phone, User, Truck, Sparkles } from 'lucide-react';
+import { X, CheckCircle2, ShoppingBag, ShieldCheck, MapPin, Phone, User, Truck, Sparkles, Banknote, Smartphone, Zap, CreditCard } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { useStore } from '../context/StoreContext';
 import { PaymentMethod } from '../types';
 import { STORE_INFO } from '../data/initialData';
-import { SamsungEmoji } from './SamsungEmoji';
 
 export const CheckoutModal: React.FC = () => {
   const { 
@@ -311,28 +310,31 @@ export const CheckoutModal: React.FC = () => {
               </h3>
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
                 {[
-                  { name: 'Cash on Delivery', icon: '💵', desc: 'Pay upon delivery' },
-                  { name: 'bKash', icon: '📱', desc: STORE_INFO.phone },
-                  { name: 'Nagad', icon: '⚡', desc: STORE_INFO.phone },
-                  { name: 'Credit/Debit Card', icon: '💳', desc: 'Visa / Mastercard' }
-                ].map((pm) => (
-                  <button
-                    key={pm.name}
-                    type="button"
-                    onClick={() => setPaymentMethod(pm.name as PaymentMethod)}
-                    className={`p-3 rounded-xl border text-left cursor-pointer transition-all ${
-                      paymentMethod === pm.name
-                        ? 'bg-purple-50 border-purple-600 ring-2 ring-purple-600/20 shadow-xs'
-                        : 'bg-white border-slate-200 hover:bg-slate-50 text-slate-700'
-                    }`}
-                  >
-                    <div className="h-6 flex items-center">
-                      <SamsungEmoji emoji={pm.icon} size="md" />
-                    </div>
-                    <div className="text-xs font-bold text-slate-900 mt-1">{pm.name}</div>
-                    <div className="text-[10px] text-slate-400">{pm.desc}</div>
-                  </button>
-                ))}
+                  { name: 'Cash on Delivery', icon: Banknote, desc: 'Pay upon delivery' },
+                  { name: 'bKash', icon: Smartphone, desc: STORE_INFO.phone },
+                  { name: 'Nagad', icon: Zap, desc: STORE_INFO.phone },
+                  { name: 'Credit/Debit Card', icon: CreditCard, desc: 'Visa / Mastercard' }
+                ].map((pm) => {
+                  const IconComp = pm.icon;
+                  return (
+                    <button
+                      key={pm.name}
+                      type="button"
+                      onClick={() => setPaymentMethod(pm.name as PaymentMethod)}
+                      className={`p-3 rounded-xl border text-left cursor-pointer transition-all ${
+                        paymentMethod === pm.name
+                          ? 'bg-slate-900 border-slate-900 text-white shadow-xs'
+                          : 'bg-white border-slate-200 hover:bg-slate-50 text-slate-700'
+                      }`}
+                    >
+                      <div className="h-6 flex items-center">
+                        <IconComp className={`w-5 h-5 ${paymentMethod === pm.name ? 'text-amber-400' : 'text-slate-600'}`} />
+                      </div>
+                      <div className={`text-xs font-bold mt-1 ${paymentMethod === pm.name ? 'text-white' : 'text-slate-900'}`}>{pm.name}</div>
+                      <div className={`text-[10px] ${paymentMethod === pm.name ? 'text-slate-300' : 'text-slate-400'}`}>{pm.desc}</div>
+                    </button>
+                  );
+                })}
               </div>
             </div>
 

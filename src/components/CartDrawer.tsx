@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { X, Trash2, Plus, Minus, ShoppingBag, ArrowRight, Tag, Check, AlertCircle } from 'lucide-react';
 import { useStore } from '../context/StoreContext';
 import { COUPONS } from '../data/initialData';
-import { SamsungEmoji } from './SamsungEmoji';
 
 export const CartDrawer: React.FC = () => {
   const { 
@@ -105,10 +104,10 @@ export const CartDrawer: React.FC = () => {
           <div className="flex-1 overflow-y-auto p-3.5 sm:p-5 space-y-4 sm:space-y-5">
             {cart.length === 0 ? (
               <div className="text-center py-16 space-y-3">
-                <div className="w-16 h-16 rounded-full bg-purple-50 text-purple-700 mx-auto flex items-center justify-center border border-purple-100 shadow-xs">
-                  <SamsungEmoji emoji="🐾" size="lg" />
+                <div className="w-16 h-16 rounded-2xl bg-slate-100 text-slate-500 mx-auto flex items-center justify-center border border-slate-200 shadow-2xs">
+                  <ShoppingBag className="w-7 h-7" />
                 </div>
-                <h3 className="text-base font-bold text-slate-800">Your Cart is Empty</h3>
+                <h3 className="text-base font-bold text-slate-800">আপনার কার্ট খালি (Cart is Empty)</h3>
                 <p className="text-xs text-slate-500 max-w-xs mx-auto">
                   Add nutritious food, treats, toys, or hygiene essentials to your cart.
                 </p>

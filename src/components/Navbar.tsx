@@ -16,13 +16,15 @@ import {
   Scan,
   Lock,
   Bell,
-  Scissors
+  Scissors,
+  Home,
+  Coffee,
+  Heart
 } from 'lucide-react';
 import { useStore } from '../context/StoreContext';
 import { ProductCategory } from '../types';
 import { STORE_INFO } from '../data/initialData';
 import { Logo } from './Logo';
-import { SamsungEmoji } from './SamsungEmoji';
 
 interface NavbarProps {
   onSelectCategory?: (category: ProductCategory | 'All') => void;
@@ -615,7 +617,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                 onClick={() => setMobileMenuOpen(false)}
                 className="px-3 py-2 rounded-xl bg-purple-50 text-purple-900 border border-purple-100 flex items-center gap-1.5"
               >
-                <SamsungEmoji emoji="🏡" size="xs" />
+                <Home className="w-3.5 h-3.5 text-purple-700" />
                 <span>Foster Care</span>
               </a>
               <a
@@ -623,7 +625,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                 onClick={() => setMobileMenuOpen(false)}
                 className="px-3 py-2 rounded-xl bg-purple-50 text-purple-900 border border-purple-100 flex items-center gap-1.5"
               >
-                <SamsungEmoji emoji="✂️" size="xs" />
+                <Scissors className="w-3.5 h-3.5 text-purple-700" />
                 <span>Grooming Spa</span>
               </a>
               <a
@@ -631,15 +633,15 @@ export const Navbar: React.FC<NavbarProps> = ({
                 onClick={() => setMobileMenuOpen(false)}
                 className="px-3 py-2 rounded-xl bg-amber-50 text-amber-900 border border-amber-100 flex items-center gap-1.5"
               >
-                <SamsungEmoji emoji="🐾" size="xs" />
-                <span>Pet Sale & Kittens</span>
+                <Heart className="w-3.5 h-3.5 text-amber-700" />
+                <span>Pet Sale & Adoption</span>
               </a>
               <a
                 href="#services-and-policies-section"
                 onClick={() => setMobileMenuOpen(false)}
                 className="px-3 py-2 rounded-xl bg-blue-50 text-blue-900 border border-blue-100 flex items-center gap-1.5"
               >
-                <SamsungEmoji emoji="🚚" size="xs" />
+                <Truck className="w-3.5 h-3.5 text-blue-700" />
                 <span>Pet Courier</span>
               </a>
               <a
@@ -647,7 +649,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                 onClick={() => setMobileMenuOpen(false)}
                 className="px-3 py-2 rounded-xl bg-emerald-50 text-emerald-900 border border-emerald-100 col-span-2 flex items-center justify-center gap-1.5"
               >
-                <SamsungEmoji emoji="☕" size="xs" />
+                <Coffee className="w-3.5 h-3.5 text-emerald-700" />
                 <span>Beachside Pet Cafe & Lounge</span>
               </a>
             </div>
@@ -660,45 +662,40 @@ export const Navbar: React.FC<NavbarProps> = ({
             <div className="grid grid-cols-2 gap-2 text-xs font-medium">
             <button
               onClick={() => { handleCategoryClick('All'); setMobileMenuOpen(false); }}
-              className="text-left px-3 py-2 rounded-xl bg-purple-50 text-purple-900 font-bold flex items-center gap-1.5"
+              className="text-left px-3 py-2 rounded-xl bg-slate-900 text-white font-bold flex items-center gap-1.5"
             >
-              <SamsungEmoji emoji="✨" size="xs" />
+              <ShoppingBag className="w-3.5 h-3.5 text-amber-400" />
               <span>All Products</span>
             </button>
             <button
               onClick={() => { handleCategoryClick('Pet Food'); setMobileMenuOpen(false); }}
-              className="text-left px-3 py-2 rounded-xl bg-slate-50 text-slate-700 flex items-center gap-1.5"
+              className="text-left px-3 py-2 rounded-xl bg-slate-50 text-slate-700 hover:bg-slate-100 flex items-center gap-1.5"
             >
-              <SamsungEmoji emoji="🐱" size="xs" />
-              <span>Cat Food</span>
+              <span>🐱 Cat Food</span>
             </button>
             <button
               onClick={() => { handleCategoryClick('Accessories & Toys'); setMobileMenuOpen(false); }}
-              className="text-left px-3 py-2 rounded-xl bg-slate-50 text-slate-700 flex items-center gap-1.5"
+              className="text-left px-3 py-2 rounded-xl bg-slate-50 text-slate-700 hover:bg-slate-100 flex items-center gap-1.5"
             >
-              <SamsungEmoji emoji="🧶" size="xs" />
-              <span>Cat Toys</span>
+              <span>🎒 Accessories</span>
             </button>
             <button
               onClick={() => { handleCategoryClick('Litter & Hygiene'); setMobileMenuOpen(false); }}
-              className="text-left px-3 py-2 rounded-xl bg-slate-50 text-slate-700 flex items-center gap-1.5"
+              className="text-left px-3 py-2 rounded-xl bg-slate-50 text-slate-700 hover:bg-slate-100 flex items-center gap-1.5"
             >
-              <SamsungEmoji emoji="🚽" size="xs" />
-              <span>Cat Litter</span>
+              <span>✨ Cat Litter</span>
             </button>
             <button
               onClick={() => { handleCategoryClick('Grooming Essentials'); setMobileMenuOpen(false); }}
-              className="text-left px-3 py-2 rounded-xl bg-slate-50 text-slate-700 flex items-center gap-1.5"
+              className="text-left px-3 py-2 rounded-xl bg-slate-50 text-slate-700 hover:bg-slate-100 flex items-center gap-1.5"
             >
-              <SamsungEmoji emoji="✨" size="xs" />
-              <span>Grooming</span>
+              <span>✂️ Grooming</span>
             </button>
             <button
               onClick={() => { handleCategoryClick('Healthcare & First Aid'); setMobileMenuOpen(false); }}
-              className="text-left px-3 py-2 rounded-xl bg-slate-50 text-slate-700 flex items-center gap-1.5"
+              className="text-left px-3 py-2 rounded-xl bg-slate-50 text-slate-700 hover:bg-slate-100 flex items-center gap-1.5"
             >
-              <SamsungEmoji emoji="🏥" size="xs" />
-              <span>Health & Vet</span>
+              <span>🌿 Health & Vet</span>
             </button>
             </div>
           </div>

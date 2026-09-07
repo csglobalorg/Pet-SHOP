@@ -244,109 +244,132 @@ export const ServicesAndPolicies: React.FC = () => {
               </div>
             </div>
 
-            {/* Pets Grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {filteredPets.map((pet) => (
-                <div 
-                  key={pet.id}
-                  className="bg-white rounded-2xl border border-slate-200/80 overflow-hidden hover:shadow-xl transition-all duration-300 flex flex-col justify-between group"
-                >
-                  <div>
-                    {/* Pet Image with Badges */}
-                    <div className="relative aspect-4/3 overflow-hidden bg-slate-100">
-                      <img 
-                        src={pet.imageUrl} 
-                        alt={pet.name}
-                        referrerPolicy="no-referrer"
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                        loading="lazy"
-                      />
-                      <div className="absolute top-3 left-3 flex flex-wrap gap-1.5">
-                        <span className="px-2.5 py-1 bg-slate-900/85 backdrop-blur-xs text-white text-[11px] font-bold rounded-lg shadow-xs">
-                          {pet.gender} • {pet.age}
-                        </span>
-                        {pet.isAdoption && (
-                          <span className="px-2 py-0.5 bg-rose-600 text-white text-[10px] font-bold rounded-md">
-                            Adoption Star
+            {/* Pets Grid or Human Empty State */}
+            {filteredPets.length > 0 ? (
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                {filteredPets.map((pet) => (
+                  <div 
+                    key={pet.id}
+                    className="bg-white rounded-2xl border border-slate-200/80 overflow-hidden hover:shadow-md transition-all duration-300 flex flex-col justify-between group"
+                  >
+                    <div>
+                      {/* Pet Image with Badges */}
+                      <div className="relative aspect-4/3 overflow-hidden bg-slate-100">
+                        <img 
+                          src={pet.imageUrl} 
+                          alt={pet.name}
+                          referrerPolicy="no-referrer"
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                          loading="lazy"
+                        />
+                        <div className="absolute top-3 left-3 flex flex-wrap gap-1.5">
+                          <span className="px-2.5 py-1 bg-slate-900/85 backdrop-blur-xs text-white text-[11px] font-bold rounded-lg shadow-xs">
+                            {pet.gender} • {pet.age}
                           </span>
-                        )}
-                      </div>
+                          {pet.isAdoption && (
+                            <span className="px-2 py-0.5 bg-rose-600 text-white text-[10px] font-bold rounded-md">
+                              Adoption Star
+                            </span>
+                          )}
+                        </div>
 
-                      <div className="absolute bottom-3 right-3">
-                        <span className="px-3 py-1 bg-white/95 backdrop-blur-xs text-slate-900 font-black text-sm rounded-xl shadow-md border border-slate-100">
-                          {pet.isAdoption ? `Adoption: ৳${pet.price.toLocaleString()}` : `৳${pet.price.toLocaleString()}`}
-                        </span>
-                      </div>
-                    </div>
-
-                    {/* Pet Info */}
-                    <div className="p-5 space-y-3">
-                      <div>
-                        <div className="flex items-center justify-between">
-                          <h4 className="font-bold text-slate-900 text-base group-hover:text-purple-700 transition-colors">
-                            {pet.name}
-                          </h4>
-                          <span className="text-xs font-semibold text-purple-700 bg-purple-50 px-2 py-0.5 rounded-md">
-                            {pet.breed}
+                        <div className="absolute bottom-3 right-3">
+                          <span className="px-3 py-1 bg-white/95 backdrop-blur-xs text-slate-900 font-black text-sm rounded-xl shadow-md border border-slate-100">
+                            {pet.isAdoption ? `Adoption: ৳${pet.price.toLocaleString()}` : `৳${pet.price.toLocaleString()}`}
                           </span>
                         </div>
-                        <p className="text-xs text-slate-600 mt-1.5 line-clamp-2 leading-relaxed">
-                          {pet.description}
-                        </p>
                       </div>
 
-                      {/* Health Badges */}
-                      <div className="flex flex-wrap gap-1.5 pt-1">
-                        {pet.vaccinated && (
-                          <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-emerald-50 text-emerald-800 text-[10px] font-semibold rounded-md border border-emerald-100">
-                            <BadgeCheck className="w-3 h-3 text-emerald-600" />
-                            Vaccinated
-                          </span>
-                        )}
-                        {pet.dewormed && (
-                          <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-blue-50 text-blue-800 text-[10px] font-semibold rounded-md border border-blue-100">
-                            <Check className="w-3 h-3 text-blue-600" />
-                            Dewormed
-                          </span>
-                        )}
-                        {pet.healthPassport && (
-                          <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-purple-50 text-purple-800 text-[10px] font-semibold rounded-md border border-purple-100">
-                            <ShieldCheck className="w-3 h-3 text-purple-600" />
-                            Health Passport
-                          </span>
-                        )}
-                      </div>
+                      {/* Pet Info */}
+                      <div className="p-5 space-y-3">
+                        <div>
+                          <div className="flex items-center justify-between">
+                            <h4 className="font-bold text-slate-900 text-base group-hover:text-purple-700 transition-colors">
+                              {pet.name}
+                            </h4>
+                            <span className="text-xs font-semibold text-purple-700 bg-purple-50 px-2 py-0.5 rounded-md">
+                              {pet.breed}
+                            </span>
+                          </div>
+                          <p className="text-xs text-slate-600 mt-1.5 line-clamp-2 leading-relaxed">
+                            {pet.description}
+                          </p>
+                        </div>
 
-                      <div className="flex items-center gap-1.5 text-[11px] text-slate-500 font-medium">
-                        <MapPin className="w-3 h-3 text-purple-600" />
-                        <span>{pet.location}</span>
+                        {/* Health Badges */}
+                        <div className="flex flex-wrap gap-1.5 pt-1">
+                          {pet.vaccinated && (
+                            <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-emerald-50 text-emerald-800 text-[10px] font-semibold rounded-md border border-emerald-100">
+                              <BadgeCheck className="w-3 h-3 text-emerald-600" />
+                              Vaccinated
+                            </span>
+                          )}
+                          {pet.dewormed && (
+                            <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-blue-50 text-blue-800 text-[10px] font-semibold rounded-md border border-blue-100">
+                              <Check className="w-3 h-3 text-blue-600" />
+                              Dewormed
+                            </span>
+                          )}
+                          {pet.healthPassport && (
+                            <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-purple-50 text-purple-800 text-[10px] font-semibold rounded-md border border-purple-100">
+                              <ShieldCheck className="w-3 h-3 text-purple-600" />
+                              Health Passport
+                            </span>
+                          )}
+                        </div>
+
+                        <div className="flex items-center gap-1.5 text-[11px] text-slate-500 font-medium">
+                          <MapPin className="w-3 h-3 text-purple-600" />
+                          <span>{pet.location}</span>
+                        </div>
                       </div>
                     </div>
-                  </div>
 
-                  {/* Actions */}
-                  <div className="p-5 pt-0 border-t border-slate-100 grid grid-cols-2 gap-2 mt-2">
-                    <button
-                      onClick={() => handleInquirePet(pet)}
-                      className="w-full py-2 px-3 rounded-xl bg-purple-900 hover:bg-purple-950 text-white font-semibold text-xs transition-colors flex items-center justify-center gap-1 cursor-pointer min-h-[40px]"
-                    >
-                      <Calendar className="w-3.5 h-3.5 text-amber-400" />
-                      <span>Meet Pet</span>
-                    </button>
+                    {/* Actions */}
+                    <div className="p-5 pt-0 border-t border-slate-100 grid grid-cols-2 gap-2 mt-2">
+                      <button
+                        onClick={() => handleInquirePet(pet)}
+                        className="w-full py-2 px-3 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-semibold text-xs transition-colors flex items-center justify-center gap-1 cursor-pointer min-h-[40px]"
+                      >
+                        <Calendar className="w-3.5 h-3.5 text-amber-400" />
+                        <span>Meet Pet</span>
+                      </button>
 
-                    <a
-                      href={`https://wa.me/${STORE_INFO.whatsappDigits}?text=${encodeURIComponent(`Hello Cox's Bazar Pet Shop! I am interested in ${pet.name} (${pet.breed}, Age: ${pet.age}). Is it currently available for visit?`)}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="w-full py-2 px-3 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-200/80 font-semibold text-xs transition-colors flex items-center justify-center gap-1 min-h-[40px]"
-                    >
-                      <MessageCircle className="w-3.5 h-3.5 text-emerald-600" />
-                      <span>WhatsApp</span>
-                    </a>
+                      <a
+                        href={`https://wa.me/${STORE_INFO.whatsappDigits}?text=${encodeURIComponent(`Hello Cox's Bazar Pet Shop! I am interested in ${pet.name} (${pet.breed}, Age: ${pet.age}). Is it currently available for visit?`)}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="w-full py-2 px-3 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-200/80 font-semibold text-xs transition-colors flex items-center justify-center gap-1 min-h-[40px]"
+                      >
+                        <MessageCircle className="w-3.5 h-3.5 text-emerald-600" />
+                        <span>WhatsApp</span>
+                      </a>
+                    </div>
                   </div>
+                ))}
+              </div>
+            ) : (
+              <div className="bg-white rounded-2xl p-8 border border-slate-200/80 text-center space-y-4 max-w-lg mx-auto shadow-2xs">
+                <div className="w-12 h-12 rounded-full bg-slate-100 mx-auto flex items-center justify-center text-slate-700">
+                  <Heart className="w-6 h-6 text-rose-500" />
                 </div>
-              ))}
-            </div>
+                <div className="space-y-1.5">
+                  <h4 className="text-sm font-bold text-slate-900">বর্তমানে কোনো পোষা প্রাণী সরাসরি বিক্রির জন্য প্রস্তুত নেই</h4>
+                  <p className="text-xs text-slate-600 leading-relaxed">
+                    নতুন স্বাস্থ্যবান পার্সিয়ান কিটেন, খাঁটি ব্রিড পাপ্পি বা এথিক্যাল রেসকিউ অ্যাডপশনের আগাম বুকিং ও তথ্যের জন্য সরাসরি আমাদের শপে কথা বলুন।
+                  </p>
+                </div>
+                <a
+                  href={`https://wa.me/${STORE_INFO.whatsappDigits}?text=${encodeURIComponent('Hello Cox\'s Bazar Pet Shop! I am inquiring about Persian kittens or puppies available for adoption/purchase.')}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold transition-all shadow-2xs"
+                >
+                  <MessageCircle className="w-4 h-4" />
+                  <span>হোয়াটসঅ্যাপে বুকিং বা তথ্য জানুন</span>
+                </a>
+              </div>
+            )}
 
             {/* Ethical Guarantee Footer */}
             <div className="bg-white rounded-2xl p-5 border border-purple-100 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs">
