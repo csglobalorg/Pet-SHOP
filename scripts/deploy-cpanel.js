@@ -51,9 +51,9 @@ async function deployViaCpanelUapi(host, user, token, zipPath) {
   }
   console.log('✅ Archive uploaded to cPanel public_html successfully!');
 
-  // Step B: Extract archive
+  // Step B: Extract archive via cPanel API2 Fileman::fileop
   console.log('📦 Extracting archive in public_html...');
-  const extractUrl = `https://${host}:2083/execute/Fileman/extract_archive?dir=public_html&file=cpanel_deploy.zip&overwrite=1`;
+  const extractUrl = `https://${host}:2083/json-api/cpanel?cpanel_jsonapi_user=${user}&cpanel_jsonapi_apiversion=2&cpanel_jsonapi_module=Fileman&cpanel_jsonapi_func=fileop&op=extract&sourcefiles=public_html%2Fcpanel_deploy.zip&destfiles=public_html`;
   const extractRes = await fetch(extractUrl, {
     headers: {
       'Authorization': `cpanel ${user}:${token}`
@@ -61,18 +61,20 @@ async function deployViaCpanelUapi(host, user, token, zipPath) {
   });
 
   const extractJson = await extractRes.json();
-  if (extractJson.status !== 1) {
-    throw new Error(extractJson.errors ? extractJson.errors.join(', ') : 'Extract failed via cPanel UAPI');
+  if (!extractJson.cpanelresult || (extractJson.cpanelresult.data && extractJson.cpanelresult.data[0] && extractJson.cpanelresult.data[0].result === 0)) {
+    throw new Error('Extraction failed on server');
   }
   console.log('✅ Extracted all files in public_html!');
 
   // Step C: Delete remote zip
   try {
-    await fetch(`https://${host}:2083/execute/Fileman/fileop?op=unlink&source_1=public_html/cpanel_deploy.zip`, {
+    const unlinkUrl = `https://${host}:2083/json-api/cpanel?cpanel_jsonapi_user=${user}&cpanel_jsonapi_apiversion=2&cpanel_jsonapi_module=Fileman&cpanel_jsonapi_func=fileop&op=unlink&sourcefiles=public_html%2Fcpanel_deploy.zip`;
+    await fetch(unlinkUrl, {
       headers: {
         'Authorization': `cpanel ${user}:${token}`
       }
     });
+    console.log('🧹 Cleaned up remote deployment zip.');
   } catch (ignored) {}
 
   return true;
