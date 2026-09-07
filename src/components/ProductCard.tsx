@@ -44,7 +44,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         {/* Discount & Deal Badges */}
         <div className="absolute top-2 left-2 flex flex-col gap-1 z-10">
           {discountPercent && (
-            <span className="bg-purple-700 text-white text-[9px] sm:text-[10px] font-bold px-1.5 sm:px-2 py-0.5 rounded-full shadow-xs tracking-tight">
+            <span className="bg-[#e62e5c] text-white text-[9px] sm:text-[10px] font-bold px-1.5 sm:px-2 py-0.5 rounded-full shadow-xs tracking-tight">
               -{discountPercent}%
             </span>
           )}
@@ -96,12 +96,12 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         <div>
           {/* Brand & Weight */}
           <div className="flex items-center justify-between text-[10px] sm:text-[11px] text-slate-500 font-medium">
-            <span className="text-purple-700 font-semibold truncate mr-1">{product.brand}</span>
+            <span className="text-[#4a154b] font-bold truncate mr-1">{product.brand}</span>
             {product.weightOrSize && <span className="text-slate-400 shrink-0">{product.weightOrSize}</span>}
           </div>
 
           {/* Title */}
-          <h3 className="text-xs sm:text-sm font-bold text-slate-800 line-clamp-2 mt-0.5 sm:mt-1 group-hover:text-purple-700 transition-colors leading-snug">
+          <h3 className="text-xs sm:text-sm font-bold text-slate-800 line-clamp-2 mt-0.5 sm:mt-1 group-hover:text-[#4a154b] transition-colors leading-snug">
             {product.title}
           </h3>
 
@@ -141,12 +141,12 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
           <button
             onClick={handleAddToCart}
             disabled={isOutOfStock}
-            className={`w-full py-1.5 sm:py-2 rounded-xl text-[11px] sm:text-xs font-semibold flex items-center justify-center gap-1 sm:gap-1.5 transition-all cursor-pointer ${
+            className={`w-full py-1.5 sm:py-2 rounded-xl text-[11px] sm:text-xs font-bold flex items-center justify-center gap-1 sm:gap-1.5 transition-all cursor-pointer ${
               isOutOfStock
                 ? 'bg-slate-100 text-slate-400 cursor-not-allowed'
                 : justAdded
                 ? 'bg-emerald-600 text-white'
-                : 'bg-purple-700 hover:bg-purple-800 text-white shadow-xs active:scale-[0.98]'
+                : 'bg-[#4a154b] hover:bg-[#3c103d] text-white shadow-xs active:scale-[0.98]'
             }`}
           >
             {isOutOfStock ? (

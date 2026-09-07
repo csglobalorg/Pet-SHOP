@@ -143,13 +143,14 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       localStorage.removeItem('cbz_pet_products_v1');
       localStorage.removeItem('cbz_pet_products_v2');
       localStorage.removeItem('cbz_pet_products_v3');
+      localStorage.removeItem('cbz_pet_products_v4');
     } catch (e) {}
 
-    const saved = localStorage.getItem('cbz_pet_products_v4');
+    const saved = localStorage.getItem('cbz_pet_products_v5');
     if (saved) {
       try {
         const parsed = JSON.parse(saved);
-        if (Array.isArray(parsed)) return parsed;
+        if (Array.isArray(parsed) && parsed.length > 0) return parsed;
       } catch (e) { console.error(e); }
     }
     return INITIAL_PRODUCTS;
@@ -421,7 +422,7 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
   // Sync to local storage
   useEffect(() => {
-    localStorage.setItem('cbz_pet_products_v4', JSON.stringify(products));
+    localStorage.setItem('cbz_pet_products_v5', JSON.stringify(products));
   }, [products]);
 
   useEffect(() => {

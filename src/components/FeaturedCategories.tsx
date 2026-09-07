@@ -14,9 +14,7 @@ export const FeaturedCategories: React.FC<FeaturedCategoriesProps> = ({ onSelect
       category: 'Pet Food' as ProductCategory,
       animal: 'cat' as AnimalType,
       searchTag: 'adult',
-      // Authentic Whiskas & dry food packshot
-      image: 'https://images.unsplash.com/photo-1589924691995-400dc9ecc119?w=500&auto=format&fit=crop&q=80',
-      badge: 'Popular'
+      image: 'https://images.unsplash.com/photo-1589924691995-400dc9ecc119?w=500&auto=format&fit=crop&q=80'
     },
     {
       id: 'cat-kitten-food',
@@ -25,9 +23,7 @@ export const FeaturedCategories: React.FC<FeaturedCategoriesProps> = ({ onSelect
       category: 'Pet Food' as ProductCategory,
       animal: 'cat' as AnimalType,
       searchTag: 'kitten',
-      // Kitten food pouches & growth food
-      image: 'https://images.unsplash.com/photo-1548767797-d8c844163c4c?w=500&auto=format&fit=crop&q=80',
-      badge: 'Growth'
+      image: 'https://images.unsplash.com/photo-1548767797-d8c844163c4c?w=500&auto=format&fit=crop&q=80'
     },
     {
       id: 'cat-collar',
@@ -36,42 +32,70 @@ export const FeaturedCategories: React.FC<FeaturedCategoriesProps> = ({ onSelect
       category: 'Accessories & Toys' as ProductCategory,
       animal: 'all' as AnimalType,
       searchTag: 'collar',
-      // Colorful bell collars
-      image: 'https://images.unsplash.com/photo-1601758228041-f3b2795255f1?w=500&auto=format&fit=crop&q=80',
-      badge: 'Style'
+      image: 'https://images.unsplash.com/photo-1601758228041-f3b2795255f1?w=500&auto=format&fit=crop&q=80'
     },
     {
-      id: 'cat-litter',
-      title: 'CAT LITTER',
+      id: 'clumping-cat-litter',
+      title: 'CLUMPING CAT LITTER',
       titleBn: 'ক্যাট লিটার',
       category: 'Litter & Hygiene' as ProductCategory,
       animal: 'cat' as AnimalType,
       searchTag: 'litter',
-      // Bentonite clumping cat litter
-      image: 'https://images.unsplash.com/photo-1543852786-1cf6624b9987?w=500&auto=format&fit=crop&q=80',
-      badge: 'Odor-Lock'
+      image: 'https://images.unsplash.com/photo-1543852786-1cf6624b9987?w=500&auto=format&fit=crop&q=80'
     },
     {
-      id: 'cat-feeding-bowls',
-      title: 'FEEDING & BOWLS',
-      titleBn: 'বাটি ও ফিডার',
+      id: 'litter-accessories',
+      title: 'CAT LITTER ACCESSORIES',
+      titleBn: 'লিটার ট্রে ও স্কুপ',
+      category: 'Litter & Hygiene' as ProductCategory,
+      animal: 'cat' as AnimalType,
+      searchTag: 'scoop',
+      image: 'https://images.unsplash.com/photo-1548767797-d8c844163c4c?w=500&auto=format&fit=crop&q=80'
+    },
+    {
+      id: 'cat-harness',
+      title: 'HARNESS',
+      titleBn: 'হারনেস ও লিড',
       category: 'Accessories & Toys' as ProductCategory,
       animal: 'all' as AnimalType,
-      searchTag: 'bowl',
-      // Pet feeding double bowl
-      image: 'https://images.unsplash.com/photo-1548767797-d8c844163c4c?w=500&auto=format&fit=crop&q=80',
-      badge: 'Dining'
+      searchTag: 'harness',
+      image: 'https://images.unsplash.com/photo-1601758228041-f3b2795255f1?w=500&auto=format&fit=crop&q=80'
     },
     {
-      id: 'cat-grooming',
-      title: 'GROOMING & CARE',
-      titleBn: 'গ্রুমিং ও হাইজিন',
-      category: 'Grooming Essentials' as ProductCategory,
+      id: 'cat-tick-flea',
+      title: 'CAT TICK & FLEA CONTROL',
+      titleBn: 'টিক ও ফ্লি কন্ট্রোল',
+      category: 'Healthcare & First Aid' as ProductCategory,
       animal: 'all' as AnimalType,
-      searchTag: 'shampoo',
-      // Grooming shampoos & brushes
-      image: 'https://images.unsplash.com/photo-1576201836106-db1758fd1c97?w=500&auto=format&fit=crop&q=80',
-      badge: 'Hygiene'
+      searchTag: 'flea',
+      image: 'https://images.unsplash.com/photo-1576201836106-db1758fd1c97?w=500&auto=format&fit=crop&q=80'
+    },
+    {
+      id: 'deworming-tablet',
+      title: 'DEWORMING TABLET',
+      titleBn: 'কৃমির ঔষধ',
+      category: 'Healthcare & First Aid' as ProductCategory,
+      animal: 'all' as AnimalType,
+      searchTag: 'deworm',
+      image: 'https://images.unsplash.com/photo-1583337130417-3346a1be7dee?w=500&auto=format&fit=crop&q=80'
+    },
+    {
+      id: 'cat-pouches',
+      title: 'CAT POUCHES',
+      titleBn: 'ক্যাট পাউচ',
+      category: 'Pet Food' as ProductCategory,
+      animal: 'cat' as AnimalType,
+      searchTag: 'pouch',
+      image: 'https://images.unsplash.com/photo-1561948955-570b270e7c36?w=500&auto=format&fit=crop&q=80'
+    },
+    {
+      id: 'cat-toys',
+      title: 'CAT TOYS',
+      titleBn: 'বিড়ালের খেলনা',
+      category: 'Accessories & Toys' as ProductCategory,
+      animal: 'cat' as AnimalType,
+      searchTag: 'toy',
+      image: 'https://images.unsplash.com/photo-1545249390-6bdfa286032f?w=500&auto=format&fit=crop&q=80'
     }
   ];
 
@@ -89,7 +113,7 @@ export const FeaturedCategories: React.FC<FeaturedCategoriesProps> = ({ onSelect
       {/* Centered Headline matching Mew Mew Shop */}
       <div className="text-center space-y-2 max-w-2xl mx-auto px-4">
         <h2 className="text-base sm:text-2xl font-bold text-slate-900 tracking-tight leading-snug">
-          Trusted Online Pet Shop in Cox's Bazar <br />
+          Trusted Online Pet Shop in Bangladesh <br />
           <span className="text-slate-700">for Authentic Pet Food & Accessories</span>
         </h2>
         
@@ -98,8 +122,8 @@ export const FeaturedCategories: React.FC<FeaturedCategoriesProps> = ({ onSelect
         </h3>
       </div>
 
-      {/* Categories Grid (Matches screenshot: 3 cards per row on mobile/tablet, clean white cards with rounded borders) */}
-      <div className="grid grid-cols-3 sm:grid-cols-3 md:grid-cols-6 gap-2 sm:gap-4">
+      {/* Categories Grid (Matches 2 rows of 5 on desktop, and clean 2-column or 3-column on mobile) */}
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2.5 sm:gap-4">
         {categories.map((item) => (
           <button
             key={item.id}

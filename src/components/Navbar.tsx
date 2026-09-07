@@ -52,7 +52,8 @@ export const Navbar: React.FC<NavbarProps> = ({
     currentUser,
     upcomingGroomingAppointments,
     triggerGroomingReminderCheck,
-    isAdminAuthenticated
+    isAdminAuthenticated,
+    wishlist
   } = useStore();
 
   const [searchQuery, setSearchQuery] = useState('');
@@ -328,13 +329,13 @@ export const Navbar: React.FC<NavbarProps> = ({
             )}
           </form>
 
-          {/* Right Buttons: Hello User, Account & My Basket(0) */}
-          <div className="flex items-center gap-3 shrink-0">
+          {/* Right Buttons: Hello User, Account, Wishlist & My Basket(0) */}
+          <div className="flex items-center gap-2.5 shrink-0">
             
             {/* User Account */}
             <button
               onClick={() => onOpenAccountModal?.('account')}
-              className="flex items-center gap-2 px-4 py-2 rounded-full border border-slate-300 hover:border-[#4a154b] hover:bg-purple-50/30 text-slate-700 text-xs font-semibold transition-all cursor-pointer shadow-xs"
+              className="flex items-center gap-2 px-3.5 py-2 rounded-full border border-slate-300 hover:border-[#4a154b] hover:bg-purple-50/30 text-slate-700 text-xs font-semibold transition-all cursor-pointer shadow-xs"
             >
               <User className="w-4 h-4 text-[#4a154b]" />
               <span>
@@ -344,13 +345,26 @@ export const Navbar: React.FC<NavbarProps> = ({
               </span>
             </button>
 
+            {/* Wishlist */}
+            <button
+              onClick={() => {
+                const catSection = document.getElementById('product-catalog-section');
+                catSection?.scrollIntoView({ behavior: 'smooth' });
+              }}
+              className="flex items-center gap-1.5 px-3 py-2 rounded-full border border-slate-300 hover:border-[#4a154b] hover:bg-purple-50/30 text-slate-700 text-xs font-semibold transition-all cursor-pointer shadow-xs"
+              title="View Wishlist"
+            >
+              <Heart className="w-4 h-4 text-rose-500" />
+              <span>Wishlist ({wishlist.length})</span>
+            </button>
+
             {/* My Basket button */}
             <button
               onClick={() => setIsCartOpen(true)}
-              className="flex items-center gap-2 px-4 py-2 rounded-full border border-slate-300 hover:border-[#4a154b] hover:bg-purple-50/30 text-slate-800 text-xs font-bold transition-all cursor-pointer shadow-xs"
+              className="flex items-center gap-2 px-4 py-2 rounded-full border border-[#4a154b]/30 bg-purple-50/40 hover:bg-purple-100/60 text-[#4a154b] text-xs font-bold transition-all cursor-pointer shadow-xs"
             >
               <ShoppingBag className="w-4 h-4 text-[#4a154b]" />
-              <span>My Basket({totalCartCount})</span>
+              <span>My Basket ({totalCartCount})</span>
             </button>
 
           </div>
@@ -364,16 +378,19 @@ export const Navbar: React.FC<NavbarProps> = ({
           <div className="flex items-center space-x-1 lg:space-x-4 text-xs font-semibold text-slate-700">
             
             {/* Categories button (aligned with sidebar below) */}
-            <div className="w-60 py-2.5 flex items-center gap-2 text-slate-900 font-bold">
-              <Menu className="w-4 h-4 text-purple-700" />
-              <span className="tracking-wide">Categories</span>
+            <div className="w-64 py-2.5 px-4 bg-[#4a154b] text-white rounded-t-xl flex items-center justify-between font-bold cursor-pointer">
+              <div className="flex items-center gap-2">
+                <Menu className="w-4 h-4 text-purple-200" />
+                <span className="tracking-wide">Browse Categories</span>
+              </div>
+              <ChevronDown className="w-3.5 h-3.5 text-purple-200" />
             </div>
 
             {/* Nav Menu Links */}
             <button 
               onClick={() => handleCategoryClick('All')}
-              className={`py-2.5 px-2 hover:text-purple-700 transition-colors cursor-pointer ${
-                selectedCategory === 'All' ? 'text-purple-700 font-bold' : ''
+              className={`py-2.5 px-2 hover:text-[#4a154b] transition-colors cursor-pointer ${
+                selectedCategory === 'All' ? 'text-[#4a154b] font-bold' : ''
               }`}
             >
               Home
@@ -564,9 +581,18 @@ export const Navbar: React.FC<NavbarProps> = ({
 
           </div>
 
-          <div className="text-xs text-purple-800 font-semibold flex items-center gap-1.5">
-            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-            <span>Store Open (10 AM - 10 PM)</span>
+          <div className="text-xs font-semibold flex items-center gap-3">
+            <a 
+              href={`tel:${STORE_INFO.phone}`}
+              className="hidden lg:flex items-center gap-1.5 text-[#4a154b] hover:text-[#3c103d] font-bold"
+            >
+              <PhoneCall className="w-3.5 h-3.5 text-[#4a154b]" />
+              <span>Hotline: {STORE_INFO.phone}</span>
+            </a>
+            <div className="text-purple-800 flex items-center gap-1.5 text-[11px]">
+              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+              <span>Open (10 AM - 10 PM)</span>
+            </div>
           </div>
 
         </div>

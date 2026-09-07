@@ -3,6 +3,7 @@ import { StoreProvider, useStore } from './context/StoreContext';
 import { Navbar } from './components/Navbar';
 import { HeroBanner } from './components/HeroBanner';
 import { FeaturedCategories } from './components/FeaturedCategories';
+import { MewMewStoreSections } from './components/MewMewStoreSections';
 import { ProductCatalog } from './components/ProductCatalog';
 import { ServicesAndPolicies } from './components/ServicesAndPolicies';
 import { CartDrawer } from './components/CartDrawer';
@@ -96,6 +97,12 @@ const StoreContent: React.FC = () => {
         {/* Featured Categories (Centered Headline + Card Grid matching screenshot) */}
         <FeaturedCategories 
           onSelectCategory={handleSelectCategory}
+        />
+
+        {/* Mew Mew Shop BD Signature Layout: Flash Sale, Turkish Banner, Cat, Dog, Flea, Brands, Top Sellers, VIP Card, Accessory Tabs, Reviews, App banner */}
+        <MewMewStoreSections 
+          onSelectCategory={handleSelectCategory}
+          onOpenAccountModal={handleOpenAccountModal}
         />
 
         {/* Main Product Catalog with live filtering & boutique state */}
