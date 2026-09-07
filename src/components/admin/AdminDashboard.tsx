@@ -75,12 +75,12 @@ export const AdminDashboard: React.FC = () => {
             <div>
               <div className="flex items-center gap-2">
                 <span className="font-extrabold text-sm tracking-tight text-white">Cox's Bazar Pet Shop & Care</span>
-                <span className="bg-purple-600/30 text-purple-300 border border-purple-500/40 text-[10px] font-bold px-2 py-0.5 rounded-md uppercase tracking-wider">
-                  Store POS & ERP
+                <span className="bg-purple-600/30 text-purple-300 border border-purple-500/40 text-[10px] font-bold px-2 py-0.5 rounded-md">
+                  অ্যাডমিন প্যানেল
                 </span>
               </div>
               <p className="text-[11px] text-purple-300/70">
-                Daily Ledger • POS Cashier • Customer Dues • Expenses • Suppliers
+                দোকান হিসাব, বিক্রি ও অনলাইন অর্ডার
               </p>
             </div>
           </div>
@@ -97,16 +97,16 @@ export const AdminDashboard: React.FC = () => {
               className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 hover:text-white text-xs font-semibold border border-slate-700 transition-colors cursor-pointer"
             >
               <ArrowLeft className="w-3.5 h-3.5" />
-              <span className="hidden sm:inline">Storefront</span>
+              <span className="hidden sm:inline">ওয়েবসাইট</span>
             </button>
 
             <button
               onClick={logoutAdmin}
               className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-rose-950/60 hover:bg-rose-900 text-rose-300 hover:text-white text-xs font-bold border border-rose-800/60 transition-colors cursor-pointer"
-              title="Lock Admin and Return to Store"
+              title="লগআউট করুন"
             >
               <LogOut className="w-3.5 h-3.5" />
-              <span>Lock Admin</span>
+              <span>লগআউট</span>
             </button>
           </div>
         </div>

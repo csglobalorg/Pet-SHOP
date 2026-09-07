@@ -64,7 +64,7 @@ export const FeaturedCategories: React.FC<FeaturedCategoriesProps> = ({ onSelect
     {
       id: 'cat-tick-flea',
       title: 'CAT TICK & FLEA CONTROL',
-      titleBn: 'টিক ও ফ্লি কন্ট্রোল',
+      titleBn: 'টিক ও ফ্লি কেয়ার',
       category: 'Healthcare & First Aid' as ProductCategory,
       animal: 'all' as AnimalType,
       searchTag: 'flea',
