@@ -20,6 +20,7 @@ export interface ServiceItem {
   tag?: string;
   badge?: string;
   category?: 'Care' | 'Travel' | 'Social' | 'Adoption' | 'Health';
+  isActive?: boolean;
 }
 
 export interface PetListing {
@@ -171,6 +172,24 @@ export interface Coupon {
   discountAmount?: number;
   minSpend: number;
   description: string;
+  isActive?: boolean;
+}
+
+export interface StoreSettings {
+  name: string;
+  brandName: string;
+  phone: string;
+  whatsapp: string;
+  whatsappDigits: string;
+  email: string;
+  address: string;
+  operatingHours: string;
+  announcementNotice: string;
+  isAnnouncementActive: boolean;
+  deliveryFeeInside: number;
+  deliveryFeeOutside: number;
+  freeDeliveryThreshold: number;
+  coupons: Coupon[];
 }
 
 export interface UserProfile {

@@ -12,7 +12,8 @@ export const CheckoutModal: React.FC = () => {
     setIsCheckoutOpen, 
     createOrder,
     setIsOrderTrackOpen,
-    currentUser
+    currentUser,
+    storeSettings
   } = useStore();
 
   const [name, setName] = useState('');
@@ -22,6 +23,9 @@ export const CheckoutModal: React.FC = () => {
   const [city, setCity] = useState("Cox's Bazar Municipality");
   const [notes, setNotes] = useState('');
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>('Cash on Delivery');
+  const [couponCodeInput, setCouponCodeInput] = useState('');
+  const [appliedCoupon, setAppliedCoupon] = useState<any | null>(null);
+  const [couponMsg, setCouponMsg] = useState<{ text: string; isError: boolean } | null>(null);
 
   React.useEffect(() => {
     if (currentUser?.isLoggedIn) {
@@ -39,21 +43,52 @@ export const CheckoutModal: React.FC = () => {
   const subtotal = cart.reduce((sum, item) => sum + (item.product.price * item.quantity), 0);
   
   const getDeliveryFee = () => {
+    const inside = storeSettings?.deliveryFeeInside ?? 50;
+    const outside = storeSettings?.deliveryFeeOutside ?? 120;
+    const freeThresh = storeSettings?.freeDeliveryThreshold ?? 1500;
+
     if (city.includes('Municipality')) {
-      return subtotal >= 1500 ? 0 : 50;
+      return subtotal >= freeThresh ? 0 : inside;
     } else if (city.includes('Kolatoli')) {
-      return 60;
+      return subtotal >= freeThresh ? 0 : (inside + 10);
     } else if (city.includes('Ramu')) {
-      return 80;
+      return Math.round(inside * 1.6);
     } else if (city.includes('Chittagong')) {
-      return 100;
+      return Math.round(inside * 2);
     }
-    return 120;
+    return outside;
+  };
+
+  const handleApplyCoupon = (e: React.FormEvent) => {
+    e.preventDefault();
+    setCouponMsg(null);
+    const cleanCode = couponCodeInput.trim().toUpperCase();
+    if (!cleanCode) return;
+
+    const availableCoupons = storeSettings?.coupons || [];
+    const matched = availableCoupons.find(c => c.code.toUpperCase() === cleanCode && c.isActive !== false);
+
+    if (!matched) {
+      setCouponMsg({ text: 'কুপন কোডটি সঠিক নয় বা মেয়াদোত্তীর্ণ। (Invalid coupon)', isError: true });
+      return;
+    }
+
+    if (subtotal < (matched.minSpend || 0)) {
+      setCouponMsg({ text: `এই কুপনের জন্য সর্বনিম্ন অর্ডারের পরিমাণ ৳${matched.minSpend}`, isError: true });
+      return;
+    }
+
+    setAppliedCoupon(matched);
+    setCouponMsg({ text: `কুপন কোড "${matched.code}" সফলভাবে যুক্ত হয়েছে!`, isError: false });
   };
 
   const deliveryFee = getDeliveryFee();
-  const discount = 0;
-  const total = subtotal - discount + deliveryFee;
+  const discount = appliedCoupon 
+    ? (appliedCoupon.discountPercent 
+        ? Math.round((subtotal * appliedCoupon.discountPercent) / 100) 
+        : Math.min(subtotal, appliedCoupon.discountAmount || 0))
+    : 0;
+  const total = Math.max(0, subtotal - discount + deliveryFee);
 
   const handleSubmitOrder = (e: React.FormEvent) => {
     e.preventDefault();
@@ -336,6 +371,31 @@ export const CheckoutModal: React.FC = () => {
               </div>
             </div>
 
+            {/* Promo Code Input Box */}
+            <div className="space-y-1.5">
+              <div className="flex gap-2">
+                <input
+                  type="text"
+                  placeholder="Promo Coupon Code (e.g. WELCOME10, COXPET50)"
+                  value={couponCodeInput}
+                  onChange={(e) => setCouponCodeInput(e.target.value.toUpperCase())}
+                  className="flex-1 px-3.5 py-2 rounded-xl border border-slate-200 text-xs font-mono uppercase focus:ring-2 focus:ring-purple-600 focus:outline-none placeholder:normal-case placeholder:font-sans"
+                />
+                <button
+                  type="button"
+                  onClick={handleApplyCoupon}
+                  className="px-4 py-2 bg-slate-900 hover:bg-purple-900 text-white rounded-xl text-xs font-bold transition-colors cursor-pointer shrink-0"
+                >
+                  Apply Code
+                </button>
+              </div>
+              {couponMsg && (
+                <p className={`text-[11px] font-semibold ${couponMsg.isError ? 'text-rose-600' : 'text-emerald-700'}`}>
+                  {couponMsg.text}
+                </p>
+              )}
+            </div>
+
             {/* Pricing Summary */}
             <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-2 text-xs">
               <div className="flex justify-between text-slate-600">
@@ -346,6 +406,12 @@ export const CheckoutModal: React.FC = () => {
                 <span>Delivery Fee ({city.split('(')[0].trim()}):</span>
                 <span>{deliveryFee === 0 ? <strong className="text-emerald-600">Free</strong> : `৳${deliveryFee}`}</span>
               </div>
+              {discount > 0 && (
+                <div className="flex justify-between text-emerald-700 font-bold">
+                  <span>Coupon Discount ({appliedCoupon?.code}):</span>
+                  <span>-৳{discount.toLocaleString()}</span>
+                </div>
+              )}
               <div className="flex justify-between font-black text-sm text-slate-900 pt-2 border-t border-slate-200">
                 <span>Total Amount:</span>
                 <span className="text-purple-700">৳{total.toLocaleString()}</span>

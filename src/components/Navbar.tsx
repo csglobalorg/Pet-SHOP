@@ -64,7 +64,8 @@ export const Navbar: React.FC<NavbarProps> = ({
     upcomingGroomingAppointments,
     triggerGroomingReminderCheck,
     isAdminAuthenticated,
-    wishlist
+    wishlist,
+    storeSettings
   } = useStore();
 
   const [searchQuery, setSearchQuery] = useState('');
@@ -161,26 +162,32 @@ export const Navbar: React.FC<NavbarProps> = ({
           <div className="flex items-center gap-2 sm:gap-4 text-[11px] font-medium">
             <span className="hidden xs:inline text-purple-200">★</span>
             <a 
-              href={`tel:${STORE_INFO.phone}`} 
+              href={`tel:${storeSettings?.phone || STORE_INFO.phone}`} 
               className="flex items-center gap-1.5 hover:text-purple-200 transition-colors"
             >
               <PhoneCall className="w-3 h-3 text-purple-300" />
-              <span>{STORE_INFO.phone}</span>
+              <span>{storeSettings?.phone || STORE_INFO.phone}</span>
             </a>
             <span className="hidden sm:inline text-purple-300/40">|</span>
             <div className="hidden sm:flex items-center gap-1.5 text-purple-200 text-[11px]">
               <MapPin className="w-3 h-3 text-purple-300" />
               <span>Cox's Bazar, Bangladesh</span>
             </div>
-            <span className="hidden md:inline text-purple-200 font-bold">
-              • ফ্রি ডেলিভারি ও অরিজিনাল পেট ফুড
-            </span>
+            {storeSettings?.isAnnouncementActive && storeSettings?.announcementNotice ? (
+              <span className="hidden md:inline text-purple-200 font-bold">
+                • {storeSettings.announcementNotice}
+              </span>
+            ) : (
+              <span className="hidden md:inline text-purple-200 font-bold">
+                • ফ্রি ডেলিভারি ও অরিজিনাল পেট ফুড
+              </span>
+            )}
           </div>
 
           {/* Right quick links */}
           <div className="flex items-center gap-2 sm:gap-3 text-[11px]">
             <a
-              href={`https://wa.me/${STORE_INFO.whatsappDigits}?text=${encodeURIComponent('Hello Cox\'s Bazar Pet Shop!')}`}
+              href={`https://wa.me/${storeSettings?.whatsappDigits || STORE_INFO.whatsappDigits}?text=${encodeURIComponent('Hello Cox\'s Bazar Pet Shop!')}`}
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center gap-1 text-emerald-300 hover:text-emerald-200 font-medium transition-colors"

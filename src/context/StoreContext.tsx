@@ -12,7 +12,9 @@ import {
   CustomerDueRecord,
   SupplierRecord,
   UserProfile,
-  PetListing
+  PetListing,
+  StoreSettings,
+  Coupon
 } from '../types';
 import { 
   INITIAL_PRODUCTS, 
@@ -20,6 +22,7 @@ import {
   INITIAL_INVENTORY_LOGS, 
   INITIAL_APPOINTMENTS, 
   STORE_SERVICES,
+  STORE_INFO,
   INITIAL_EXPENSES,
   INITIAL_CUSTOMER_DUES,
   INITIAL_SUPPLIERS,
@@ -32,7 +35,7 @@ export interface DailySalesMetric {
   orders: number;
 }
 
-export type AdminTabType = 'dokan' | 'pos' | 'dues' | 'expenses' | 'inventory' | 'products' | 'suppliers' | 'appointments' | 'sales';
+export type AdminTabType = 'dokan' | 'pos' | 'dues' | 'expenses' | 'inventory' | 'products' | 'suppliers' | 'appointments' | 'sales' | 'settings';
 
 interface StoreContextType {
   products: Product[];
@@ -70,11 +73,24 @@ interface StoreContextType {
 
   // Admin Protection & Staff Security Gate
   isAdminAuthenticated: boolean;
+  adminEmail: string;
   isAdminAuthModalOpen: boolean;
   setIsAdminAuthModalOpen: (open: boolean) => void;
-  loginAdmin: (passcode: string) => boolean;
+  loginAdmin: (emailOrPass: string, password?: string) => boolean;
   logoutAdmin: () => void;
   openAdminPortal: (tab?: AdminTabType) => void;
+
+  // Store Global Settings & Announcements
+  storeSettings: StoreSettings;
+  updateStoreSettings: (updated: Partial<StoreSettings>) => void;
+  addCoupon: (coupon: Coupon) => void;
+  deleteCoupon: (code: string) => void;
+  toggleCoupon: (code: string) => void;
+
+  // Service Pricing & Catalog Management (Admin)
+  updateService: (id: string, updated: Partial<ServiceItem>) => void;
+  addService: (service: Omit<ServiceItem, 'id'>) => void;
+  deleteService: (id: string) => void;
 
   // Dokan Retail Khata State
   expenses: ExpenseRecord[];
@@ -189,7 +205,50 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     return INITIAL_APPOINTMENTS;
   });
 
-  const services = STORE_SERVICES;
+  const [services, setServices] = useState<ServiceItem[]>(() => {
+    const saved = localStorage.getItem('cbz_pet_services_v5');
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+      } catch (e) { console.error(e); }
+    }
+    return STORE_SERVICES;
+  });
+
+  const DEFAULT_STORE_SETTINGS: StoreSettings = {
+    name: STORE_INFO.name,
+    brandName: STORE_INFO.brandName,
+    phone: STORE_INFO.phone,
+    whatsapp: STORE_INFO.whatsapp,
+    whatsappDigits: STORE_INFO.whatsappDigits,
+    email: STORE_INFO.email,
+    address: STORE_INFO.address,
+    operatingHours: STORE_INFO.operatingHours,
+    announcementNotice: "⚡ কক্সবাজার সদরে ফ্রি হোম ডেলিভারি (১৫০০ টাকার অর্ডারে) • হেল্পলাইন: 01854-444344",
+    isAnnouncementActive: true,
+    deliveryFeeInside: 50,
+    deliveryFeeOutside: 120,
+    freeDeliveryThreshold: 1500,
+    coupons: [
+      { code: 'WELCOME10', discountPercent: 10, minSpend: 1000, description: '10% discount on order over ৳1000', isActive: true },
+      { code: 'COXPET50', discountAmount: 50, minSpend: 800, description: '৳50 discount for Cox\'s Bazar pet parents', isActive: true },
+      { code: 'GROOM20', discountPercent: 20, minSpend: 1500, description: '20% off for grooming & care packages', isActive: true }
+    ]
+  };
+
+  const [storeSettings, setStoreSettings] = useState<StoreSettings>(() => {
+    const saved = localStorage.getItem('cbz_pet_store_settings_v5');
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        if (parsed && typeof parsed === 'object') {
+          return { ...DEFAULT_STORE_SETTINGS, ...parsed };
+        }
+      } catch (e) { console.error(e); }
+    }
+    return DEFAULT_STORE_SETTINGS;
+  });
 
   const [cart, setCart] = useState<CartItem[]>(() => {
     const saved = localStorage.getItem('cbz_pet_cart_v2');
@@ -259,13 +318,41 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   });
   const [isAdminAuthModalOpen, setIsAdminAuthModalOpen] = useState(false);
 
-  const loginAdmin = (passcode: string): boolean => {
-    const cleanPin = passcode.trim();
-    // Default Owner PIN is 1234 or admin
-    if (cleanPin === '1234' || cleanPin.toLowerCase() === 'admin' || cleanPin === 'admin123') {
+  const [adminEmail, setAdminEmail] = useState<string>(() => {
+    try {
+      return sessionStorage.getItem('cbz_admin_email') || 'admin@cbp.com';
+    } catch {
+      return 'admin@cbp.com';
+    }
+  });
+
+  const loginAdmin = (emailOrPass: string, password?: string): boolean => {
+    if (password !== undefined) {
+      const cleanEmail = emailOrPass.trim().toLowerCase();
+      const cleanPass = password.trim();
+
+      if (cleanEmail === 'admin@cbp.com' && cleanPass === '@F6f8y6d9@') {
+        setIsAdminAuthenticated(true);
+        setAdminEmail(cleanEmail);
+        try {
+          sessionStorage.setItem('cbz_admin_auth', 'true');
+          sessionStorage.setItem('cbz_admin_email', cleanEmail);
+        } catch {}
+        setIsAdminAuthModalOpen(false);
+        setAdminTab(pendingAdminTab || 'dokan');
+        setActiveView('admin');
+        return true;
+      }
+      return false;
+    }
+
+    const clean = emailOrPass.trim();
+    if (clean === '@F6f8y6d9@') {
       setIsAdminAuthenticated(true);
+      setAdminEmail('admin@cbp.com');
       try {
         sessionStorage.setItem('cbz_admin_auth', 'true');
+        sessionStorage.setItem('cbz_admin_email', 'admin@cbp.com');
       } catch {}
       setIsAdminAuthModalOpen(false);
       setAdminTab(pendingAdminTab || 'dokan');
@@ -279,6 +366,7 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     setIsAdminAuthenticated(false);
     try {
       sessionStorage.removeItem('cbz_admin_auth');
+      sessionStorage.removeItem('cbz_admin_email');
     } catch {}
     setActiveView('store');
   };
@@ -871,6 +959,62 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     }));
   };
 
+  // Sync services & storeSettings to localStorage
+  useEffect(() => {
+    try {
+      localStorage.setItem('cbz_pet_services_v5', JSON.stringify(services));
+    } catch (e) { console.error(e); }
+  }, [services]);
+
+  useEffect(() => {
+    try {
+      localStorage.setItem('cbz_pet_store_settings_v5', JSON.stringify(storeSettings));
+    } catch (e) { console.error(e); }
+  }, [storeSettings]);
+
+  // Service Pricing & Catalog Handlers
+  const updateService = (id: string, updated: Partial<ServiceItem>) => {
+    setServices(prev => prev.map(s => s.id === id ? { ...s, ...updated } : s));
+  };
+
+  const addService = (newServiceData: Omit<ServiceItem, 'id'>) => {
+    const newService: ServiceItem = {
+      ...newServiceData,
+      id: `srv-${Date.now()}`
+    };
+    setServices(prev => [...prev, newService]);
+  };
+
+  const deleteService = (id: string) => {
+    setServices(prev => prev.filter(s => s.id !== id));
+  };
+
+  // Store Settings & Promo Coupons Handlers
+  const updateStoreSettings = (updated: Partial<StoreSettings>) => {
+    setStoreSettings(prev => ({ ...prev, ...updated }));
+  };
+
+  const addCoupon = (coupon: Coupon) => {
+    setStoreSettings(prev => ({
+      ...prev,
+      coupons: [...prev.coupons.filter(c => c.code.toUpperCase() !== coupon.code.toUpperCase()), coupon]
+    }));
+  };
+
+  const deleteCoupon = (code: string) => {
+    setStoreSettings(prev => ({
+      ...prev,
+      coupons: prev.coupons.filter(c => c.code.toUpperCase() !== code.toUpperCase())
+    }));
+  };
+
+  const toggleCoupon = (code: string) => {
+    setStoreSettings(prev => ({
+      ...prev,
+      coupons: prev.coupons.map(c => c.code.toUpperCase() === code.toUpperCase() ? { ...c, isActive: !c.isActive } : c)
+    }));
+  };
+
   const resetToDefaults = () => {
     setProducts(INITIAL_PRODUCTS);
     setOrders(INITIAL_ORDERS);
@@ -942,11 +1086,20 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         openBookingModalForService,
         salesAnalytics,
         isAdminAuthenticated,
+        adminEmail,
         isAdminAuthModalOpen,
         setIsAdminAuthModalOpen,
         loginAdmin,
         logoutAdmin,
         openAdminPortal,
+        storeSettings,
+        updateStoreSettings,
+        addCoupon,
+        deleteCoupon,
+        toggleCoupon,
+        updateService,
+        addService,
+        deleteService,
         expenses,
         customerDues,
         suppliers,

@@ -18,7 +18,8 @@ import {
   KeyRound, 
   AlertCircle,
   Eye,
-  EyeOff
+  EyeOff,
+  Sliders
 } from 'lucide-react';
 import { useStore } from '../../context/StoreContext';
 import { DokanOverview } from './DokanOverview';
@@ -30,6 +31,7 @@ import { InventoryManagement } from './InventoryManagement';
 import { SupplierLedger } from './SupplierLedger';
 import { AppointmentManager } from './AppointmentManager';
 import { SalesReportTracker } from './SalesReportTracker';
+import { StoreSettingsManager } from './StoreSettingsManager';
 import { AdminLoginPage } from './AdminLoginPage';
 
 export const AdminDashboard: React.FC = () => {
@@ -44,6 +46,7 @@ export const AdminDashboard: React.FC = () => {
     suppliers, 
     appointments,
     isAdminAuthenticated,
+    adminEmail,
     logoutAdmin
   } = useStore();
 
@@ -82,8 +85,13 @@ export const AdminDashboard: React.FC = () => {
             </div>
           </div>
 
-          {/* Action Buttons: Storefront & Lock Admin */}
+          {/* Action Buttons: Email Badge, Storefront & Lock Admin */}
           <div className="flex items-center gap-2">
+            <div className="hidden md:flex items-center gap-1.5 px-3 py-1 rounded-xl bg-purple-950/60 border border-purple-800/50 text-[11px] font-mono text-purple-300">
+              <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
+              <span>{adminEmail || 'admin@cbp.com'}</span>
+            </div>
+
             <button
               onClick={() => setActiveView('store')}
               className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 hover:text-white text-xs font-semibold border border-slate-700 transition-colors cursor-pointer"
@@ -243,6 +251,19 @@ export const AdminDashboard: React.FC = () => {
             <span className="text-[10px] text-slate-400">({orders.length})</span>
           </button>
 
+          {/* 10. Store Settings & Announcements */}
+          <button
+            onClick={() => setAdminTab('settings')}
+            className={`flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold whitespace-nowrap rounded-xl transition-all cursor-pointer ${
+              adminTab === 'settings'
+                ? 'bg-purple-600 text-white shadow-md ring-2 ring-purple-400/30'
+                : 'text-purple-300 hover:text-white hover:bg-slate-800/80 bg-purple-950/30 border border-purple-800/40'
+            }`}
+          >
+            <Sliders className="w-4 h-4 text-purple-300" />
+            <span>Settings & Notices</span>
+          </button>
+
         </div>
       </header>
 
@@ -257,6 +278,7 @@ export const AdminDashboard: React.FC = () => {
         {adminTab === 'suppliers' && <SupplierLedger />}
         {adminTab === 'appointments' && <AppointmentManager />}
         {adminTab === 'sales' && <SalesReportTracker />}
+        {adminTab === 'settings' && <StoreSettingsManager />}
 
         <div className="mt-12 pt-6 border-t border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-500">
           <div>
