@@ -21,10 +21,9 @@ import { useStore } from '../context/StoreContext';
 
 interface FooterProps {
   onSelectCategory?: (category: ProductCategory) => void;
-  onOpenAdmin?: () => void;
 }
 
-export const Footer: React.FC<FooterProps> = ({ onSelectCategory, onOpenAdmin }) => {
+export const Footer: React.FC<FooterProps> = ({ onSelectCategory }) => {
   const { openBookingModalForService } = useStore();
 
   return (
@@ -282,14 +281,6 @@ export const Footer: React.FC<FooterProps> = ({ onSelectCategory, onOpenAdmin })
           <div className="flex items-center gap-4">
             <span className="text-purple-400/80 font-serif italic text-xs hidden sm:inline">
               "{STORE_INFO.tagline}"
-            </span>
-            {/* Secret discreet dot trigger for staff */}
-            <span 
-              onClick={onOpenAdmin}
-              className="hidden sm:inline text-slate-800 hover:text-slate-600 cursor-default select-none text-[10px] transition-colors"
-              title=""
-            >
-              •
             </span>
           </div>
         </div>

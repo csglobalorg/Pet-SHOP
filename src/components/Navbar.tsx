@@ -111,21 +111,9 @@ export const Navbar: React.FC<NavbarProps> = ({
     { name: 'Special Offers', category: 'Pet Food' as ProductCategory, searchTag: 'flash sale', icon: Tag }
   ];
 
-  // Secret Staff Trigger: Triple-clicking logo unlocks Admin PIN portal
-  const logoClickRef = useRef<{ count: number; timer: any }>({ count: 0, timer: null });
   const handleLogoClick = () => {
     setActiveView('store');
-    logoClickRef.current.count += 1;
-    if (logoClickRef.current.count >= 3) {
-      logoClickRef.current.count = 0;
-      clearTimeout(logoClickRef.current.timer);
-      openAdminPortal();
-      return;
-    }
-    clearTimeout(logoClickRef.current.timer);
-    logoClickRef.current.timer = setTimeout(() => {
-      logoClickRef.current.count = 0;
-    }, 1500);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const totalCartCount = cart.reduce((sum, item) => sum + item.quantity, 0);
@@ -208,30 +196,6 @@ export const Navbar: React.FC<NavbarProps> = ({
               <Truck className="w-3 h-3 text-purple-300" />
               <span>Track Order</span>
             </button>
-            {/* View Switcher: ONLY visible to authenticated staff */}
-            {isAdminAuthenticated && (
-              <>
-                <span className="text-purple-300/40">|</span>
-                {activeView === 'admin' ? (
-                  <button
-                    onClick={() => setActiveView('store')}
-                    className="flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-600 hover:bg-emerald-500 text-white text-[10px] font-bold transition-all shadow-xs cursor-pointer"
-                  >
-                    <Store className="w-3 h-3 text-amber-300" />
-                    <span>Storefront</span>
-                  </button>
-                ) : (
-                  <button
-                    onClick={() => setActiveView('admin')}
-                    className="flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-purple-900 hover:bg-purple-800 text-purple-200 text-[10px] font-bold transition-all shadow-xs cursor-pointer"
-                    title="Open Dokan ERP & POS Management"
-                  >
-                    <Lock className="w-2.5 h-2.5 text-amber-400" />
-                    <span>Admin ERP</span>
-                  </button>
-                )}
-              </>
-            )}
           </div>
         </div>
       </div>

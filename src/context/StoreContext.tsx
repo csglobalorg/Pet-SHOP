@@ -213,7 +213,41 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     return [];
   });
 
-  const [activeView, setActiveView] = useState<'store' | 'admin'>('store');
+  const checkIsAdminUrl = () => {
+    if (typeof window === 'undefined') return false;
+    const path = window.location.pathname.toLowerCase();
+    const hash = (window.location.hash || '').toLowerCase();
+    const search = window.location.search.toLowerCase();
+    return (
+      path.startsWith('/admin') ||
+      path.startsWith('/erp') ||
+      path.startsWith('/pos') ||
+      hash.includes('admin') ||
+      hash.includes('pos') ||
+      search.includes('admin') ||
+      search.includes('pos')
+    );
+  };
+
+  const [activeView, setActiveViewState] = useState<'store' | 'admin'>(() => {
+    return checkIsAdminUrl() ? 'admin' : 'store';
+  });
+
+  const setActiveView = (view: 'store' | 'admin') => {
+    setActiveViewState(view);
+    if (typeof window !== 'undefined') {
+      if (view === 'admin') {
+        if (!window.location.pathname.startsWith('/admin') && !window.location.hash.includes('admin')) {
+          window.history.pushState({}, '', '/admin');
+        }
+      } else {
+        if (window.location.pathname.startsWith('/admin') || window.location.hash.includes('admin')) {
+          window.history.pushState({}, '', '/');
+        }
+      }
+    }
+  };
+
   const [adminTab, setAdminTab] = useState<AdminTabType>('dokan');
   const [pendingAdminTab, setPendingAdminTab] = useState<AdminTabType>('dokan');
   const [isAdminAuthenticated, setIsAdminAuthenticated] = useState<boolean>(() => {
@@ -234,7 +268,7 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         sessionStorage.setItem('cbz_admin_auth', 'true');
       } catch {}
       setIsAdminAuthModalOpen(false);
-      setAdminTab(pendingAdminTab);
+      setAdminTab(pendingAdminTab || 'dokan');
       setActiveView('admin');
       return true;
     }
@@ -252,47 +286,26 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   const openAdminPortal = (tab?: AdminTabType) => {
     const target = tab || 'dokan';
     setPendingAdminTab(target);
-    if (isAdminAuthenticated) {
-      setAdminTab(target);
-      setActiveView('admin');
-    } else {
-      setIsAdminAuthModalOpen(true);
-    }
+    setAdminTab(target);
+    setActiveView('admin');
   };
 
-  // Keyboard shortcut listener for staff access (Ctrl+Shift+A, Ctrl+Shift+P, Alt+A)
+  // URL trigger listener for staff: /admin, #/admin, ?admin
   useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      const isKeyA = e.key.toLowerCase() === 'a';
-      const isKeyP = e.key.toLowerCase() === 'p';
-      if ((e.altKey && isKeyA) || (e.ctrlKey && e.shiftKey && (isKeyA || isKeyP))) {
-        e.preventDefault();
-        openAdminPortal(isKeyP ? 'pos' : 'dokan');
+    const syncViewFromUrl = () => {
+      if (checkIsAdminUrl()) {
+        setActiveViewState('admin');
+      } else {
+        setActiveViewState('store');
       }
     };
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [isAdminAuthenticated]);
-
-  // URL trigger listener for staff: /?admin, /?pos, /?erp, #admin, #pos
-  useEffect(() => {
-    const checkUrlForAdmin = () => {
-      if (typeof window !== 'undefined') {
-        const params = new URLSearchParams(window.location.search);
-        const hash = (window.location.hash || '').toLowerCase();
-        if (params.has('admin') || hash === '#admin') {
-          openAdminPortal('dokan');
-        } else if (params.has('pos') || hash === '#pos') {
-          openAdminPortal('pos');
-        } else if (params.has('erp') || hash === '#erp') {
-          openAdminPortal('dokan');
-        }
-      }
+    window.addEventListener('popstate', syncViewFromUrl);
+    window.addEventListener('hashchange', syncViewFromUrl);
+    return () => {
+      window.removeEventListener('popstate', syncViewFromUrl);
+      window.removeEventListener('hashchange', syncViewFromUrl);
     };
-    checkUrlForAdmin();
-    window.addEventListener('hashchange', checkUrlForAdmin);
-    return () => window.removeEventListener('hashchange', checkUrlForAdmin);
-  }, [isAdminAuthenticated]);
+  }, []);
 
   // Customer Account & Profile
   const GUEST_USER: UserProfile = {

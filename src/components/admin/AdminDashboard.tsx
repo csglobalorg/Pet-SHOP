@@ -30,6 +30,7 @@ import { InventoryManagement } from './InventoryManagement';
 import { SupplierLedger } from './SupplierLedger';
 import { AppointmentManager } from './AppointmentManager';
 import { SalesReportTracker } from './SalesReportTracker';
+import { AdminLoginPage } from './AdminLoginPage';
 
 export const AdminDashboard: React.FC = () => {
   const { 
@@ -43,151 +44,17 @@ export const AdminDashboard: React.FC = () => {
     suppliers, 
     appointments,
     isAdminAuthenticated,
-    loginAdmin,
     logoutAdmin
   } = useStore();
-
-  const [pinInput, setPinInput] = useState('');
-  const [pinError, setPinError] = useState('');
-  const [showPin, setShowPin] = useState(false);
 
   const totalSales = (orders || []).filter(o => o.orderStatus !== 'Cancelled').reduce((sum, o) => sum + o.total, 0);
   const lowStockCount = (products || []).filter(p => p.stock <= 8).length;
   const pendingAppointments = (appointments || []).filter(a => a.status === 'Pending').length;
   const totalCustomerDues = (customerDues || []).reduce((sum, d) => sum + d.totalDue, 0);
 
-  // Security Protection: If not authenticated, show passcode lock screen
+  // Security Protection: If not authenticated, show separate dedicated AdminLoginPage
   if (!isAdminAuthenticated) {
-    const handleUnlock = (e: React.FormEvent) => {
-      e.preventDefault();
-      const success = loginAdmin(pinInput);
-      if (!success) {
-        setPinError('Incorrect PIN. Default store PIN is 1234.');
-        setPinInput('');
-      } else {
-        setPinError('');
-      }
-    };
-
-    return (
-      <div className="min-h-screen bg-slate-950 text-white flex items-center justify-center p-4">
-        <div className="bg-slate-900 border border-slate-800 rounded-3xl max-w-sm w-full p-6 shadow-2xl space-y-5 animate-in fade-in zoom-in-95 duration-150 text-center">
-          
-          <div className="w-14 h-14 rounded-2xl bg-purple-900/60 border border-purple-500/30 flex items-center justify-center text-purple-300 mx-auto shadow-inner">
-            <Lock className="w-7 h-7 text-purple-400" />
-          </div>
-
-          <div className="space-y-1">
-            <h2 className="text-lg font-bold text-white tracking-tight">Admin & POS Security Gate</h2>
-            <p className="text-xs text-slate-400">
-              Access is restricted to store management and counter staff.
-            </p>
-          </div>
-
-          <form onSubmit={handleUnlock} className="space-y-3.5">
-            <div className="relative">
-              <input
-                type={showPin ? 'text' : 'password'}
-                autoFocus
-                maxLength={8}
-                value={pinInput || ''}
-                onChange={(e) => {
-                  setPinInput(e.target.value);
-                  setPinError('');
-                }}
-                placeholder="Enter PIN"
-                className="w-full text-center text-2xl tracking-widest font-mono font-bold py-3 bg-slate-950 border border-slate-700 rounded-2xl text-white focus:outline-none focus:border-purple-500 transition-all placeholder:text-slate-700"
-              />
-              <button
-                type="button"
-                onClick={() => setShowPin(!showPin)}
-                className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-300 cursor-pointer"
-              >
-                {showPin ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-              </button>
-            </div>
-
-            {pinError && (
-              <div className="flex items-center gap-1.5 text-rose-400 text-xs font-semibold bg-rose-950/40 border border-rose-800/40 p-2 rounded-xl justify-center">
-                <AlertCircle className="w-3.5 h-3.5 shrink-0" />
-                <span>{pinError}</span>
-              </div>
-            )}
-
-            {/* Quick Touch Keypad */}
-            <div className="grid grid-cols-3 gap-2 pt-1">
-              {['1', '2', '3', '4', '5', '6', '7', '8', '9'].map(num => (
-                <button
-                  key={num}
-                  type="button"
-                  onClick={() => {
-                    setPinError('');
-                    if (pinInput.length < 8) setPinInput(prev => prev + num);
-                  }}
-                  className="py-2.5 rounded-xl bg-slate-800/80 hover:bg-slate-700 text-lg font-bold font-mono text-slate-200 transition-colors active:scale-95 cursor-pointer"
-                >
-                  {num}
-                </button>
-              ))}
-              <button
-                type="button"
-                onClick={() => { setPinInput(''); setPinError(''); }}
-                className="py-2.5 rounded-xl bg-slate-800/40 hover:bg-slate-800 text-xs font-bold text-slate-400 hover:text-rose-400 transition-colors cursor-pointer"
-              >
-                Clear
-              </button>
-              <button
-                type="button"
-                onClick={() => {
-                  setPinError('');
-                  if (pinInput.length < 8) setPinInput(prev => prev + '0');
-                }}
-                className="py-2.5 rounded-xl bg-slate-800/80 hover:bg-slate-700 text-lg font-bold font-mono text-slate-200 transition-colors active:scale-95 cursor-pointer"
-              >
-                0
-              </button>
-              <button
-                type="button"
-                onClick={() => setPinInput(prev => prev.slice(0, -1))}
-                className="py-2.5 rounded-xl bg-slate-800/40 hover:bg-slate-800 text-xs font-bold text-slate-400 hover:text-slate-200 transition-colors cursor-pointer"
-              >
-                ⌫
-              </button>
-            </div>
-
-            <button
-              type="submit"
-              className="w-full py-3 bg-purple-700 hover:bg-purple-600 text-white rounded-2xl font-bold text-xs shadow-md transition-all cursor-pointer mt-2"
-            >
-              Verify & Unlock
-            </button>
-          </form>
-
-          <div className="flex items-center justify-between text-[11px] text-slate-500 pt-2 border-t border-slate-800">
-            <button
-              type="button"
-              onClick={() => setActiveView('store')}
-              className="text-slate-400 hover:text-white flex items-center gap-1 cursor-pointer"
-            >
-              <ArrowLeft className="w-3.5 h-3.5" />
-              <span>Back to Storefront</span>
-            </button>
-
-            <button
-              type="button"
-              onClick={() => {
-                setPinInput('1234');
-                setPinError('');
-              }}
-              className="text-purple-400 hover:underline cursor-pointer"
-            >
-              Auto-fill PIN (1234)
-            </button>
-          </div>
-
-        </div>
-      </div>
-    );
+    return <AdminLoginPage />;
   }
 
   return (

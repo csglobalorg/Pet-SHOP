@@ -17,11 +17,11 @@ import { FloatingWidgets } from './components/FloatingWidgets';
 import { MobileBottomNav } from './components/MobileBottomNav';
 import { Footer } from './components/Footer';
 import { AdminDashboard } from './components/admin/AdminDashboard';
-import { AdminAuthModal } from './components/AdminAuthModal';
+import { AdminLoginPage } from './components/admin/AdminLoginPage';
 import { ProductCategory, AnimalType } from './types';
 
 const StoreContent: React.FC = () => {
-  const { activeView, openAdminPortal } = useStore();
+  const { activeView, isAdminAuthenticated } = useStore();
   const [selectedCategory, setSelectedCategory] = useState<ProductCategory | 'All'>('All');
   const [selectedAnimal, setSelectedAnimal] = useState<AnimalType>('all');
   const [searchQuery, setSearchQuery] = useState('');
@@ -71,6 +71,9 @@ const StoreContent: React.FC = () => {
   };
 
   if (activeView === 'admin') {
+    if (!isAdminAuthenticated) {
+      return <AdminLoginPage />;
+    }
     return <AdminDashboard />;
   }
 
@@ -120,10 +123,7 @@ const StoreContent: React.FC = () => {
       </main>
 
       {/* Footer */}
-      <Footer 
-        onSelectCategory={handleSelectCategory} 
-        onOpenAdmin={() => openAdminPortal()} 
-      />
+      <Footer onSelectCategory={handleSelectCategory} />
 
       {/* Floating Right Docked Cart & Bottom Right Messenger Bubble */}
       <FloatingWidgets />
@@ -145,7 +145,6 @@ const StoreContent: React.FC = () => {
         onClose={() => setAccountModalOpen(false)} 
         defaultTab={accountModalTab} 
       />
-      <AdminAuthModal />
 
       {/* Local Notification for Real Grooming Appointments */}
       <GroomingReminderToast onOpenAccountModal={() => handleOpenAccountModal('grooming')} />

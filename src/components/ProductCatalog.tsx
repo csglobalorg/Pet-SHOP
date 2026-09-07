@@ -30,7 +30,7 @@ export const ProductCatalog: React.FC<ProductCatalogProps> = ({
   selectedAnimal = 'all',
   onSelectAnimal
 }) => {
-  const { products, openAdminPortal, isAdminAuthenticated } = useStore();
+  const { products } = useStore();
 
   const [sortBy, setSortBy] = useState<'popular' | 'price-asc' | 'price-desc' | 'rating'>('popular');
   const [inStockOnly, setInStockOnly] = useState(false);
@@ -288,17 +288,6 @@ export const ProductCatalog: React.FC<ProductCatalogProps> = ({
               <PhoneCall className="w-4 h-4 text-slate-700" />
               <span>সরাসরি কল করুন ({STORE_INFO.phone})</span>
             </a>
-
-            {/* Admin Quick Action Button */}
-            {isAdminAuthenticated ? (
-              <button
-                onClick={() => openAdminPortal('products')}
-                className="px-4 py-2.5 rounded-xl bg-purple-900 hover:bg-purple-800 text-white text-xs sm:text-sm font-semibold transition-all flex items-center gap-1.5 cursor-pointer"
-              >
-                <Plus className="w-4 h-4 text-amber-300" />
-                <span>+ প্রোডাক্ট যোগ করুন (Admin)</span>
-              </button>
-            ) : null}
           </div>
 
           <div className="pt-4 border-t border-slate-100 text-[11px] text-slate-400 flex items-center justify-center gap-2">

@@ -11,8 +11,7 @@ export const CheckoutModal: React.FC = () => {
     isCheckoutOpen, 
     setIsCheckoutOpen, 
     createOrder,
-    setActiveView,
-    setAdminTab,
+    setIsOrderTrackOpen,
     currentUser
   } = useStore();
 
@@ -180,13 +179,12 @@ export const CheckoutModal: React.FC = () => {
               <button
                 onClick={() => {
                   handleClose();
-                  setActiveView('admin');
-                  setAdminTab('sales');
+                  setIsOrderTrackOpen(true);
                 }}
-                className="w-full sm:w-auto px-5 py-2.5 bg-purple-700 hover:bg-purple-800 text-white rounded-xl text-xs font-semibold flex items-center justify-center gap-1.5 cursor-pointer transition-colors shadow-xs"
+                className="w-full sm:w-auto px-5 py-2.5 bg-[#4a154b] hover:bg-[#3c103d] text-white rounded-xl text-xs font-semibold flex items-center justify-center gap-1.5 cursor-pointer transition-colors shadow-xs"
               >
-                <Sparkles className="w-4 h-4 text-purple-200" />
-                <span>View Order in Admin</span>
+                <Truck className="w-4 h-4 text-purple-200" />
+                <span>Track Order</span>
               </button>
             </div>
           </div>
