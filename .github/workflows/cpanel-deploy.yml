@@ -1,0 +1,38 @@
+name: Deploy to Namecheap cPanel
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  web-deploy:
+    name: 🎉 Build & Deploy to Namecheap cPanel
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🚚 Get latest code
+        uses: actions/checkout@v4
+
+      - name: ⚙️ Use Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: 🔨 Install Dependencies
+        run: npm ci
+
+      - name: 📦 Build Production Bundle
+        run: node node_modules/vite/bin/vite.js build
+
+      - name: 📄 Ensure .htaccess exists
+        run: cp public/.htaccess dist/.htaccess || true
+
+      - name: 🚀 Sync Files to cPanel public_html via FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: server407.web-hosting.com
+          username: coxswdtb
+          password: ${{ secrets.CPANEL_FTP_PASSWORD }}
+          local-dir: ./dist/
+          server-dir: /public_html/
